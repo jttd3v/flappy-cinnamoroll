@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Puzzle Cloud Path - Cinnamoroll Learning Games</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="title-area">
+                <div class="puzzle-icon">🧩</div>
+                <h1>Puzzle Cloud Path</h1>
+                <p class="subtitle">Slide tiles to solve puzzles with Cinnamoroll! 🐰</p>
+            </div>
+            
+            <div class="preview-puzzle">
+                <div class="preview-tile">🐰</div>
+                <div class="preview-tile">☁️</div>
+                <div class="preview-tile">⭐</div>
+                <div class="preview-tile empty"></div>
+            </div>
+            
+            <div class="start-form">
+                <label for="theme-select">Choose a theme:</label>
+                <select id="theme-select">
+                    <option value="cinnamoroll">🐰 Cinnamoroll</option>
+                    <option value="numbers">🔢 Numbers</option>
+                    <option value="animals">🐾 Animals</option>
+                    <option value="food">🍎 Food</option>
+                    <option value="space">🚀 Space</option>
+                </select>
+                
+                <button id="start-btn" class="primary-btn">
+                    <span>🧩</span> Start Puzzle!
+                </button>
+            </div>
+            
+            <div class="stats-preview">
+                <div class="stat-item">
+                    <span class="stat-icon">🏆</span>
+                    <span class="stat-label">Best</span>
+                    <span id="best-moves" class="stat-value">--</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-label">Stars</span>
+                    <span id="total-stars" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🧩</span>
+                    <span class="stat-label">Solved</span>
+                    <span id="puzzles-solved" class="stat-value">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <button id="home-btn" class="icon-btn">🏠</button>
+                <div class="puzzle-info">
+                    <span id="puzzle-name">Puzzle</span>
+                    <span id="puzzle-size">3×3</span>
+                </div>
+                <div class="header-stats">
+                    <span id="move-count">Moves: 0</span>
+                </div>
+            </div>
+            
+            <div class="target-preview" id="target-preview">
+                <h3>🎯 Goal</h3>
+                <div class="target-grid" id="target-grid"></div>
+            </div>
+            
+            <div class="puzzle-area">
+                <div class="puzzle-grid" id="puzzle-grid">
+                    <!-- Puzzle tiles rendered by JS -->
+                </div>
+            </div>
+            
+            <div class="game-stats">
+                <div class="stat-display">
+                    <span class="stat-label">⏱️ Time</span>
+                    <span id="timer-display" class="stat-value">0:00</span>
+                </div>
+                <div class="stat-display" id="move-limit-display">
+                    <span class="stat-label">👣 Limit</span>
+                    <span id="moves-remaining" class="stat-value">∞</span>
+                </div>
+                <div class="stat-display">
+                    <span class="stat-label">💡 Hints</span>
+                    <span id="hints-remaining" class="stat-value">3</span>
+                </div>
+            </div>
+            
+            <div class="game-controls">
+                <button id="hint-btn" class="control-btn">
+                    <span>💡</span> Hint
+                </button>
+                <button id="shuffle-btn" class="control-btn">
+                    <span>🔀</span> New Puzzle
+                </button>
+                <button id="reset-btn" class="control-btn">
+                    <span>↩️</span> Reset
+                </button>
+            </div>
+        </div>
+        
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <h1 id="result-title">🎉 Puzzle Complete!</h1>
+                <div class="result-emoji">🧩✨</div>
+                
+                <div class="completed-puzzle" id="completed-puzzle">
+                    <!-- Completed puzzle shown here -->
+                </div>
+                
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <span class="stat-icon">👣</span>
+                        <span class="stat-label">Moves</span>
+                        <span id="final-moves" class="stat-value">0</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="stat-icon">⏱️</span>
+                        <span class="stat-label">Time</span>
+                        <span id="final-time" class="stat-value">0:00</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="stat-icon">🏆</span>
+                        <span class="stat-label">Best</span>
+                        <span id="best-record" class="stat-value">--</span>
+                    </div>
+                </div>
+                
+                <div class="star-rating" id="star-rating">
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                </div>
+                
+                <div class="result-message" id="result-message">
+                    Great job solving the puzzle!
+                </div>
+                
+                <div class="result-buttons">
+                    <button id="next-puzzle-btn" class="primary-btn">
+                        <span>➡️</span> Next Puzzle
+                    </button>
+                    <button id="retry-btn" class="secondary-btn">
+                        <span>🔄</span> Try Again
+                    </button>
+                    <button id="menu-btn" class="secondary-btn">
+                        <span>🏠</span> Menu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../shared-assets/audio/GameAudioManager.js"></script>
+    <script src="../../shared-assets/player/PlayerManager.js"></script>
+    <script src="../../shared-assets/ui/Breadcrumb.js"></script>
+    <script src="PuzzlePathGame.js"></script>
+</body>
+</html>

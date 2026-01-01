@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Star Counter - Cinnamoroll Games</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="game-container">
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen active">
+      <div class="title-area">
+        <h1>⭐ Star Counter ⭐</h1>
+        <p>Catch the right answer!</p>
+        <div class="mascot">🐰</div>
+      </div>
+      
+      <button id="start-btn" class="primary-btn">Start Game!</button>
+      
+      <div class="high-score">
+        🏆 Best Score: <span id="high-score-display">0</span>
+      </div>
+      
+      <div class="instructions">
+        <h3>How to Play:</h3>
+        <p>⬅️➡️ Move left/right to catch stars</p>
+        <p>✓ Catch the CORRECT answer</p>
+        <p>✗ Avoid WRONG answers!</p>
+      </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+      <canvas id="game-canvas"></canvas>
+      
+      <div id="mobile-controls" class="mobile-controls">
+        <button id="left-btn" class="control-btn">⬅️</button>
+        <button id="right-btn" class="control-btn">➡️</button>
+      </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="screen">
+      <h2 id="result-title">🎉 Game Over! 🎉</h2>
+      
+      <div id="star-rating" class="stars">
+        <span class="star">⭐</span>
+        <span class="star">⭐</span>
+        <span class="star">⭐</span>
+      </div>
+      
+      <div class="result-stats">
+        <div class="result-stat">
+          <span class="label">Final Score</span>
+          <span id="final-score" class="value">0</span>
+        </div>
+        <div class="result-stat">
+          <span class="label">Correct Answers</span>
+          <span id="final-correct" class="value">0</span>
+        </div>
+        <div class="result-stat">
+          <span class="label">Best Combo</span>
+          <span id="final-combo" class="value">0x</span>
+        </div>
+        <div class="result-stat">
+          <span class="label">Accuracy</span>
+          <span id="final-accuracy" class="value">0%</span>
+        </div>
+      </div>
+      
+      <div id="new-record" class="new-record hidden">
+        🏆 New Best Score! 🏆
+      </div>
+      
+      <div class="result-buttons">
+        <button id="play-again-btn" class="primary-btn">Play Again</button>
+        <button id="home-btn" class="secondary-btn">Home</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../shared-assets/audio/GameAudioManager.js"></script>
+  <script src="../../shared-assets/player/PlayerManager.js"></script>
+  <script src="../../shared-assets/ui/Breadcrumb.js"></script>
+  <script src="StarCounterGame.js"></script>
+</body>
+</html>

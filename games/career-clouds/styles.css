@@ -1,0 +1,875 @@
+/**
+ * Career Clouds - Styles
+ */
+
+:root {
+    --primary-color: #7c3aed;
+    --secondary-color: #fbbf24;
+    --accent-color: #06b6d4;
+    --bg-gradient: linear-gradient(180deg, #c4b5fd 0%, #e0e7ff 50%, #fef3c7 100%);
+    --card-bg: #ffffff;
+    --text-dark: #1e1b4b;
+    --text-light: #6b7280;
+    --shadow-soft: 0 4px 15px rgba(124, 58, 237, 0.15);
+    --shadow-medium: 0 8px 25px rgba(124, 58, 237, 0.2);
+    --border-radius: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Segoe UI', 'Comic Sans MS', sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 500px;
+    min-height: 100vh;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Screens */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Start Screen */
+#start-screen {
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.title-area {
+    text-align: center;
+}
+
+.cloud-icon {
+    font-size: 50px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.title-area h1 {
+    font-size: 32px;
+    color: var(--text-dark);
+    text-shadow: 2px 2px 0 white;
+    margin: 10px 0;
+}
+
+.subtitle {
+    color: var(--text-light);
+    font-size: 16px;
+}
+
+.character-display {
+    text-align: center;
+}
+
+.character {
+    font-size: 70px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-15px) scale(1.05); }
+}
+
+.character-display p {
+    color: var(--text-dark);
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.start-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 280px;
+}
+
+.start-form label {
+    text-align: center;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.start-form select {
+    padding: 15px 20px;
+    font-size: 18px;
+    border: 3px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    background: white;
+    color: var(--text-dark);
+    cursor: pointer;
+    text-align: center;
+}
+
+.primary-btn {
+    padding: 18px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(124, 58, 237, 0.4);
+}
+
+.secondary-btn {
+    padding: 15px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    background: white;
+    color: var(--text-dark);
+    border: 3px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.secondary-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.data-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 15px 25px;
+    border-radius: 30px;
+    box-shadow: var(--shadow-soft);
+}
+
+.status-icon {
+    font-size: 24px;
+}
+
+.status-text {
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.status-text span {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Assessment Screen */
+#assessment-screen {
+    padding: 0;
+    background: #f5f3ff;
+}
+
+.assessment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    background: white;
+    box-shadow: var(--shadow-soft);
+}
+
+.assessment-header h2 {
+    color: var(--text-dark);
+    font-size: 20px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    background: #f3f4f6;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 5px;
+    padding: 15px 20px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    background: #f3f4f6;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Profile Tab */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 20px;
+}
+
+.profile-avatar {
+    font-size: 50px;
+}
+
+.profile-info h3 {
+    color: var(--text-dark);
+    font-size: 22px;
+}
+
+.profile-info p {
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+.strengths-section, .growth-section {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 15px;
+}
+
+.strengths-section h4, .growth-section h4 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.strengths-list, .growth-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.strength-item, .growth-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.strength-item .skill-icon, .growth-item .skill-icon {
+    font-size: 24px;
+}
+
+.strength-item .skill-name, .growth-item .skill-name {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.strength-item .skill-score {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.encouragement-box {
+    background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+    color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+.encouragement-box p {
+    font-size: 16px;
+}
+
+/* Careers Tab */
+.section-title {
+    color: var(--text-dark);
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.section-desc {
+    color: var(--text-light);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.careers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.career-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    padding: 18px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.career-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.career-card .career-icon {
+    font-size: 40px;
+}
+
+.career-card .career-info {
+    flex: 1;
+}
+
+.career-card .career-title {
+    font-weight: bold;
+    color: var(--text-dark);
+    font-size: 16px;
+}
+
+.career-card .career-match {
+    font-size: 13px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.career-card .career-arrow {
+    font-size: 20px;
+    color: var(--text-light);
+}
+
+/* Skills Tab */
+.skills-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 20px;
+}
+
+.skill-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.skill-bar .skill-icon {
+    font-size: 20px;
+    width: 30px;
+}
+
+.skill-bar .skill-name {
+    width: 80px;
+    font-size: 13px;
+    color: var(--text-dark);
+}
+
+.skill-bar .bar-container {
+    flex: 1;
+    height: 20px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.skill-bar .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.skill-bar .skill-score {
+    width: 40px;
+    text-align: right;
+    font-weight: bold;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.games-section {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+}
+
+.games-section h4 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.games-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.game-suggestion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 15px 10px;
+    background: #f9fafb;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.game-suggestion:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.game-suggestion .game-icon {
+    font-size: 28px;
+}
+
+.game-suggestion .game-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+    text-align: center;
+}
+
+.game-suggestion:hover .game-name {
+    color: white;
+}
+
+/* No Data Screen */
+#nodata-screen {
+    justify-content: center;
+    align-items: center;
+}
+
+.nodata-content {
+    text-align: center;
+    max-width: 320px;
+}
+
+.nodata-icon {
+    font-size: 70px;
+    margin-bottom: 20px;
+}
+
+.nodata-content h2 {
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.nodata-content > p {
+    color: var(--text-light);
+    margin-bottom: 25px;
+}
+
+.game-suggestions {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 20px;
+}
+
+.game-suggestions h4 {
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.suggestion-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.game-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 15px;
+    background: #f9fafb;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.game-link:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.game-link .game-icon {
+    font-size: 30px;
+}
+
+.game-link .game-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.game-link:hover .game-name {
+    color: white;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-medium);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header .career-icon {
+    font-size: 40px;
+}
+
+.modal-header h2 {
+    flex: 1;
+    color: var(--text-dark);
+    font-size: 20px;
+}
+
+.close-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.career-desc {
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.career-match {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.match-label {
+    color: var(--text-light);
+}
+
+.match-score {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.career-skills h4, .career-facts h4 {
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.skills-needed {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.skill-tag {
+    padding: 8px 15px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.career-facts ul {
+    list-style: none;
+    padding: 0;
+}
+
+.career-facts li {
+    padding: 10px 0;
+    border-bottom: 1px solid #e5e7eb;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.career-facts li:last-child {
+    border-bottom: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ===================== TABLET (768px+) ===================== */
+@media (min-width: 768px) {
+    body {
+        padding: 30px;
+    }
+    
+    .game-container {
+        max-width: 700px;
+        min-height: auto;
+        border-radius: 35px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: var(--shadow-medium);
+        padding: 20px;
+    }
+    
+    .screen {
+        min-height: 700px;
+        padding: 30px;
+    }
+    
+    .title-area h1 {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .character {
+        font-size: 90px;
+    }
+    
+    .cloud-icon {
+        font-size: 65px;
+    }
+    
+    .btn-primary {
+        padding: 18px 50px;
+        font-size: 1.3rem;
+    }
+    
+    .scenario-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    #scenario-text {
+        font-size: 1.2rem;
+    }
+    
+    .choices {
+        gap: 15px;
+    }
+    
+    .choice-btn {
+        padding: 20px 25px;
+        font-size: 1.1rem;
+    }
+    
+    .results-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    
+    .career-card {
+        padding: 25px;
+    }
+    
+    .career-icon {
+        font-size: 3rem;
+    }
+    
+    .stat-value {
+        font-size: 2.2rem;
+    }
+}
+
+/* ===================== DESKTOP (1024px+) ===================== */
+@media (min-width: 1024px) {
+    body {
+        padding: 40px;
+    }
+    
+    .game-container {
+        max-width: 900px;
+    }
+    
+    .screen {
+        min-height: 750px;
+        padding: 45px;
+    }
+    
+    .title-area h1 {
+        font-size: 3rem;
+    }
+    
+    .subtitle {
+        font-size: 1.4rem;
+    }
+    
+    .character {
+        font-size: 110px;
+    }
+    
+    #scenario-text {
+        font-size: 1.4rem;
+        max-width: 700px;
+        margin: 0 auto 20px;
+    }
+    
+    .choices {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .choice-btn {
+        padding: 25px 30px;
+        font-size: 1.2rem;
+    }
+    
+    .results-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+    }
+    
+    .modal-content {
+        max-width: 600px;
+    }
+    
+    .stat-value {
+        font-size: 2.6rem;
+    }
+}
+
+/* ===================== LARGE DESKTOP (1440px+) ===================== */
+@media (min-width: 1440px) {
+    .game-container {
+        max-width: 1100px;
+    }
+    
+    .title-area h1 {
+        font-size: 3.5rem;
+    }
+    
+    .results-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}

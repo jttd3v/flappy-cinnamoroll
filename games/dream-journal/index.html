@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Dream Journal - Cinnamoroll Learning Games</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="title-area">
+                <h1 class="game-title">📝 Cinnamoroll's Dream Journal 📝</h1>
+                <div class="mascot">🐰💭</div>
+                <p class="tagline">Write your dreams and stories!</p>
+            </div>
+            
+            <button id="start-btn" class="primary-btn">Start Writing!</button>
+            
+            <div class="stats-display">
+                <div class="stat-badge">
+                    <span>🔥 Streak: <span id="streak-display">0</span></span>
+                </div>
+                <div class="stat-badge">
+                    <span>📚 Entries: <span id="entries-display">0</span></span>
+                </div>
+            </div>
+            
+            <button id="gallery-btn" class="secondary-btn">📖 View Journal</button>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div id="game-header">
+                <div class="header-left">
+                    <span id="date-display">Today</span>
+                </div>
+                <div class="header-center">
+                    <span id="streak-indicator">🔥 0 day streak</span>
+                </div>
+                <div class="header-right">
+                    <button id="home-btn" class="icon-btn" title="Home">🏠</button>
+                </div>
+            </div>
+            
+            <!-- Prompt Area -->
+            <div id="prompt-area">
+                <div id="prompt-decoration">☁️ ✨ ☁️</div>
+                <h3 id="prompt-category">Today's Dream Prompt</h3>
+                <p id="prompt-text">Loading prompt...</p>
+            </div>
+            
+            <!-- Writing Area -->
+            <div id="writing-area">
+                <div id="starter-hints" class="hidden">
+                    <p class="hint-label">Story starters (click to use):</p>
+                    <div id="starter-buttons"></div>
+                </div>
+                
+                <textarea id="writing-input" placeholder="Start writing your story here..."></textarea>
+                
+                <div id="writing-footer">
+                    <div id="word-count">
+                        <span id="current-words">0</span> / <span id="target-words">50</span> words
+                    </div>
+                    <div id="word-progress">
+                        <div id="word-progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div id="action-area">
+                <button id="save-draft-btn" class="secondary-btn">💾 Save Draft</button>
+                <button id="submit-btn" class="primary-btn" disabled>✨ Submit</button>
+            </div>
+            
+            <!-- Auto-save indicator -->
+            <div id="autosave-indicator" class="hidden">
+                <span>✓ Auto-saved</span>
+            </div>
+        </div>
+        
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <h1 id="result-title">🌟 Great Writing! 🌟</h1>
+                <div id="star-rating" class="star-container">
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                </div>
+                
+                <div class="feedback-card">
+                    <p id="feedback-message">Your story has been saved to your dream journal!</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="final-words">0</div>
+                        <div class="stat-label">Words Written</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-words">0</div>
+                        <div class="stat-label">Total Words</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="current-streak">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="badges-earned">0</div>
+                        <div class="stat-label">Badges</div>
+                    </div>
+                </div>
+                
+                <div id="new-badge" class="hidden">
+                    <div id="badge-display"></div>
+                    <p id="badge-name">New Badge!</p>
+                </div>
+                
+                <div class="result-buttons">
+                    <button id="write-more-btn" class="primary-btn">Write More</button>
+                    <button id="home-result-btn" class="secondary-btn">Home</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Gallery Screen -->
+        <div id="gallery-screen" class="screen">
+            <div id="gallery-header">
+                <h2>📚 My Dream Collection</h2>
+                <button id="close-gallery-btn" class="icon-btn">✕</button>
+            </div>
+            
+            <div id="badges-area">
+                <h3>🏆 Badges</h3>
+                <div id="badges-container"></div>
+            </div>
+            
+            <div id="entries-area">
+                <h3>📖 Journal Entries</h3>
+                <div id="entries-container">
+                    <p class="empty-message">No entries yet. Start writing!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../shared-assets/audio/GameAudioManager.js"></script>
+    <script src="../../shared-assets/player/PlayerManager.js"></script>
+    <script src="../../shared-assets/ui/Breadcrumb.js"></script>
+    <script src="DreamJournalGame.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Quiz Quest - Cinnamoroll Learning Games</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="title-area">
+                <h1 class="game-title">🗺️ Quiz Quest 🏰</h1>
+                <div class="mascot">
+                    <img src="../../assets/images/cinnamoroll.png" alt="Cinnamoroll" 
+                         onerror="this.style.display='none'">
+                </div>
+                <p class="tagline">Journey through knowledge!</p>
+            </div>
+            
+            <button id="start-btn" class="primary-btn adventure-btn" aria-label="Start quiz quest game">Begin Quest!</button>
+            
+            <div class="high-score-display">
+                <span>🏆 Best Score: <span id="high-score-value">0</span></span>
+            </div>
+        </div>
+        
+        <!-- Map Screen -->
+        <div id="map-screen" class="screen">
+            <div id="map-header">
+                <div class="header-stat">
+                    <span class="stat-icon">⭐</span>
+                    <span id="total-stars">0</span>
+                </div>
+                <div class="header-stat">
+                    <span class="stat-icon">❤️</span>
+                    <span id="lives-display">3</span>
+                </div>
+                <div class="header-stat">
+                    <span class="stat-icon">🎯</span>
+                    <span id="map-score">0</span>
+                </div>
+            </div>
+            
+            <div id="map-container">
+                <canvas id="map-canvas" width="380" height="320"></canvas>
+            </div>
+            
+            <div id="location-info" class="hidden">
+                <h3 id="location-name"></h3>
+                <p id="location-desc"></p>
+                <div id="location-progress">
+                    <span id="location-questions">5 questions</span>
+                    <span id="location-category">📚 Mixed</span>
+                </div>
+                <button id="enter-location-btn" class="primary-btn">Enter</button>
+            </div>
+        </div>
+        
+        <!-- Quiz Screen - Quizizz Inspired -->
+        <div id="quiz-screen" class="screen">
+            <!-- Top Bar with Timer & Progress -->
+            <div id="quiz-top-bar">
+                <div id="quiz-timer-section">
+                    <div id="timer-ring">
+                        <svg viewBox="0 0 36 36">
+                            <path id="timer-ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                            <path id="timer-ring-fill" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                        </svg>
+                        <span id="timer-text">30</span>
+                    </div>
+                </div>
+                <div id="quiz-progress-section">
+                    <span id="question-number">1/5</span>
+                    <div id="progress-dots">
+                        <!-- Generated dynamically -->
+                    </div>
+                </div>
+                <div id="quiz-score-section">
+                    <span id="quiz-live-score">0</span>
+                    <span class="score-label">pts</span>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div id="question-card">
+                <div id="category-badge">
+                    <span id="category-icon">🔬</span>
+                    <span id="category-name">Science</span>
+                </div>
+                <div id="question-area">
+                    <h2 id="question-text">Loading question...</h2>
+                </div>
+                <div id="streak-indicator" class="hidden">
+                    <span class="streak-fire">🔥</span>
+                    <span id="streak-count">0</span>
+                </div>
+            </div>
+            
+            <!-- Quizizz-style Answer Grid (2x2) -->
+            <div id="answers-grid" class="quizizz-grid">
+                <!-- Answer buttons generated dynamically with shapes -->
+            </div>
+
+            <!-- Power-ups Bar -->
+            <div id="quiz-footer">
+                <div class="power-up-bar">
+                    <button class="power-up-btn" id="hint-btn" title="Eliminate 1 wrong answer">
+                        💡 <span class="pu-count" id="hint-count">3</span>
+                    </button>
+                    <button class="power-up-btn" id="fifty-btn" title="50/50 - Remove 2 wrong">
+                        ⚖️ <span class="pu-count" id="fifty-count">2</span>
+                    </button>
+                    <button class="power-up-btn" id="skip-btn" title="Skip question">
+                        ⏭️ <span class="pu-count" id="skip-count">1</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Feedback Overlay - Quizizz Style -->
+            <div id="feedback-overlay" class="feedback-overlay hidden">
+                <div id="feedback-box" class="feedback-box">
+                    <div id="feedback-icon" class="feedback-icon"></div>
+                    <p id="feedback-text" class="feedback-text"></p>
+                    <p id="feedback-explanation" class="feedback-explanation"></p>
+                    <div id="feedback-points" class="hidden">+100</div>
+                    <button id="continue-btn" class="primary-btn">Continue</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Location Complete Screen -->
+        <div id="location-complete-screen" class="screen">
+            <div class="complete-content">
+                <h1 id="complete-title">Area Complete!</h1>
+                <div id="earned-stars" class="star-container">
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                </div>
+                
+                <div class="complete-stats">
+                    <div class="stat-row">
+                        <span>Correct Answers:</span>
+                        <span id="correct-answers">0/5</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Stars Earned:</span>
+                        <span id="stars-earned">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Points Gained:</span>
+                        <span id="points-gained">0</span>
+                    </div>
+                </div>
+                
+                <button id="continue-map-btn" class="primary-btn adventure-btn">Continue Journey</button>
+            </div>
+        </div>
+        
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <h1 id="result-title">Quest Complete!</h1>
+                <div class="final-badge">🏆</div>
+                
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <div class="stat-value" id="final-score">0</div>
+                        <div class="stat-label">Total Score</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="stat-value" id="final-stars">0</div>
+                        <div class="stat-label">Stars Collected</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="stat-value" id="accuracy-rate">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="stat-value" id="areas-completed">0</div>
+                        <div class="stat-label">Areas Explored</div>
+                    </div>
+                </div>
+                
+                <div id="subject-breakdown">
+                    <h3>Subject Strengths</h3>
+                    <div id="subject-bars"></div>
+                </div>
+                
+                <div id="new-record" class="hidden">🎉 New High Score! 🎉</div>
+                
+                <div class="result-buttons">
+                    <button id="play-again-btn" class="primary-btn adventure-btn">New Quest</button>
+                    <button id="home-btn" class="secondary-btn">Home</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="gameover-screen" class="screen">
+            <div class="gameover-content">
+                <h1>Journey Paused</h1>
+                <p>You ran out of lives!</p>
+                <div class="gameover-stats">
+                    <p>Score: <span id="gameover-score">0</span></p>
+                    <p>Stars: <span id="gameover-stars">0</span></p>
+                </div>
+                <div class="gameover-buttons">
+                    <button id="retry-btn" class="primary-btn">Try Again</button>
+                    <button id="quit-btn" class="secondary-btn">Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../shared-assets/audio/GameAudioManager.js"></script>
+    <script src="../../shared-assets/player/PlayerManager.js"></script>
+    <script src="../../shared-assets/ui/Breadcrumb.js"></script>
+    <script src="QuizQuestGame.js"></script>
+</body>
+</html>

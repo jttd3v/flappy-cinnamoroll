@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Cinnamoroll Games - Select Your Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #FFF8E7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* Player Bar */
+        .player-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #FFFFFF;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            z-index: 50;
+        }
+        
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .player-avatar {
+            width: 36px;
+            height: 36px;
+            background: #E6E6FA;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .player-name {
+            font-weight: 600;
+            color: #FFB6C1;
+        }
+        
+        .player-age {
+            font-size: 12px;
+            color: #888;
+        }
+        
+        .change-player-btn {
+            background: #E6E6FA;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #6B5B95;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .change-player-btn:hover {
+            background: #FFB6C1;
+            color: white;
+        }
+        
+        /* Profile Popup */
+        .profile-popup {
+            position: fixed;
+            top: 60px;
+            left: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            min-width: 280px;
+            z-index: 100;
+            animation: slideDown 0.2s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .profile-header {
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 15px;
+        }
+        
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            background: #E6E6FA;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 10px;
+        }
+        
+        .profile-header h3 {
+            color: #FFB6C1;
+            margin: 0;
+            font-size: 18px;
+        }
+        
+        .profile-header p {
+            color: #888;
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .stat-icon {
+            font-size: 20px;
+        }
+        
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #FFB6C1;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #888;
+        }
+        
+        .profile-difficulty {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #FFF8E7;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .difficulty-badge {
+            background: #FFB6C1;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .main-content {
+            margin-top: 70px;
+            width: 100%;
+            max-width: 900px;
+        }
+        
+        h1 {
+            color: #FFB6C1;
+            font-size: 2em;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #6B5B95;
+            margin-bottom: 20px;
+            font-size: 1em;
+            text-align: center;
+        }
+        
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            width: 100%;
+            padding: 10px;
+        }
+        
+        .game-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 120px;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .game-icon {
+            width: 50px;
+            height: 50px;
+            background: #E6E6FA;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .game-card h2 {
+            color: #FFB6C1;
+            font-size: 0.85em;
+            line-height: 1.2;
+        }
+        
+        .game-card .category {
+            font-size: 0.7em;
+            color: #888;
+            margin-top: 4px;
+        }
+        
+        /* Registration Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-card {
+            background: #FFFFFF;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            transform: scale(0.8) translateY(20px);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        
+        .modal-overlay.active .modal-card {
+            transform: scale(1) translateY(0);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        
+        .modal-close:hover {
+            background: #e0e0e0;
+        }
+        
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            background: #E6E6FA;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+            margin: 0 auto 15px;
+        }
+        
+        .modal-card h2 {
+            color: #FFB6C1;
+            font-size: 1.5em;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .modal-category {
+            text-align: center;
+            color: #6B5B95;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .modal-description {
+            color: #666;
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .modal-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .skill-tag {
+            background: #E6E6FA;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            color: #6B5B95;
+        }
+        
+        .play-btn {
+            display: block;
+            width: 100%;
+            background: #FFB6C1;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .play-btn:hover {
+            background: #FF9AAB;
+            transform: scale(1.02);
+        }
+        
+        /* Registration Form */
+        .register-form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #E6E6FA;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #6B5B95;
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #E6E6FA;
+            border-radius: 12px;
+            background: #FFFFFF;
+            color: #5D5D5D;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #FFB6C1;
+        }
+        
+        .existing-players {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #E6E6FA;
+        }
+        
+        .existing-players h4 {
+            color: #888;
+            font-size: 12px;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+        
+        .player-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .player-chip {
+            padding: 8px 14px;
+            background: #E6E6FA;
+            color: #6B5B95;
+            border: none;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .player-chip:hover {
+            background: #FFB6C1;
+            color: white;
+        }
+        
+        /* Floating clouds decoration */
+        .cloud {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            z-index: -1;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        .cloud-1 { width: 80px; height: 32px; top: 10%; left: 5%; animation-delay: 0s; }
+        .cloud-1::before { width: 40px; height: 40px; top: -20px; left: 12px; }
+        .cloud-1::after { width: 32px; height: 32px; top: -12px; left: 40px; }
+        
+        .cloud-2 { width: 60px; height: 28px; top: 15%; right: 10%; animation-delay: -5s; }
+        .cloud-2::before { width: 35px; height: 35px; top: -16px; left: 8px; }
+        .cloud-2::after { width: 28px; height: 28px; top: -8px; left: 32px; }
+        
+        .cloud-3 { width: 90px; height: 36px; bottom: 10%; left: 15%; animation-delay: -10s; }
+        .cloud-3::before { width: 44px; height: 44px; top: -24px; left: 16px; }
+        .cloud-3::after { width: 36px; height: 36px; top: -12px; left: 48px; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-10px) translateX(5px); }
+            50% { transform: translateY(0) translateX(10px); }
+            75% { transform: translateY(10px) translateX(5px); }
+        }
+        
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #6B5B95;
+            font-size: 0.9em;
+        }
+        
+        footer a {
+            color: #FF9999;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5em; }
+            .games-container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            .game-card {
+                padding: 12px 8px;
+                min-height: 100px;
+            }
+            .game-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 22px;
+            }
+            .game-card h2 {
+                font-size: 0.75em;
+            }
+            .modal-card {
+                padding: 20px;
+            }
+        }
+        
+        /* ============ TABLET STYLES (768px+) ============ */
+        @media (min-width: 768px) {
+            body {
+                padding: 30px;
+            }
+            
+            .main-content {
+                max-width: 900px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .subtitle {
+                font-size: 1.2em;
+                margin-bottom: 30px;
+            }
+            
+            .games-container {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+            
+            .game-card {
+                padding: 20px;
+                min-height: 150px;
+            }
+            
+            .game-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 32px;
+                margin-bottom: 12px;
+            }
+            
+            .game-card h2 {
+                font-size: 1em;
+            }
+            
+            .game-card .category {
+                font-size: 0.8em;
+            }
+            
+            .modal-card {
+                max-width: 500px;
+                padding: 40px;
+            }
+        }
+        
+        /* ============ DESKTOP STYLES (1024px+) ============ */
+        @media (min-width: 1024px) {
+            body {
+                padding: 40px;
+            }
+            
+            .main-content {
+                max-width: 1200px;
+            }
+            
+            h1 {
+                font-size: 3em;
+            }
+            
+            .subtitle {
+                font-size: 1.4em;
+                margin-bottom: 40px;
+            }
+            
+            .games-container {
+                grid-template-columns: repeat(5, 1fr);
+                gap: 25px;
+            }
+            
+            .game-card {
+                padding: 25px;
+                min-height: 180px;
+                border-radius: 20px;
+            }
+            
+            .game-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            }
+            
+            .game-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 38px;
+                margin-bottom: 15px;
+            }
+            
+            .game-card h2 {
+                font-size: 1.1em;
+            }
+            
+            .game-card .category {
+                font-size: 0.85em;
+                margin-top: 8px;
+            }
+            
+            .player-bar {
+                padding: 15px 40px;
+            }
+            
+            .player-avatar {
+                width: 44px;
+                height: 44px;
+                font-size: 22px;
+            }
+            
+            .player-name {
+                font-size: 1.1em;
+            }
+            
+            .profile-popup {
+                left: 40px;
+                min-width: 320px;
+            }
+            
+            .modal-card {
+                max-width: 550px;
+            }
+            
+            .modal-icon {
+                width: 100px;
+                height: 100px;
+                font-size: 55px;
+            }
+            
+            .modal-card h2 {
+                font-size: 1.8em;
+            }
+            
+            .play-btn {
+                padding: 18px;
+                font-size: 1.2em;
+            }
+        }
+        
+        /* ============ LARGE DESKTOP STYLES (1440px+) ============ */
+        @media (min-width: 1440px) {
+            .main-content {
+                max-width: 1400px;
+            }
+            
+            h1 {
+                font-size: 3.5em;
+            }
+            
+            .games-container {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 30px;
+            }
+            
+            .game-card {
+                padding: 30px;
+                min-height: 200px;
+            }
+            
+            .game-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 44px;
+            }
+            
+            .game-card h2 {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+  <link rel="stylesheet" crossorigin href="./assets/launcher-D87Q6eV-.css">
+</head>
+<body>
+    <!-- Decorative clouds -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    
+    <!-- Player Bar -->
+    <div class="player-bar" id="player-bar" style="display: none;">
+        <div class="player-info" id="player-info-btn" style="cursor: pointer;" title="View Profile">
+            <div class="player-avatar">👤</div>
+            <div>
+                <div class="player-name" id="display-player-name">Guest</div>
+                <div class="player-age" id="display-player-age">Age: --</div>
+            </div>
+        </div>
+        <button class="change-player-btn" id="change-player-btn">Change Player</button>
+    </div>
+    
+    <!-- Profile Popup -->
+    <div class="profile-popup" id="profile-popup" style="display: none;">
+        <div class="profile-header">
+            <div class="profile-avatar">👤</div>
+            <h3 id="profile-name">Player Name</h3>
+            <p id="profile-age">Age: --</p>
+        </div>
+        <div class="profile-stats">
+            <div class="stat-item">
+                <span class="stat-icon">🎮</span>
+                <span class="stat-value" id="stat-games-played">0</span>
+                <span class="stat-label">Games Played</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-value" id="stat-total-stars">0</span>
+                <span class="stat-label">Stars Earned</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-icon">🏆</span>
+                <span class="stat-value" id="stat-best-score">0</span>
+                <span class="stat-label">Best Score</span>
+            </div>
+        </div>
+        <div class="profile-difficulty">
+            <span>Difficulty Level:</span>
+            <span class="difficulty-badge" id="profile-difficulty">Standard</span>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <h1>🐰 Cinnamoroll Games 🐰</h1>
+        <p class="subtitle">Choose your adventure!</p>
+        
+        <div class="games-container" id="games-grid"></div>
+    </div>
+    
+    <!-- Registration Modal -->
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-card">
+            <div class="modal-icon">🐰</div>
+            <h2>Welcome!</h2>
+            <p class="modal-description">Enter your name to start playing and save your progress!</p>
+            
+            <div class="register-form">
+                <div class="form-group">
+                    <label for="player-name">Your Name</label>
+                    <input type="text" id="player-name" placeholder="Enter your name" maxlength="12">
+                </div>
+                <div class="form-group">
+                    <label for="player-age">Your Age</label>
+                    <select id="player-age">
+                        <option value="6">6-8 years</option>
+                        <option value="9">9-10 years</option>
+                        <option value="11">11-12 years</option>
+                        <option value="13">13-15 years</option>
+                        <option value="16" selected>16-18 years</option>
+                        <option value="19">19-25 years</option>
+                        <option value="26">26-35 years</option>
+                    </select>
+                </div>
+                <button class="play-btn" id="register-btn">Start Playing!</button>
+            </div>
+            
+            <div class="existing-players" id="existing-players-section" style="display: none;">
+                <h4>Or select an existing player:</h4>
+                <div class="player-list" id="player-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal-card">
+            <button class="modal-close" id="modal-close">×</button>
+            <div class="modal-icon" id="modal-icon">🐰</div>
+            <h2 id="modal-title">Game Title</h2>
+            <div class="modal-category" id="modal-category">Category</div>
+            <p class="modal-description" id="modal-description">Description goes here.</p>
+            <div class="modal-skills" id="modal-skills"></div>
+            <button class="play-btn" id="modal-play">Play Now</button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Built with the <strong>Cinnamoroll Game Engine</strong> 💖</p>
+        <p><a href="./docs/CREATING_NEW_GAME.md">Create Your Own Game</a> | <a href="./docs/API.md">API Docs</a></p>
+    </footer>
+    
+    <script src="./shared-assets/player/PlayerManager.js"></script>
+    <script src="./shared-assets/core/GameServices.js"></script>
+    <script>
+        // Game data for all available games
+        const GAMES = [
+            {
+                id: 'flappy-cinnamoroll',
+                title: 'Flappy Cinnamoroll',
+                icon: '🐰',
+                category: 'Action',
+                description: 'Help Cinnamoroll fly through the clouds! Tap to flap and avoid obstacles. Watch out for the ghost!',
+                skills: ['Timing', 'Reflexes', 'Focus'],
+                path: './index.html'
+            },
+            {
+                id: 'treasure-chest-memory',
+                title: 'Memory Match',
+                icon: '🧠',
+                category: 'Memory',
+                description: 'Match pairs of Cinnamoroll and friends in this cute memory game! Train your brain while having fun.',
+                skills: ['Memory', 'Attention', 'Pattern Recognition'],
+                path: './games/treasure-chest-memory/index.html'
+            },
+            {
+                id: 'star-counter',
+                title: 'Star Counter',
+                icon: '⭐',
+                category: 'Math',
+                description: 'Count stars and solve math puzzles! Perfect for learning numbers and arithmetic skills.',
+                skills: ['Math', 'Counting', 'Speed'],
+                path: './games/star-counter/index.html'
+            },
+            {
+                id: 'pattern-rainbow',
+                title: 'Pattern Rainbow',
+                icon: '🌈',
+                category: 'Logic',
+                description: 'Complete colorful patterns and sequences! Discover the hidden rules and test your logic skills.',
+                skills: ['Logic', 'Patterns', 'Creativity'],
+                path: './games/pattern-rainbow/index.html'
+            },
+            {
+                id: 'quiz-quest',
+                title: 'Quiz Quest',
+                icon: '❓',
+                category: 'Knowledge',
+                description: 'Answer trivia questions across many topics! Learn new facts and challenge your knowledge.',
+                skills: ['Knowledge', 'Reading', 'Memory'],
+                path: './games/quiz-quest/index.html'
+            },
+            {
+                id: 'candy-shop',
+                title: 'Candy Shop',
+                icon: '🍬',
+                category: 'Math',
+                description: 'Run your own candy shop! Handle customers, calculate prices, and make change correctly.',
+                skills: ['Math', 'Money', 'Planning'],
+                path: './games/candy-shop/index.html'
+            },
+            {
+                id: 'story-cloud',
+                title: 'Story Cloud',
+                icon: '📖',
+                category: 'Reading',
+                description: 'Create your own adventures! Read interactive stories and make choices that shape the ending.',
+                skills: ['Reading', 'Creativity', 'Decision Making'],
+                path: './games/story-cloud/index.html'
+            },
+            {
+                id: 'dream-journal',
+                title: 'Dream Journal',
+                icon: '📝',
+                category: 'Writing',
+                description: 'Express yourself through writing! Daily prompts inspire creativity and build writing skills.',
+                skills: ['Writing', 'Creativity', 'Expression'],
+                path: './games/dream-journal/index.html'
+            },
+            {
+                id: 'cloud-kingdom',
+                title: 'Cloud Kingdom',
+                icon: '☁️',
+                category: 'Adventure',
+                description: 'Explore a magical kingdom in the clouds! Complete quests, meet characters, and discover secrets.',
+                skills: ['Exploration', 'Problem Solving', 'Spatial'],
+                path: './games/cloud-kingdom/index.html'
+            },
+            {
+                id: 'puzzle-path',
+                title: 'Puzzle Path',
+                icon: '🧩',
+                category: 'Puzzle',
+                description: 'Slide tiles to solve puzzles! Multiple themes and difficulty levels for endless fun.',
+                skills: ['Logic', 'Spatial', 'Planning'],
+                path: './games/puzzle-path/index.html'
+            },
+            {
+                id: 'career-clouds',
+                title: 'Career Clouds',
+                icon: '💼',
+                category: 'Assessment',
+                description: 'Discover your strengths! This special game analyzes your skills from all games and suggests future careers.',
+                skills: ['Self-Discovery', 'All Skills'],
+                path: './games/career-clouds/index.html'
+            }
+        ];
+        
+        // DOM elements
+        const gamesGrid = document.getElementById('games-grid');
+        const modal = document.getElementById('modal');
+        const modalClose = document.getElementById('modal-close');
+        const modalIcon = document.getElementById('modal-icon');
+        const modalTitle = document.getElementById('modal-title');
+        const modalCategory = document.getElementById('modal-category');
+        const modalDescription = document.getElementById('modal-description');
+        const modalSkills = document.getElementById('modal-skills');
+        const modalPlay = document.getElementById('modal-play');
+        
+        // Registration elements
+        const registerModal = document.getElementById('register-modal');
+        const playerNameInput = document.getElementById('player-name');
+        const playerAgeSelect = document.getElementById('player-age');
+        const registerBtn = document.getElementById('register-btn');
+        const playerBar = document.getElementById('player-bar');
+        const displayPlayerName = document.getElementById('display-player-name');
+        const displayPlayerAge = document.getElementById('display-player-age');
+        const changePlayerBtn = document.getElementById('change-player-btn');
+        const existingPlayersSection = document.getElementById('existing-players-section');
+        const playerList = document.getElementById('player-list');
+        
+        // Current selected game
+        let selectedGame = null;
+        
+        // ==========================================
+        // PLAYER MANAGEMENT
+        // ==========================================
+        
+        function checkPlayer() {
+            // Check if player is logged in
+            if (PlayerManager.hasActivePlayer()) {
+                showPlayerBar();
+                hideRegisterModal();
+            } else {
+                hidePlayerBar();
+                showRegisterModal();
+            }
+        }
+        
+        function showPlayerBar() {
+            const player = PlayerManager.getCurrentPlayer();
+            if (player) {
+                displayPlayerName.textContent = player.name;
+                displayPlayerAge.textContent = `Age: ${player.age}`;
+                playerBar.style.display = 'flex';
+            }
+        }
+        
+        function hidePlayerBar() {
+            playerBar.style.display = 'none';
+        }
+        
+        function showRegisterModal() {
+            // Load existing players
+            const players = PlayerManager.getAllPlayers();
+            if (players.length > 0) {
+                existingPlayersSection.style.display = 'block';
+                playerList.innerHTML = '';
+                players.forEach(p => {
+                    const chip = document.createElement('button');
+                    chip.className = 'player-chip';
+                    chip.textContent = `${p.name} (${p.age})`;
+                    chip.addEventListener('click', () => selectExistingPlayer(p.name));
+                    playerList.appendChild(chip);
+                });
+            } else {
+                existingPlayersSection.style.display = 'none';
+            }
+            
+            registerModal.classList.add('active');
+        }
+        
+        function hideRegisterModal() {
+            registerModal.classList.remove('active');
+        }
+        
+        function registerPlayer() {
+            const name = playerNameInput.value.trim();
+            const age = parseInt(playerAgeSelect.value);
+            
+            if (!name) {
+                alert('Please enter your name!');
+                return;
+            }
+            
+            const result = PlayerManager.registerPlayer(name, age);
+            
+            if (result.success) {
+                hideRegisterModal();
+                showPlayerBar();
+                
+                if (result.isNew) {
+                    showToast(`Welcome, ${result.player.name}! 🎉`);
+                } else {
+                    showToast(`Welcome back, ${result.player.name}! 👋`);
+                }
+            } else {
+                alert(result.error || 'Registration failed');
+            }
+        }
+        
+        function selectExistingPlayer(name) {
+            const result = PlayerManager.switchPlayer(name);
+            
+            if (result.success) {
+                hideRegisterModal();
+                showPlayerBar();
+                showToast(`Welcome back, ${result.player.name}! 👋`);
+            }
+        }
+        
+        function showToast(message) {
+            if (typeof GameServices !== 'undefined' && GameServices.UI) {
+                GameServices.UI.showToast(message);
+            } else {
+                console.log(message);
+            }
+        }
+        
+        // ==========================================
+        // GAME CARDS
+        // ==========================================
+        
+        // Render game cards
+        function renderGames() {
+            gamesGrid.innerHTML = '';
+            
+            GAMES.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <div class="game-icon">${game.icon}</div>
+                    <h2>${game.title}</h2>
+                    <div class="category">${game.category}</div>
+                `;
+                card.addEventListener('click', () => openModal(game));
+                gamesGrid.appendChild(card);
+            });
+        }
+        
+        // Open modal with game details
+        function openModal(game) {
+            selectedGame = game;
+            modalIcon.textContent = game.icon;
+            modalTitle.textContent = game.title;
+            modalCategory.textContent = game.category;
+            modalDescription.textContent = game.description;
+            
+            // Render skill tags
+            modalSkills.innerHTML = '';
+            game.skills.forEach(skill => {
+                const tag = document.createElement('span');
+                tag.className = 'skill-tag';
+                tag.textContent = skill;
+                modalSkills.appendChild(tag);
+            });
+            
+            modal.classList.add('active');
+        }
+        
+        // Play the selected game
+        function playGame() {
+            if (!selectedGame) return;
+            
+            // Check if player is registered
+            if (!PlayerManager.hasActivePlayer()) {
+                closeModal();
+                showRegisterModal();
+                return;
+            }
+            
+            // Navigate to game
+            window.location.href = selectedGame.path;
+        }
+        
+        // Close modal
+        function closeModal() {
+            modal.classList.remove('active');
+            selectedGame = null;
+        }
+        
+        // ==========================================
+        // PROFILE POPUP
+        // ==========================================
+        
+        const profilePopup = document.getElementById('profile-popup');
+        const playerInfoBtn = document.getElementById('player-info-btn');
+        let profileVisible = false;
+        
+        function toggleProfile() {
+            if (profileVisible) {
+                hideProfile();
+            } else {
+                showProfile();
+            }
+        }
+        
+        function showProfile() {
+            const player = PlayerManager.getCurrentPlayer();
+            if (!player) return;
+            
+            // Update profile info
+            document.getElementById('profile-name').textContent = player.name;
+            document.getElementById('profile-age').textContent = `Age: ${player.age}`;
+            
+            // Calculate stats from player data
+            let totalGamesPlayed = 0;
+            let totalStars = 0;
+            let bestScore = 0;
+            
+            if (player.gameStats) {
+                Object.values(player.gameStats).forEach(game => {
+                    totalGamesPlayed += game.played || 0;
+                    totalStars += game.totalStars || 0;
+                    if (game.highScore && game.highScore > bestScore) {
+                        bestScore = game.highScore;
+                    }
+                });
+            }
+            
+            document.getElementById('stat-games-played').textContent = totalGamesPlayed;
+            document.getElementById('stat-total-stars').textContent = totalStars;
+            document.getElementById('stat-best-score').textContent = bestScore;
+            
+            // Determine difficulty label based on age
+            let difficultyLabel = 'Standard';
+            if (player.age <= 8) difficultyLabel = 'Beginner';
+            else if (player.age <= 12) difficultyLabel = 'Easy';
+            else if (player.age <= 15) difficultyLabel = 'Medium';
+            else if (player.age <= 18) difficultyLabel = 'Hard';
+            else if (player.age <= 25) difficultyLabel = 'Expert';
+            else difficultyLabel = 'Master';
+            
+            document.getElementById('profile-difficulty').textContent = difficultyLabel;
+            
+            profilePopup.style.display = 'block';
+            profileVisible = true;
+        }
+        
+        function hideProfile() {
+            profilePopup.style.display = 'none';
+            profileVisible = false;
+        }
+        
+        // ==========================================
+        // EVENT LISTENERS
+        // ==========================================
+        
+        // Profile popup
+        playerInfoBtn.addEventListener('click', toggleProfile);
+        document.addEventListener('click', (e) => {
+            if (profileVisible && !profilePopup.contains(e.target) && !playerInfoBtn.contains(e.target)) {
+                hideProfile();
+            }
+        });
+        
+        // Registration
+        registerBtn.addEventListener('click', registerPlayer);
+        playerNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') registerPlayer();
+        });
+        changePlayerBtn.addEventListener('click', () => {
+            PlayerManager.logout();
+            hidePlayerBar();
+            showRegisterModal();
+        });
+        
+        // Modal
+        modalClose.addEventListener('click', closeModal);
+        modalPlay.addEventListener('click', playGame);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+        
+        // ==========================================
+        // INITIALIZE
+        // ==========================================
+        
+        renderGames();
+        checkPlayer();
+    </script>
+</body>
+</html>

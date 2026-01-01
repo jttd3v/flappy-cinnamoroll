@@ -1,0 +1,598 @@
+/**
+ * Desktop Responsive Styles
+ * 
+ * This file provides responsive optimizations for laptop/desktop displays.
+ * Include after sanrio-theme.css in your game pages.
+ * 
+ * Breakpoints:
+ * - Tablet: 768px+
+ * - Desktop: 1024px+
+ * - Large Desktop: 1440px+
+ * 
+ * @version 1.0.0
+ */
+
+/* ==========================================
+   CSS VARIABLES - Desktop Overrides
+   ========================================== */
+
+:root {
+    /* Desktop-specific sizing */
+    --desktop-game-width: 900px;
+    --desktop-game-height: 700px;
+    --desktop-max-width: 1200px;
+    --desktop-sidebar-width: 280px;
+    
+    /* Desktop spacing */
+    --desktop-padding: 40px;
+    --desktop-gap: 30px;
+    
+    /* Desktop typography scale */
+    --desktop-font-scale: 1.15;
+}
+
+/* ==========================================
+   BASE RESPONSIVE STYLES
+   ========================================== */
+
+/* Tablet and up (768px+) */
+@media (min-width: 768px) {
+    body {
+        padding: 20px;
+    }
+    
+    /* Game container expands on tablet */
+    #game-container {
+        max-width: 700px !important;
+        max-height: none !important;
+        height: auto !important;
+        min-height: 600px;
+        border-radius: 30px;
+        margin: 20px auto;
+    }
+    
+    /* Screens adapt to larger space */
+    .screen {
+        padding: 30px;
+        max-height: none !important;
+        overflow-y: visible;
+    }
+    
+    /* Larger titles */
+    .game-title, h1 {
+        font-size: 2.5rem !important;
+    }
+    
+    /* Larger mascots */
+    .mascot {
+        font-size: 5rem !important;
+    }
+    
+    .mascot img {
+        width: 150px !important;
+    }
+    
+    /* Settings panel side-by-side */
+    .settings-panel {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+    
+    .setting-group {
+        flex: 0 0 auto;
+        min-width: 200px;
+    }
+    
+    /* Larger buttons */
+    .primary-btn,
+    .secondary-btn {
+        padding: 18px 50px;
+        font-size: 1.3rem;
+    }
+    
+    /* Game header optimization */
+    #game-header {
+        padding: 15px 25px;
+        font-size: 1.1rem;
+    }
+    
+    /* Stats grid in 2-3 columns */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+    body {
+        padding: 30px;
+    }
+    
+    /* Full desktop game container */
+    #game-container {
+        max-width: var(--desktop-game-width) !important;
+        min-height: var(--desktop-game-height);
+        padding: 0;
+    }
+    
+    .screen {
+        padding: 40px;
+    }
+    
+    /* Even larger titles */
+    .game-title, h1 {
+        font-size: 3rem !important;
+    }
+    
+    .tagline {
+        font-size: 1.4rem !important;
+    }
+    
+    /* Horizontal layouts for game areas */
+    #game-screen {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        gap: 25px;
+    }
+    
+    /* Start screen centering */
+    #start-screen {
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .title-area {
+        margin-bottom: 40px;
+    }
+    
+    /* Result screen stats */
+    .result-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    /* Larger fonts overall */
+    .stat-value {
+        font-size: 2.5rem !important;
+    }
+    
+    .stat-label {
+        font-size: 1rem !important;
+    }
+}
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+    #game-container {
+        max-width: 1100px !important;
+    }
+    
+    .screen {
+        padding: 50px;
+    }
+    
+    .game-title, h1 {
+        font-size: 3.5rem !important;
+    }
+}
+
+
+/* ==========================================
+   GAME-SPECIFIC DESKTOP LAYOUTS
+   ========================================== */
+
+/* ==========  Memory/Card Games  ========== */
+@media (min-width: 768px) {
+    /* Memory game grid expands */
+    #memory-grid,
+    #card-grid,
+    .memory-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 15px !important;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .memory-card,
+    .card {
+        width: 100px !important;
+        height: 100px !important;
+        font-size: 2.5rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    #memory-grid,
+    #card-grid,
+    .memory-grid {
+        grid-template-columns: repeat(6, 1fr) !important;
+        gap: 20px !important;
+        max-width: 800px;
+    }
+    
+    .memory-card,
+    .card {
+        width: 110px !important;
+        height: 110px !important;
+        font-size: 3rem !important;
+    }
+}
+
+/* ==========  Quiz Games  ========== */
+@media (min-width: 768px) {
+    #quiz-area,
+    #question-area {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    .question-text,
+    #question-text {
+        font-size: 1.5rem !important;
+    }
+    
+    #choices-container,
+    .choices-container,
+    .answer-buttons {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+    
+    .choice-btn,
+    .answer-btn {
+        padding: 20px 25px !important;
+        font-size: 1.2rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    #quiz-area,
+    #question-area {
+        max-width: 800px;
+    }
+    
+    .question-text,
+    #question-text {
+        font-size: 1.8rem !important;
+    }
+    
+    .choice-btn,
+    .answer-btn {
+        padding: 25px 30px !important;
+        font-size: 1.3rem !important;
+    }
+}
+
+/* ==========  Shop/Counter Games  ========== */
+@media (min-width: 768px) {
+    #shop-area,
+    #candy-shelf {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 15px;
+    }
+    
+    .candy-item,
+    .shop-item {
+        padding: 15px !important;
+    }
+    
+    #order-area {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+    
+    #current-order,
+    #order-summary {
+        flex: 1;
+    }
+}
+
+@media (min-width: 1024px) {
+    #shop-area,
+    #candy-shelf {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 20px;
+    }
+    
+    #customer-area {
+        padding: 25px;
+    }
+    
+    #customer-icon {
+        font-size: 4rem !important;
+    }
+    
+    #order-text {
+        font-size: 1.4rem !important;
+    }
+}
+
+/* ==========  Pattern Games  ========== */
+@media (min-width: 768px) {
+    #pattern-area {
+        gap: 20px !important;
+    }
+    
+    .pattern-item,
+    .pattern-element {
+        width: 80px !important;
+        height: 80px !important;
+        font-size: 2.5rem !important;
+    }
+    
+    #choice-area {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1024px) {
+    .pattern-item,
+    .pattern-element {
+        width: 100px !important;
+        height: 100px !important;
+        font-size: 3rem !important;
+    }
+}
+
+/* ==========  Story/Journal Games  ========== */
+@media (min-width: 768px) {
+    #story-area,
+    #journal-area,
+    .story-content {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+    
+    .story-text,
+    .journal-entry {
+        font-size: 1.3rem !important;
+        line-height: 1.8 !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    #story-area,
+    #journal-area,
+    .story-content {
+        max-width: 800px;
+        padding: 40px;
+    }
+    
+    .story-text,
+    .journal-entry {
+        font-size: 1.5rem !important;
+    }
+}
+
+/* ==========  Puzzle/Path Games  ========== */
+@media (min-width: 768px) {
+    #puzzle-grid,
+    .puzzle-container {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .puzzle-cell {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    #puzzle-grid,
+    .puzzle-container {
+        max-width: 600px;
+    }
+    
+    .puzzle-cell {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 1.8rem !important;
+    }
+}
+
+/* ==========  Counter Games  ========== */
+@media (min-width: 768px) {
+    #counting-area,
+    .count-display {
+        gap: 20px;
+    }
+    
+    .count-item,
+    .star-item {
+        font-size: 3rem !important;
+    }
+    
+    #number-pad,
+    .number-input {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .number-btn {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 1.8rem !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .count-item,
+    .star-item {
+        font-size: 4rem !important;
+    }
+    
+    .number-btn {
+        width: 80px !important;
+        height: 80px !important;
+        font-size: 2rem !important;
+    }
+}
+
+
+/* ==========================================
+   DESKTOP UTILITY CLASSES
+   ========================================== */
+
+/* Show only on desktop */
+.desktop-only {
+    display: none !important;
+}
+
+@media (min-width: 1024px) {
+    .desktop-only {
+        display: block !important;
+    }
+    
+    .desktop-flex {
+        display: flex !important;
+    }
+    
+    .desktop-grid {
+        display: grid !important;
+    }
+}
+
+/* Hide on desktop */
+@media (min-width: 1024px) {
+    .mobile-only {
+        display: none !important;
+    }
+}
+
+/* Desktop layout helpers */
+@media (min-width: 1024px) {
+    .desktop-row {
+        flex-direction: row !important;
+    }
+    
+    .desktop-center {
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    
+    .desktop-space-between {
+        justify-content: space-between !important;
+    }
+    
+    .desktop-gap-lg {
+        gap: var(--desktop-gap) !important;
+    }
+    
+    .desktop-padding-lg {
+        padding: var(--desktop-padding) !important;
+    }
+    
+    .desktop-text-lg {
+        font-size: calc(1em * var(--desktop-font-scale)) !important;
+    }
+    
+    .desktop-w-full {
+        width: 100% !important;
+        max-width: var(--desktop-max-width) !important;
+    }
+    
+    .desktop-w-half {
+        width: 50% !important;
+    }
+}
+
+
+/* ==========================================
+   KEYBOARD NAVIGATION (Desktop)
+   ========================================== */
+
+@media (min-width: 1024px) {
+    /* Better focus styles for keyboard navigation */
+    button:focus-visible,
+    .choice-btn:focus-visible,
+    .card:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+        outline: 3px solid var(--sanrio-pink, #FFB6C1);
+        outline-offset: 3px;
+    }
+    
+    /* Hover states more prominent on desktop */
+    .game-card:hover,
+    .choice-btn:hover,
+    .primary-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+
+/* ==========================================
+   ANIMATIONS - Desktop optimized
+   ========================================== */
+
+@media (min-width: 1024px) {
+    /* Smoother animations on desktop */
+    .screen {
+        transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    
+    .screen.active {
+        animation: slideIn 0.4s ease;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Mascot animations more subtle */
+    .mascot,
+    .cinnamoroll-mascot {
+        animation: gentleBounce 3s ease-in-out infinite;
+    }
+    
+    @keyframes gentleBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+}
+
+
+/* ==========================================
+   PRINT STYLES (for score sharing)
+   ========================================== */
+
+@media print {
+    body {
+        background: white !important;
+    }
+    
+    #game-container {
+        box-shadow: none !important;
+        max-width: 100% !important;
+    }
+    
+    .primary-btn,
+    .secondary-btn,
+    #game-header {
+        display: none !important;
+    }
+    
+    .result-content {
+        display: block !important;
+    }
+}

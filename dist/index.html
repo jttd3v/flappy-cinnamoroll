@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Flappy Cinnamoroll</title>
+  <!-- Load new TypeScript modules for enhanced features -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    /* Main wrapper for webcam + game */
+    #mainWrapper {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    /* Webcam Container */
+    #webcamContainer {
+      position: relative;
+      width: 400px;
+      height: 600px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      background: #1a1a2e;
+      display: none;
+    }
+    #webcamContainer.active {
+      display: block;
+    }
+    #webcamVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+    #webcamOverlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    #webcamLabel {
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .rec-indicator {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      background: rgba(220, 53, 69, 0.9);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      animation: pulse 1s infinite;
+    }
+    .rec-indicator.active {
+      display: flex;
+    }
+    .rec-dot {
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    #gameContainer {
+      position: relative;
+    }
+    #gameCanvas {
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    /* Recording Controls */
+    #recordingControls {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      justify-content: center;
+    }
+    .rec-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #startRecordingBtn {
+      background: #28a745;
+      color: white;
+    }
+    #startRecordingBtn:hover {
+      background: #218838;
+    }
+    #startRecordingBtn:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+    }
+    #stopRecordingBtn {
+      background: #dc3545;
+      color: white;
+      display: none;
+    }
+    #stopRecordingBtn.active {
+      display: flex;
+    }
+    #stopRecordingBtn:hover {
+      background: #c82333;
+    }
+    #toggleWebcamBtn {
+      background: #17a2b8;
+      color: white;
+    }
+    #toggleWebcamBtn:hover {
+      background: #138496;
+    }
+    #toggleWebcamBtn.active {
+      background: #6c757d;
+    }
+    #recordingStatus {
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      min-height: 18px;
+    }
+    /* Name input modal */
+    #nameModal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      text-align: center;
+      z-index: 100;
+      display: none;
+    }
+    #nameModal.show {
+      display: block;
+    }
+    #nameModal h2 {
+      color: #5BA3D0;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    #nameModal input {
+      width: 200px;
+      padding: 12px 16px;
+      font-size: 18px;
+      border: 2px solid #5BA3D0;
+      border-radius: 8px;
+      outline: none;
+      text-align: center;
+    }
+    #nameModal input:focus {
+      border-color: #FFB6C1;
+    }
+    #nameModal button {
+      display: block;
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      font-size: 18px;
+      background: linear-gradient(135deg, #FFB6C1, #FF69B4);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    #nameModal button:hover {
+      transform: scale(1.05);
+    }
+    #nameModal .emoji {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+    #nameModal .player-status {
+      font-size: 12px;
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 6px;
+      min-height: 20px;
+    }
+    #nameModal .player-status.existing {
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+    #nameModal .player-status.new {
+      background: #E3F2FD;
+      color: #1565C0;
+    }
+    #nameModal .player-status.empty {
+      background: transparent;
+      color: #999;
+    }
+    /* Change Player Button */
+    #changePlayerBtn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #5BA3D0;
+      border: 2px solid #5BA3D0;
+      border-radius: 6px;
+      cursor: pointer;
+      z-index: 50;
+      transition: all 0.2s;
+      display: none;
+    }
+    #changePlayerBtn:hover {
+      background: #5BA3D0;
+      color: white;
+    }
+    #changePlayerBtn.show {
+      display: block;
+    }
+    /* Existing Players Section */
+    #existingPlayers {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #E0E0E0;
+    }
+    #existingPlayers h4 {
+      color: #888;
+      font-size: 12px;
+      margin-bottom: 8px;
+      font-weight: normal;
+    }
+    #playerList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .player-chip {
+      padding: 6px 12px;
+      background: #E3F2FD;
+      color: #1565C0;
+      border: 1px solid #90CAF9;
+      border-radius: 16px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .player-chip:hover {
+      background: #5BA3D0;
+      color: white;
+      border-color: #5BA3D0;
+    }
+    .player-chip .score {
+      font-size: 10px;
+      opacity: 0.8;
+      margin-left: 4px;
+    }
+    #noPlayers {
+      color: #999;
+      font-size: 12px;
+      font-style: italic;
+    }
+    
+    /* ============ TABLET STYLES (768px+) ============ */
+    @media (min-width: 768px) {
+      body {
+        padding: 30px;
+      }
+      
+      #mainWrapper {
+        gap: 30px;
+      }
+      
+      #gameCanvas {
+        border-radius: 20px;
+      }
+      
+      #webcamContainer {
+        width: 450px;
+        height: 650px;
+        border-radius: 20px;
+      }
+      
+      #nameModal {
+        padding: 40px;
+        border-radius: 24px;
+      }
+      
+      #nameModal h2 {
+        font-size: 28px;
+      }
+      
+      #nameModal .emoji {
+        font-size: 50px;
+      }
+      
+      #nameModal input {
+        width: 250px;
+        padding: 14px 18px;
+        font-size: 20px;
+      }
+      
+      #nameModal button {
+        padding: 14px;
+        font-size: 20px;
+      }
+      
+      .rec-btn {
+        padding: 14px 28px;
+        font-size: 16px;
+      }
+      
+      #changePlayerBtn {
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+    }
+    
+    /* ============ DESKTOP STYLES (1024px+) ============ */
+    @media (min-width: 1024px) {
+      body {
+        padding: 40px;
+      }
+      
+      #mainWrapper {
+        gap: 40px;
+      }
+      
+      #gameCanvas {
+        border-radius: 24px;
+      }
+      
+      #webcamContainer {
+        width: 500px;
+        height: 700px;
+        border-radius: 24px;
+      }
+      
+      #nameModal {
+        padding: 50px;
+      }
+      
+      #nameModal h2 {
+        font-size: 32px;
+        margin-bottom: 25px;
+      }
+      
+      #nameModal .emoji {
+        font-size: 60px;
+        margin-bottom: 15px;
+      }
+      
+      #nameModal input {
+        width: 280px;
+        padding: 16px 20px;
+        font-size: 22px;
+        border-radius: 12px;
+      }
+      
+      #nameModal button {
+        padding: 16px;
+        font-size: 22px;
+        border-radius: 12px;
+      }
+      
+      .rec-btn {
+        padding: 16px 32px;
+        font-size: 17px;
+        border-radius: 10px;
+      }
+      
+      #changePlayerBtn {
+        padding: 12px 20px;
+        font-size: 15px;
+        border-radius: 8px;
+      }
+      
+      #recordingControls {
+        gap: 20px;
+        margin-top: 25px;
+      }
+    }
+    
+    /* ============ LARGE DESKTOP (1440px+) ============ */
+    @media (min-width: 1440px) {
+      #mainWrapper {
+        gap: 50px;
+      }
+      
+      #webcamContainer {
+        width: 550px;
+        height: 750px;
+      }
+      
+      #nameModal {
+        padding: 60px;
+        min-width: 400px;
+      }
+      
+      #nameModal h2 {
+        font-size: 36px;
+      }
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/main-Bar6Fac5.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/vendor-audio-CjgeZf7n.js">
+  <link rel="modulepreload" crossorigin href="./assets/vendor-db-BYG65H0b.js">
+  <link rel="modulepreload" crossorigin href="./assets/vendor-gsap-C8pce-KX.js">
+  <link rel="modulepreload" crossorigin href="./assets/vendor-effects-B5JVzsfH.js">
+</head>
+<body>
+  <div id="mainWrapper">
+    <!-- Webcam Container (left side) -->
+    <div id="webcamContainer">
+      <video id="webcamVideo" autoplay muted playsinline></video>
+      <div id="webcamOverlay">
+        <span id="webcamLabel">📹 Player Cam</span>
+        <div class="rec-indicator" id="recIndicator">
+          <span class="rec-dot"></span>
+          <span>REC</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Game Container (right side) -->
+    <div id="gameContainer">
+      <canvas id="gameCanvas"></canvas>
+      
+      <!-- Change Player Button -->
+      <button id="changePlayerBtn">👤 Change Player</button>
+      
+      <!-- Name Input Modal -->
+      <div id="nameModal">
+        <div class="emoji">🐰</div>
+        <h2>Enter Your Name</h2>
+        <input type="text" id="playerNameInput" placeholder="Your name" maxlength="12" autofocus>
+        <div id="playerStatus" class="player-status empty"></div>
+        <button id="startGameBtn">Start Game!</button>
+        
+        <!-- Existing Players Section -->
+        <div id="existingPlayers">
+          <h4>Or select a player:</h4>
+          <div id="playerList"></div>
+          <div id="noPlayers">No saved players yet</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Recording Controls -->
+  <div id="recordingControls">
+    <button id="toggleWebcamBtn" class="rec-btn">📷 Enable Webcam</button>
+    <button id="startRecordingBtn" class="rec-btn" disabled>⏺️ Start Recording</button>
+    <button id="stopRecordingBtn" class="rec-btn">⏹️ Stop & Save</button>
+  </div>
+  <div id="recordingStatus"></div>
+
+  <script>
+    // ============================================
+    // PHASE 1: FOUNDATION - CONFIG & SETUP
+    // ============================================
+    
+    const CONFIG = {
+      // Canvas
+      CANVAS_WIDTH: 400,
+      CANVAS_HEIGHT: 600,
+      
+      // Physics (frame-rate independent base values at 60fps)
+      GRAVITY: 0.4,
+      FLAP_FORCE: -8,
+      MAX_FALL_SPEED: 10,
+      TARGET_FPS: 60,
+      
+      // Player
+      PLAYER_SIZE: 40,
+      PLAYER_X_PERCENT: 0.15,
+      COLLISION_FORGIVENESS: 0.7, // 70% of hitbox for more forgiving collisions
+      
+      // Obstacles
+      BASE_CLOUD_SPEED: 3,
+      CLOUD_GAP: 160, // Slightly larger gap for easier gameplay
+      CLOUD_WIDTH: 60,
+      SPAWN_INTERVAL: 100,
+      
+      // Safety bounds
+      MIN_GAP_Y: 80,
+      MAX_GAP_Y_OFFSET: 180,
+      
+      // Speed increase
+      SPEED_INCREMENT: 0.4, // Slightly slower progression
+      SPEED_INCREASE_INTERVAL: 5,
+      
+      // Ghost enemy (BUG-005: Better balancing)
+      GHOST_SPAWN_SCORE: 8, // Spawn later (was 5)
+      GHOST_BASE_SPEED: 1.2, // Slower base speed (was 1.5)
+      GHOST_CHASE_SPEED: 0.6, // Slower Y chase (was 0.8)
+      GHOST_ADVANCE_SPEED: 0.4, // Slower X advance (was 0.5)
+      GHOST_SIZE: 50,
+      GHOST_WARNING_TIME: 3000, // 3 second warning before ghost appears
+    };
+
+    // Game states
+    const STATE = {
+      NAME_ENTRY: -1,
+      IDLE: 0,
+      PLAYING: 1,
+      GAME_OVER: 2
+    };
+
+    // ============================================
+    // EVENT SYSTEM (Event-Driven Architecture)
+    // ============================================
+    
+    const GameEvents = {
+      listeners: {},
+      
+      on(event, callback) {
+        if (!this.listeners[event]) {
+          this.listeners[event] = [];
+        }
+        this.listeners[event].push(callback);
+      },
+      
+      emit(event, data) {
+        if (this.listeners[event]) {
+          this.listeners[event].forEach(callback => callback(data));
+        }
+      },
+      
+      off(event, callback) {
+        if (this.listeners[event]) {
+          this.listeners[event] = this.listeners[event].filter(cb => cb !== callback);
+        }
+      }
+    };
+
+    // ============================================
+    // SOUND SYSTEM (Web Audio API)
+    // ============================================
+    
+    const SoundManager = {
+      audioContext: null,
+      
+      init() {
+        try {
+          this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        } catch (e) {
+          console.warn('Web Audio API not supported');
+        }
+      },
+      
+      // Generate collision sound
+      playCollision() {
+        if (!this.audioContext) return;
+        
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(200, this.audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(50, this.audioContext.currentTime + 0.3);
+        
+        gainNode.gain.setValueAtTime(0.5, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+        
+        oscillator.type = 'sawtooth';
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + 0.3);
+      },
+      
+      // Generate score sound
+      playScore() {
+        if (!this.audioContext) return;
+        
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(523, this.audioContext.currentTime);
+        oscillator.frequency.setValueAtTime(659, this.audioContext.currentTime + 0.1);
+        
+        gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.2);
+        
+        oscillator.type = 'sine';
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + 0.2);
+      },
+      
+      // Generate flap sound
+      playFlap() {
+        if (!this.audioContext) return;
+        
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(400, this.audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(600, this.audioContext.currentTime + 0.05);
+        
+        gainNode.gain.setValueAtTime(0.15, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.05);
+        
+        oscillator.type = 'sine';
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + 0.05);
+      },
+      
+      // Ghost appear sound
+      playGhostAppear() {
+        if (!this.audioContext) return;
+        
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(150, this.audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(80, this.audioContext.currentTime + 0.5);
+        
+        gainNode.gain.setValueAtTime(0.4, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5);
+        
+        oscillator.type = 'sawtooth';
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + 0.5);
+      },
+      
+      // Speed up sound
+      playSpeedUp() {
+        if (!this.audioContext) return;
+        
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(300, this.audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(900, this.audioContext.currentTime + 0.15);
+        
+        gainNode.gain.setValueAtTime(0.2, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.15);
+        
+        oscillator.type = 'square';
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + 0.15);
+      }
+    };
+
+    // ============================================
+    // LEADERBOARD SYSTEM
+    // ============================================
+    
+    const Leaderboard = {
+      maxEntries: 5,
+      storageKey: 'cinnamorollLeaderboard',
+      
+      /**
+       * Get all leaderboard scores
+       * @returns {Array} Array of score entries
+       */
+      getScores() {
+        try {
+          const data = localStorage.getItem(this.storageKey);
+          return data ? JSON.parse(data) : [];
+        } catch (e) {
+          console.error('Failed to read leaderboard:', e);
+          return [];
+        }
+      },
+      
+      /**
+       * Validate player name
+       * @param {string} name - Player name to validate
+       * @returns {object} { valid: boolean, sanitized: string, error: string }
+       */
+      validateName(name) {
+        // Guard: null or undefined
+        if (name === null || name === undefined) {
+          return { valid: false, sanitized: '', error: 'Name is required' };
+        }
+        
+        // Sanitize: trim whitespace
+        const sanitized = String(name).trim();
+        
+        // Guard: empty string
+        if (sanitized.length === 0) {
+          return { valid: false, sanitized: '', error: 'Name cannot be empty' };
+        }
+        
+        // Guard: too short
+        if (sanitized.length < 1) {
+          return { valid: false, sanitized: '', error: 'Name too short' };
+        }
+        
+        // Guard: too long (max 12 chars)
+        if (sanitized.length > 12) {
+          return { valid: false, sanitized: sanitized.substring(0, 12), error: 'Name truncated to 12 characters' };
+        }
+        
+        return { valid: true, sanitized: sanitized, error: null };
+      },
+      
+      /**
+       * Find existing player by name (case-insensitive)
+       * @param {string} name - Player name to find
+       * @returns {object|null} Existing player entry or null
+       */
+      findPlayer(name) {
+        if (!name) return null;
+        const scores = this.getScores();
+        const normalizedName = name.toLowerCase().trim();
+        return scores.find(entry => entry.name.toLowerCase() === normalizedName) || null;
+      },
+      
+      /**
+       * Check if player name exists
+       * @param {string} name - Player name to check
+       * @returns {boolean}
+       */
+      playerExists(name) {
+        return this.findPlayer(name) !== null;
+      },
+      
+      /**
+       * Get player's current best score
+       * @param {string} name - Player name
+       * @returns {number} Best score or 0 if not found
+       */
+      getPlayerBestScore(name) {
+        const player = this.findPlayer(name);
+        return player ? player.score : 0;
+      },
+      
+      /**
+       * Add or update score for a player
+       * - Enforces unique player name constraint
+       * - Only updates if new score is higher than existing
+       * - Atomic operation with validation
+       * 
+       * @param {string} name - Player name
+       * @param {number} score - New score
+       * @returns {object} { success: boolean, action: string, scores: Array }
+       */
+      addScore(name, score) {
+        // Validate name
+        const validation = this.validateName(name);
+        if (!validation.valid && !validation.sanitized) {
+          console.warn('Leaderboard: Invalid name rejected', validation.error);
+          return { success: false, action: 'rejected', reason: validation.error, scores: this.getScores() };
+        }
+        
+        const sanitizedName = validation.sanitized;
+        
+        // Validate score
+        if (typeof score !== 'number' || isNaN(score) || score < 0) {
+          console.warn('Leaderboard: Invalid score rejected', score);
+          return { success: false, action: 'rejected', reason: 'Invalid score', scores: this.getScores() };
+        }
+        
+        // Guard: score of 0 doesn't need to be saved
+        if (score === 0) {
+          return { success: false, action: 'skipped', reason: 'Zero score not recorded', scores: this.getScores() };
+        }
+        
+        const scores = this.getScores();
+        const normalizedName = sanitizedName.toLowerCase();
+        const existingIndex = scores.findIndex(entry => entry.name.toLowerCase() === normalizedName);
+        const timestamp = new Date().toISOString();
+        
+        let action = '';
+        
+        if (existingIndex !== -1) {
+          // EXISTING PLAYER: Only update if new score is HIGHER
+          const existingEntry = scores[existingIndex];
+          
+          if (score > existingEntry.score) {
+            // Update existing record with higher score
+            scores[existingIndex] = {
+              name: sanitizedName, // Preserve original casing from new entry
+              score: score,
+              bestScore: score,
+              previousScore: existingEntry.score,
+              lastUpdatedDatetime: timestamp,
+              createdDatetime: existingEntry.createdDatetime || timestamp,
+              gamesPlayed: (existingEntry.gamesPlayed || 1) + 1
+            };
+            action = 'updated';
+            console.log(`Leaderboard: Updated ${sanitizedName}'s score from ${existingEntry.score} to ${score}`);
+          } else {
+            // Score not higher - only update games played count
+            scores[existingIndex] = {
+              ...existingEntry,
+              lastUpdatedDatetime: timestamp,
+              gamesPlayed: (existingEntry.gamesPlayed || 1) + 1
+            };
+            action = 'unchanged';
+            console.log(`Leaderboard: ${sanitizedName}'s score ${score} not higher than best ${existingEntry.score}`);
+          }
+        } else {
+          // NEW PLAYER: Create new entry
+          scores.push({
+            name: sanitizedName,
+            score: score,
+            bestScore: score,
+            previousScore: null,
+            lastUpdatedDatetime: timestamp,
+            createdDatetime: timestamp,
+            gamesPlayed: 1
+          });
+          action = 'created';
+          console.log(`Leaderboard: New player ${sanitizedName} added with score ${score}`);
+        }
+        
+        // Sort by score descending
+        scores.sort((a, b) => b.score - a.score);
+        
+        // Keep only top entries
+        const topScores = scores.slice(0, this.maxEntries);
+        
+        // Atomic save
+        try {
+          localStorage.setItem(this.storageKey, JSON.stringify(topScores));
+        } catch (e) {
+          console.error('Leaderboard: Failed to save', e);
+          return { success: false, action: 'error', reason: 'Storage failed', scores: this.getScores() };
+        }
+        
+        return { success: true, action: action, scores: topScores };
+      },
+      
+      /**
+       * Check if score qualifies for leaderboard
+       * @param {number} score - Score to check
+       * @returns {boolean}
+       */
+      isHighScore(score) {
+        const scores = this.getScores();
+        if (scores.length < this.maxEntries) return score > 0;
+        return score > scores[scores.length - 1].score;
+      },
+      
+      /**
+       * Get the highest score on the leaderboard
+       * @returns {number}
+       */
+      getHighScore() {
+        const scores = this.getScores();
+        return scores.length > 0 ? scores[0].score : 0;
+      },
+      
+      /**
+       * Format datetime for display
+       * @param {string} isoString - ISO datetime string
+       * @returns {string} Formatted datetime
+       */
+      formatDatetime(isoString) {
+        if (!isoString) return 'N/A';
+        try {
+          const date = new Date(isoString);
+          return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        } catch (e) {
+          return 'N/A';
+        }
+      }
+    };
+
+    // ============================================
+    // PHASE 1: CANVAS SETUP
+    // ============================================
+    
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const nameModal = document.getElementById('nameModal');
+    const playerNameInput = document.getElementById('playerNameInput');
+    const startGameBtn = document.getElementById('startGameBtn');
+    
+    // Defensive: verify canvas context exists
+    if (!ctx) {
+      alert('Canvas not supported in this browser!');
+      throw new Error('Canvas context not available');
+    }
+    
+    canvas.width = CONFIG.CANVAS_WIDTH;
+    canvas.height = CONFIG.CANVAS_HEIGHT;
+
+    // ============================================
+    // BACKGROUND CLOUDS (Moving)
+    // ============================================
+    
+    const backgroundClouds = [
+      { x: 50, y: 100, size: 60, speed: 0.3 },
+      { x: 280, y: 180, size: 45, speed: 0.5 },
+      { x: 150, y: 400, size: 55, speed: 0.4 },
+      { x: 320, y: 500, size: 40, speed: 0.6 },
+      { x: 400, y: 300, size: 50, speed: 0.35 }
+    ];
+
+    // ============================================
+    // PHASE 2: PLAYER CHARACTER
+    // ============================================
+    
+    const player = {
+      x: CONFIG.CANVAS_WIDTH * CONFIG.PLAYER_X_PERCENT,
+      y: CONFIG.CANVAS_HEIGHT / 2,
+      width: CONFIG.PLAYER_SIZE,
+      height: CONFIG.PLAYER_SIZE,
+      velocity: 0
+    };
+
+    // ============================================
+    // GHOST ENEMY
+    // ============================================
+    
+    const ghost = {
+      x: -CONFIG.GHOST_SIZE,
+      y: CONFIG.CANVAS_HEIGHT / 2,
+      width: CONFIG.GHOST_SIZE,
+      height: CONFIG.GHOST_SIZE,
+      active: false,
+      eyeGlow: 0,
+      warningStartTime: 0, // For ghost warning animation
+      showWarning: false,  // Show warning indicator
+    };
+
+    // ============================================
+    // FRAME TIMING (BUG-001: Frame-rate independence)
+    // ============================================
+    
+    let lastFrameTime = performance.now();
+    let deltaTime = 16.67; // Default to 60fps
+    let gameLoopId = null; // Store RAF ID for cleanup
+
+    // ============================================
+    // PHASE 3: OBSTACLES (CLOUDS)
+    // ============================================
+    
+    let clouds = [];
+    let frameCount = 0;
+    let currentSpeed = CONFIG.BASE_CLOUD_SPEED;
+    let lastSpeedIncreaseScore = 0;
+
+    function spawnCloud() {
+      // Random gap position with safety bounds
+      const minY = CONFIG.MIN_GAP_Y;
+      const maxY = CONFIG.CANVAS_HEIGHT - CONFIG.MIN_GAP_Y - CONFIG.CLOUD_GAP;
+      const gapY = Math.random() * (maxY - minY) + minY;
+      
+      clouds.push({
+        x: CONFIG.CANVAS_WIDTH,
+        gapY: gapY,
+        width: CONFIG.CLOUD_WIDTH,
+        scored: false
+      });
+    }
+
+    // ============================================
+    // PHASE 4: GAME STATE & SCORING
+    // ============================================
+    
+    let state = STATE.NAME_ENTRY;
+    let score = 0;
+    let playerName = '';
+    let highScore = Leaderboard.getHighScore();
+
+    function resetGame() {
+      player.y = CONFIG.CANVAS_HEIGHT / 2;
+      player.velocity = 0;
+      clouds.length = 0;
+      score = 0;
+      frameCount = 0;
+      currentSpeed = CONFIG.BASE_CLOUD_SPEED;
+      lastSpeedIncreaseScore = 0;
+      ghost.active = false;
+      ghost.x = -CONFIG.GHOST_SIZE;
+      state = STATE.IDLE;
+    }
+
+    // ============================================
+    // COLLISION DETECTION (BUG-006: More forgiving)
+    // ============================================
+    
+    function checkCollision(player, cloud) {
+      // Guard clause
+      if (!player || !cloud) return false;
+      
+      // Apply collision forgiveness - use smaller hitbox
+      const forgiveness = CONFIG.COLLISION_FORGIVENESS;
+      const shrink = (1 - forgiveness) * CONFIG.PLAYER_SIZE / 2;
+      
+      const playerLeft = player.x + shrink;
+      const playerRight = player.x + player.width - shrink;
+      const playerTop = player.y + shrink;
+      const playerBottom = player.y + player.height - shrink;
+      const cloudRight = cloud.x + cloud.width;
+      
+      // Check if player is horizontally aligned with cloud
+      if (playerRight > cloud.x && playerLeft < cloudRight) {
+        // Check if hitting top cloud (above gap)
+        if (playerTop < cloud.gapY) {
+          return true;
+        }
+        // Check if hitting bottom cloud (below gap)
+        if (playerBottom > cloud.gapY + CONFIG.CLOUD_GAP) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function checkGhostCollision() {
+      if (!ghost.active) return false;
+      
+      // More forgiving ghost collision (BUG-005)
+      const forgiveness = 0.6; // 60% hitbox for ghost
+      const playerShrink = (1 - CONFIG.COLLISION_FORGIVENESS) * CONFIG.PLAYER_SIZE / 2;
+      const ghostShrink = (1 - forgiveness) * CONFIG.GHOST_SIZE / 2;
+      
+      const playerLeft = player.x + playerShrink;
+      const playerRight = player.x + player.width - playerShrink;
+      const playerTop = player.y + playerShrink;
+      const playerBottom = player.y + player.height - playerShrink;
+      
+      const ghostLeft = ghost.x + ghostShrink;
+      const ghostRight = ghost.x + ghost.width - ghostShrink;
+      const ghostTop = ghost.y + ghostShrink;
+      const ghostBottom = ghost.y + ghost.height - ghostShrink;
+      
+      return (
+        playerRight > ghostLeft &&
+        playerLeft < ghostRight &&
+        playerBottom > ghostTop &&
+        playerTop < ghostBottom
+      );
+    }
+
+    function clampPlayer() {
+      // Prevent going above screen
+      if (player.y < 0) {
+        player.y = 0;
+        player.velocity = 0;
+      }
+      
+      // Clamp velocity
+      player.velocity = Math.min(player.velocity, CONFIG.MAX_FALL_SPEED);
+      
+      // Ground collision = game over
+      if (player.y + player.height >= CONFIG.CANVAS_HEIGHT) {
+        player.y = CONFIG.CANVAS_HEIGHT - player.height;
+        return true;
+      }
+      return false;
+    }
+
+    // ============================================
+    // INPUT HANDLING
+    // ============================================
+    
+    function flap() {
+      if (state === STATE.NAME_ENTRY) return;
+      
+      if (state === STATE.IDLE) {
+        state = STATE.PLAYING;
+        player.velocity = CONFIG.FLAP_FORCE;
+        SoundManager.playFlap();
+        GameEvents.emit('gameStart');
+      } else if (state === STATE.PLAYING) {
+        player.velocity = CONFIG.FLAP_FORCE;
+        SoundManager.playFlap();
+      } else if (state === STATE.GAME_OVER) {
+        resetGame();
+      }
+    }
+
+    // Event listeners
+    canvas.addEventListener('click', flap);
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      flap();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        flap();
+      }
+    });
+
+    // Name modal handlers
+    const playerStatusDiv = document.getElementById('playerStatus');
+    const playerListDiv = document.getElementById('playerList');
+    const noPlayersDiv = document.getElementById('noPlayers');
+    
+    // Function to populate existing players list
+    function populateExistingPlayers() {
+      const scores = Leaderboard.getScores();
+      playerListDiv.innerHTML = '';
+      
+      if (scores.length === 0) {
+        noPlayersDiv.style.display = 'block';
+        return;
+      }
+      
+      noPlayersDiv.style.display = 'none';
+      
+      // Sort by best score descending
+      scores.sort((a, b) => b.score - a.score);
+      
+      scores.forEach(player => {
+        const chip = document.createElement('div');
+        chip.className = 'player-chip';
+        chip.innerHTML = `${player.name}<span class="score">★${player.score}</span>`;
+        chip.addEventListener('click', () => {
+          playerNameInput.value = player.name;
+          // Trigger input event to update status
+          playerNameInput.dispatchEvent(new Event('input'));
+          playerNameInput.focus();
+        });
+        playerListDiv.appendChild(chip);
+      });
+    }
+    
+    // Check player status as user types
+    playerNameInput.addEventListener('input', () => {
+      const name = playerNameInput.value.trim();
+      
+      if (!name) {
+        playerStatusDiv.className = 'player-status empty';
+        playerStatusDiv.textContent = '';
+        return;
+      }
+      
+      const existingPlayer = Leaderboard.findPlayer(name);
+      
+      if (existingPlayer) {
+        playerStatusDiv.className = 'player-status existing';
+        playerStatusDiv.innerHTML = `✅ Welcome back! Your best: <strong>${existingPlayer.score}</strong> pts`;
+      } else {
+        playerStatusDiv.className = 'player-status new';
+        playerStatusDiv.textContent = '🆕 New player - Good luck!';
+      }
+    });
+    
+    const changePlayerBtn = document.getElementById('changePlayerBtn');
+    
+    startGameBtn.addEventListener('click', () => {
+      const name = playerNameInput.value.trim() || 'Player';
+      playerName = name;
+      nameModal.classList.remove('show');
+      changePlayerBtn.classList.add('show'); // Show change player button
+      state = STATE.IDLE;
+      SoundManager.init();
+    });
+
+    playerNameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        startGameBtn.click();
+      }
+    });
+    
+    // Change Player button handler
+    changePlayerBtn.addEventListener('click', () => {
+      // Only allow changing player when not actively playing
+      if (state === STATE.PLAYING) return;
+      
+      // Reset game state
+      resetGame();
+      
+      // Show name modal again
+      playerNameInput.value = '';
+      playerStatusDiv.className = 'player-status empty';
+      playerStatusDiv.textContent = '';
+      nameModal.classList.add('show');
+      changePlayerBtn.classList.remove('show');
+      state = STATE.NAME_ENTRY;
+      
+      // Populate existing players list
+      populateExistingPlayers();
+      
+      // Focus on input
+      setTimeout(() => playerNameInput.focus(), 100);
+    });
+
+    // Show name modal on load
+    nameModal.classList.add('show');
+    populateExistingPlayers(); // Populate existing players on initial load
+
+    // ============================================
+    // EVENT LISTENERS (Event-Driven)
+    // ============================================
+    
+    GameEvents.on('collision', (data) => {
+      SoundManager.playCollision();
+      console.log('💥 Collision!', data);
+    });
+
+    GameEvents.on('score', (data) => {
+      SoundManager.playScore();
+      console.log('⭐ Score!', data.score);
+      
+      // Trigger visual celebration for milestones (BUG-007 fix)
+      if (window.FlappyBridge && data.score % 10 === 0) {
+        window.FlappyBridge.celebrateScore(data.score);
+      }
+    });
+
+    GameEvents.on('ghostSpawn', () => {
+      SoundManager.playGhostAppear();
+      console.log('👻 Ghost appeared!');
+    });
+
+    GameEvents.on('speedUp', (data) => {
+      SoundManager.playSpeedUp();
+      console.log('🚀 Speed up!', data.speed.toFixed(1));
+    });
+
+    // ============================================
+    // UPDATE FUNCTION (PHYSICS - Frame-rate independent)
+    // ============================================
+    
+    function update(delta = 1) {
+      // Update background clouds always (even when not playing)
+      updateBackgroundClouds(delta);
+      
+      if (state !== STATE.PLAYING) return;
+      
+      frameCount++;
+      
+      // Player physics with delta time
+      player.velocity += CONFIG.GRAVITY * delta;
+      player.y += player.velocity * delta;
+      
+      // Check bounds
+      if (clampPlayer()) {
+        GameEvents.emit('collision', { type: 'ground' });
+        gameOver();
+        return;
+      }
+      
+      // Spawn clouds
+      if (frameCount % CONFIG.SPAWN_INTERVAL === 0) {
+        spawnCloud();
+      }
+      
+      // Update clouds with delta time
+      for (let i = clouds.length - 1; i >= 0; i--) {
+        const cloud = clouds[i];
+        cloud.x -= currentSpeed * delta;
+        
+        // Check collision
+        if (checkCollision(player, cloud)) {
+          GameEvents.emit('collision', { type: 'cloud' });
+          gameOver();
+          return;
+        }
+        
+        // Score when passing cloud
+        if (!cloud.scored && cloud.x + cloud.width < player.x) {
+          cloud.scored = true;
+          score++;
+          GameEvents.emit('score', { score });
+          
+          // Check for speed increase every 5 clouds
+          if (score > 0 && score % CONFIG.SPEED_INCREASE_INTERVAL === 0 && score !== lastSpeedIncreaseScore) {
+            lastSpeedIncreaseScore = score;
+            currentSpeed += CONFIG.SPEED_INCREMENT;
+            GameEvents.emit('speedUp', { speed: currentSpeed, score });
+          }
+          
+          // Spawn ghost after 5 clouds
+          if (score === CONFIG.GHOST_SPAWN_SCORE && !ghost.active) {
+            ghost.active = true;
+            ghost.x = -CONFIG.GHOST_SIZE;
+            ghost.y = player.y;
+            GameEvents.emit('ghostSpawn');
+          }
+        }
+        
+        // Remove off-screen clouds
+        if (cloud.x + cloud.width < 0) {
+          clouds.splice(i, 1);
+        }
+      }
+      
+      // Update ghost
+      if (ghost.active) {
+        updateGhost();
+        
+        if (checkGhostCollision()) {
+          GameEvents.emit('collision', { type: 'ghost' });
+          gameOver();
+          return;
+        }
+      }
+    }
+
+    function updateBackgroundClouds(delta = 1) {
+      const speed = state === STATE.PLAYING ? 1 : 0.3;
+      
+      backgroundClouds.forEach(cloud => {
+        cloud.x -= cloud.speed * speed * delta;
+        
+        // Wrap around
+        if (cloud.x + cloud.size < 0) {
+          cloud.x = CONFIG.CANVAS_WIDTH + cloud.size;
+          cloud.y = Math.random() * (CONFIG.CANVAS_HEIGHT - 100) + 50;
+        }
+      });
+    }
+
+    function updateGhost() {
+      // Ghost chases player with balanced speed (BUG-005)
+      const targetY = player.y;
+      const baseSpeed = CONFIG.GHOST_BASE_SPEED + (currentSpeed - CONFIG.BASE_CLOUD_SPEED) * 0.2;
+      
+      // Smoother Y tracking with reduced chase speed
+      const yDiff = targetY - ghost.y;
+      if (Math.abs(yDiff) > 2) {
+        ghost.y += Math.sign(yDiff) * baseSpeed * CONFIG.GHOST_CHASE_SPEED;
+      }
+      
+      // Slower X advance - ghost maintains distance
+      const targetX = player.x - 100; // Stay 100px behind player
+      if (ghost.x < targetX) {
+        ghost.x += baseSpeed * CONFIG.GHOST_ADVANCE_SPEED;
+      } else if (ghost.x > targetX + 20) {
+        ghost.x -= baseSpeed * 0.3; // Retreat slowly if too close
+      }
+      
+      // Eye glow animation
+      ghost.eyeGlow = (Math.sin(Date.now() / 100) + 1) / 2;
+    }
+
+    // Track last game result for display
+    let lastGameResult = null;
+
+    function gameOver() {
+      state = STATE.GAME_OVER;
+      
+      // Update leaderboard and track result
+      if (score > 0) {
+        lastGameResult = Leaderboard.addScore(playerName, score);
+        highScore = Leaderboard.getHighScore();
+        
+        // Celebrate new high score (BUG-007 fix)
+        if (window.FlappyBridge && lastGameResult.action === 'updated') {
+          window.FlappyBridge.celebrateHighScore();
+        }
+      } else {
+        lastGameResult = { success: false, action: 'skipped', reason: 'Zero score' };
+      }
+      
+      // Log result for debugging
+      console.log('Game Over Result:', lastGameResult);
+    }
+
+    // ============================================
+    // RENDER FUNCTION (DRAWING)
+    // ============================================
+    
+    function render() {
+      // Clear canvas
+      ctx.clearRect(0, 0, CONFIG.CANVAS_WIDTH, CONFIG.CANVAS_HEIGHT);
+      
+      // Draw sky background
+      const gradient = ctx.createLinearGradient(0, 0, 0, CONFIG.CANVAS_HEIGHT);
+      
+      // Darken sky when ghost is active
+      if (ghost.active && state === STATE.PLAYING) {
+        const darkness = Math.min((score - CONFIG.GHOST_SPAWN_SCORE) * 0.02, 0.3);
+        gradient.addColorStop(0, `rgb(${135 - darkness * 135}, ${206 - darkness * 100}, ${235 - darkness * 50})`);
+        gradient.addColorStop(1, `rgb(${224 - darkness * 100}, ${246 - darkness * 100}, ${255 - darkness * 50})`);
+      } else {
+        gradient.addColorStop(0, '#87CEEB');
+        gradient.addColorStop(1, '#E0F6FF');
+      }
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, CONFIG.CANVAS_WIDTH, CONFIG.CANVAS_HEIGHT);
+      
+      // Draw decorative background clouds
+      drawBackgroundClouds();
+      
+      // Draw obstacle clouds
+      clouds.forEach(cloud => {
+        drawCloud(cloud);
+      });
+      
+      // Draw ghost if active
+      if (ghost.active) {
+        drawGhost();
+      }
+      
+      // Draw player (Cinnamoroll)
+      drawPlayer();
+      
+      // Draw score and speed indicator
+      drawScore();
+      
+      // Draw UI based on state
+      if (state === STATE.IDLE) {
+        drawStartScreen();
+      } else if (state === STATE.GAME_OVER) {
+        drawGameOverScreen();
+      }
+    }
+
+    function drawBackgroundClouds() {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+      backgroundClouds.forEach(cloud => {
+        drawCloudShape(cloud.x, cloud.y, cloud.size);
+      });
+    }
+
+    function drawCloudShape(x, y, size) {
+      ctx.beginPath();
+      ctx.arc(x, y, size * 0.5, 0, Math.PI * 2);
+      ctx.arc(x + size * 0.4, y - size * 0.1, size * 0.4, 0, Math.PI * 2);
+      ctx.arc(x + size * 0.8, y, size * 0.45, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawCloud(cloud) {
+      // Top cloud (obstacle)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 5;
+      
+      // Top cloud - fluffy style
+      const topHeight = cloud.gapY;
+      ctx.beginPath();
+      ctx.roundRect(cloud.x, 0, cloud.width, topHeight, [0, 0, 20, 20]);
+      ctx.fill();
+      
+      // Add fluffy bumps to top cloud bottom
+      ctx.beginPath();
+      ctx.arc(cloud.x + 15, topHeight - 5, 15, 0, Math.PI * 2);
+      ctx.arc(cloud.x + cloud.width / 2, topHeight - 8, 18, 0, Math.PI * 2);
+      ctx.arc(cloud.x + cloud.width - 15, topHeight - 5, 15, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Bottom cloud
+      const bottomY = cloud.gapY + CONFIG.CLOUD_GAP;
+      const bottomHeight = CONFIG.CANVAS_HEIGHT - bottomY;
+      
+      ctx.beginPath();
+      ctx.roundRect(cloud.x, bottomY, cloud.width, bottomHeight, [20, 20, 0, 0]);
+      ctx.fill();
+      
+      // Add fluffy bumps to bottom cloud top
+      ctx.beginPath();
+      ctx.arc(cloud.x + 15, bottomY + 5, 15, 0, Math.PI * 2);
+      ctx.arc(cloud.x + cloud.width / 2, bottomY + 8, 18, 0, Math.PI * 2);
+      ctx.arc(cloud.x + cloud.width - 15, bottomY + 5, 15, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+    }
+
+    function drawGhost() {
+      const x = ghost.x + ghost.width / 2;
+      const y = ghost.y + ghost.height / 2;
+      const size = ghost.width / 2;
+      
+      ctx.save();
+      ctx.translate(x, y);
+      
+      // Floating animation
+      const float = Math.sin(Date.now() / 200) * 3;
+      ctx.translate(0, float);
+      
+      // Shadow/glow effect
+      ctx.shadowColor = 'rgba(139, 0, 0, 0.5)';
+      ctx.shadowBlur = 20;
+      
+      // Ghost body (dark, translucent)
+      ctx.fillStyle = 'rgba(20, 20, 30, 0.85)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, size, size * 0.9, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Wavy bottom
+      ctx.beginPath();
+      ctx.moveTo(-size, size * 0.3);
+      for (let i = 0; i <= 6; i++) {
+        const wx = -size + (i * size * 2 / 6);
+        const wy = size * 0.3 + Math.sin(Date.now() / 150 + i) * 8 + (i % 2 === 0 ? 15 : 5);
+        ctx.lineTo(wx, wy);
+      }
+      ctx.lineTo(size, size * 0.3);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Glowing red eyes
+      const glowIntensity = 0.5 + ghost.eyeGlow * 0.5;
+      ctx.shadowColor = `rgba(255, 0, 0, ${glowIntensity})`;
+      ctx.shadowBlur = 15;
+      ctx.fillStyle = `rgba(255, ${50 * (1 - ghost.eyeGlow)}, ${50 * (1 - ghost.eyeGlow)}, 1)`;
+      
+      // Left eye
+      ctx.beginPath();
+      ctx.ellipse(-size * 0.35, -size * 0.1, size * 0.18, size * 0.25, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Right eye
+      ctx.beginPath();
+      ctx.ellipse(size * 0.35, -size * 0.1, size * 0.18, size * 0.25, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Eye pupils (dark)
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#000000';
+      ctx.beginPath();
+      ctx.arc(-size * 0.35, -size * 0.05, size * 0.08, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(size * 0.35, -size * 0.05, size * 0.08, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.restore();
+    }
+
+    function drawPlayer() {
+      const x = player.x + player.width / 2;
+      const y = player.y + player.height / 2;
+      const size = player.width / 2;
+      
+      // Calculate rotation based on velocity
+      const rotation = Math.min(Math.max(player.velocity * 3, -30), 45) * Math.PI / 180;
+      
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      
+      // Body (white, fluffy)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, size, size * 0.85, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      
+      // Ears (long, floppy like Cinnamoroll)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      // Left ear
+      ctx.ellipse(-size * 0.6, -size * 0.8, size * 0.25, size * 0.5, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+      // Right ear
+      ctx.beginPath();
+      ctx.ellipse(size * 0.6, -size * 0.8, size * 0.25, size * 0.5, 0.3, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Inner ear (pink)
+      ctx.fillStyle = '#FFB6C1';
+      ctx.beginPath();
+      ctx.ellipse(-size * 0.6, -size * 0.75, size * 0.12, size * 0.3, -0.3, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(size * 0.6, -size * 0.75, size * 0.12, size * 0.3, 0.3, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Eyes
+      ctx.fillStyle = '#2C3E50';
+      ctx.beginPath();
+      ctx.ellipse(-size * 0.3, -size * 0.1, size * 0.12, size * 0.15, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(size * 0.3, -size * 0.1, size * 0.12, size * 0.15, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Eye shine
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.arc(-size * 0.33, -size * 0.15, size * 0.05, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(size * 0.27, -size * 0.15, size * 0.05, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Blush
+      ctx.fillStyle = 'rgba(255, 182, 193, 0.6)';
+      ctx.beginPath();
+      ctx.ellipse(-size * 0.5, size * 0.15, size * 0.15, size * 0.1, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.ellipse(size * 0.5, size * 0.15, size * 0.15, size * 0.1, 0, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Nose
+      ctx.fillStyle = '#FFB6C1';
+      ctx.beginPath();
+      ctx.arc(0, size * 0.1, size * 0.08, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Mouth (cute smile)
+      ctx.strokeStyle = '#2C3E50';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(0, size * 0.2, size * 0.15, 0.1 * Math.PI, 0.9 * Math.PI);
+      ctx.stroke();
+      
+      // Tail (small curl on back)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.arc(size * 0.9, size * 0.1, size * 0.2, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.restore();
+    }
+
+    function drawScore() {
+      // Score
+      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = '#2C3E50';
+      ctx.lineWidth = 3;
+      ctx.font = 'bold 36px "Segoe UI", Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.strokeText(score, CONFIG.CANVAS_WIDTH / 2, 50);
+      ctx.fillText(score, CONFIG.CANVAS_WIDTH / 2, 50);
+      
+      // Speed indicator (when playing and speed increased)
+      if (state === STATE.PLAYING && currentSpeed > CONFIG.BASE_CLOUD_SPEED) {
+        const speedLevel = Math.floor((currentSpeed - CONFIG.BASE_CLOUD_SPEED) / CONFIG.SPEED_INCREMENT);
+        ctx.font = 'bold 14px "Segoe UI", Arial, sans-serif';
+        ctx.fillStyle = '#FF6B6B';
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 2;
+        const speedText = '🚀'.repeat(Math.min(speedLevel, 5));
+        ctx.strokeText(speedText, CONFIG.CANVAS_WIDTH / 2, 75);
+        ctx.fillText(speedText, CONFIG.CANVAS_WIDTH / 2, 75);
+      }
+      
+      // Ghost warning
+      if (ghost.active && state === STATE.PLAYING) {
+        ctx.font = 'bold 12px "Segoe UI", Arial, sans-serif';
+        ctx.fillStyle = '#8B0000';
+        ctx.textAlign = 'left';
+        ctx.fillText('👻 Ghost is chasing!', 10, 25);
+      }
+      
+      // Player name
+      if (state === STATE.PLAYING) {
+        ctx.font = '14px "Segoe UI", Arial, sans-serif';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.textAlign = 'right';
+        ctx.fillText(playerName, CONFIG.CANVAS_WIDTH - 10, 25);
+      }
+    }
+
+    function drawStartScreen() {
+      // Semi-transparent overlay
+      ctx.fillStyle = 'rgba(135, 206, 235, 0.7)';
+      ctx.fillRect(0, 0, CONFIG.CANVAS_WIDTH, CONFIG.CANVAS_HEIGHT);
+      
+      // Title
+      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = '#5BA3D0';
+      ctx.lineWidth = 4;
+      ctx.font = 'bold 32px "Segoe UI", Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.strokeText('Flappy Cinnamoroll', CONFIG.CANVAS_WIDTH / 2, 100);
+      ctx.fillText('Flappy Cinnamoroll', CONFIG.CANVAS_WIDTH / 2, 100);
+      
+      // Player name welcome
+      ctx.font = '20px "Segoe UI", Arial, sans-serif';
+      ctx.lineWidth = 2;
+      ctx.strokeText(`Welcome, ${playerName}!`, CONFIG.CANVAS_WIDTH / 2, 140);
+      ctx.fillText(`Welcome, ${playerName}!`, CONFIG.CANVAS_WIDTH / 2, 140);
+      
+      // Instructions
+      ctx.font = '18px "Segoe UI", Arial, sans-serif';
+      ctx.strokeText('Click or Press Space to Fly!', CONFIG.CANVAS_WIDTH / 2, 180);
+      ctx.fillText('Click or Press Space to Fly!', CONFIG.CANVAS_WIDTH / 2, 180);
+      
+      // Draw leaderboard
+      drawLeaderboard(220);
+      
+      // Bouncing hint
+      const bounce = Math.sin(Date.now() / 300) * 5;
+      ctx.font = '16px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#FFB6C1';
+      ctx.fillText('🐰 Tap to Start! 🐰', CONFIG.CANVAS_WIDTH / 2, CONFIG.CANVAS_HEIGHT - 50 + bounce);
+    }
+
+    function drawLeaderboard(startY) {
+      const scores = Leaderboard.getScores();
+      
+      // Calculate dynamic height based on entries
+      const entryHeight = 40; // Increased for datetime display
+      const headerHeight = 50;
+      const boxHeight = scores.length > 0 ? scores.length * entryHeight + headerHeight : 80;
+      
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+      ctx.beginPath();
+      ctx.roundRect(CONFIG.CANVAS_WIDTH / 2 - 160, startY, 320, boxHeight, 10);
+      ctx.fill();
+      
+      // Border
+      ctx.strokeStyle = '#5BA3D0';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      
+      ctx.fillStyle = '#5BA3D0';
+      ctx.font = 'bold 18px "Segoe UI", Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🏆 LEADERBOARD 🏆', CONFIG.CANVAS_WIDTH / 2, startY + 28);
+      
+      if (scores.length === 0) {
+        ctx.fillStyle = '#888';
+        ctx.font = '14px "Segoe UI", Arial, sans-serif';
+        ctx.fillText('No scores yet. Be the first!', CONFIG.CANVAS_WIDTH / 2, startY + 60);
+      } else {
+        scores.forEach((entry, index) => {
+          const y = startY + 50 + index * entryHeight;
+          const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+          
+          // Highlight current player
+          const isCurrentPlayer = entry.name.toLowerCase() === playerName.toLowerCase();
+          if (isCurrentPlayer) {
+            ctx.fillStyle = 'rgba(255, 182, 193, 0.3)';
+            ctx.fillRect(CONFIG.CANVAS_WIDTH / 2 - 150, y - 12, 300, entryHeight - 5);
+          }
+          
+          // Player name with medal
+          ctx.font = 'bold 14px "Segoe UI", Arial, sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillStyle = isCurrentPlayer ? '#E91E63' : '#333';
+          ctx.fillText(`${medal} ${entry.name}`, CONFIG.CANVAS_WIDTH / 2 - 145, y + 2);
+          
+          // Games played indicator (if available)
+          if (entry.gamesPlayed && entry.gamesPlayed > 1) {
+            ctx.font = '10px "Segoe UI", Arial, sans-serif';
+            ctx.fillStyle = '#999';
+            ctx.fillText(`(${entry.gamesPlayed} games)`, CONFIG.CANVAS_WIDTH / 2 - 145, y + 15);
+          }
+          
+          // Score
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#5BA3D0';
+          ctx.font = 'bold 16px "Segoe UI", Arial, sans-serif';
+          ctx.fillText(entry.score, CONFIG.CANVAS_WIDTH / 2 + 145, y + 2);
+          
+          // Last updated datetime
+          ctx.font = '9px "Segoe UI", Arial, sans-serif';
+          ctx.fillStyle = '#888';
+          const datetime = Leaderboard.formatDatetime(entry.lastUpdatedDatetime);
+          ctx.fillText(datetime, CONFIG.CANVAS_WIDTH / 2 + 145, y + 15);
+        });
+      }
+    }
+
+    function drawGameOverScreen() {
+      // Dark overlay
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+      ctx.fillRect(0, 0, CONFIG.CANVAS_WIDTH, CONFIG.CANVAS_HEIGHT);
+      
+      // Game Over text
+      ctx.fillStyle = '#FFFFFF';
+      ctx.strokeStyle = '#E74C3C';
+      ctx.lineWidth = 4;
+      ctx.font = 'bold 40px "Segoe UI", Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.strokeText('Game Over', CONFIG.CANVAS_WIDTH / 2, 100);
+      ctx.fillText('Game Over', CONFIG.CANVAS_WIDTH / 2, 100);
+      
+      // Player name
+      ctx.font = '18px "Segoe UI", Arial, sans-serif';
+      ctx.strokeStyle = '#2C3E50';
+      ctx.lineWidth = 2;
+      ctx.strokeText(playerName, CONFIG.CANVAS_WIDTH / 2, 135);
+      ctx.fillText(playerName, CONFIG.CANVAS_WIDTH / 2, 135);
+      
+      // Score
+      ctx.font = 'bold 32px "Segoe UI", Arial, sans-serif';
+      ctx.strokeText(`Score: ${score}`, CONFIG.CANVAS_WIDTH / 2, 175);
+      ctx.fillText(`Score: ${score}`, CONFIG.CANVAS_WIDTH / 2, 175);
+      
+      // Result feedback based on leaderboard action
+      let resultMessage = '';
+      let resultColor = '#FFFFFF';
+      
+      if (lastGameResult) {
+        switch (lastGameResult.action) {
+          case 'created':
+            resultMessage = '🆕 Added to Leaderboard!';
+            resultColor = '#4CAF50';
+            break;
+          case 'updated':
+            resultMessage = '🎉 NEW PERSONAL BEST!';
+            resultColor = '#FFD700';
+            break;
+          case 'unchanged':
+            const bestScore = Leaderboard.getPlayerBestScore(playerName);
+            resultMessage = `Your best: ${bestScore}`;
+            resultColor = '#90CAF9';
+            break;
+          case 'skipped':
+            resultMessage = 'Score not recorded';
+            resultColor = '#BDBDBD';
+            break;
+          default:
+            resultMessage = '';
+        }
+      }
+      
+      if (resultMessage) {
+        ctx.font = 'bold 16px "Segoe UI", Arial, sans-serif';
+        ctx.fillStyle = resultColor;
+        ctx.fillText(resultMessage, CONFIG.CANVAS_WIDTH / 2, 210);
+      }
+      
+      // Draw leaderboard
+      drawLeaderboard(235);
+      
+      // Restart hint
+      ctx.font = '16px "Segoe UI", Arial, sans-serif';
+      ctx.fillStyle = '#BDC3C7';
+      ctx.fillText('Click to Play Again', CONFIG.CANVAS_WIDTH / 2, CONFIG.CANVAS_HEIGHT - 30);
+    }
+
+    // ============================================
+    // SCREEN & WEBCAM RECORDING SYSTEM
+    // ============================================
+    
+    const RecordingManager = {
+      // State
+      isRecording: false,
+      webcamEnabled: false,
+      webcamStream: null,
+      mediaRecorder: null,
+      recordedChunks: [],
+      combinedCanvas: null,
+      combinedCtx: null,
+      recordingStartScore: 0,
+      
+      // DOM Elements
+      webcamContainer: document.getElementById('webcamContainer'),
+      webcamVideo: document.getElementById('webcamVideo'),
+      recIndicator: document.getElementById('recIndicator'),
+      toggleWebcamBtn: document.getElementById('toggleWebcamBtn'),
+      startRecordingBtn: document.getElementById('startRecordingBtn'),
+      stopRecordingBtn: document.getElementById('stopRecordingBtn'),
+      recordingStatus: document.getElementById('recordingStatus'),
+      
+      // Initialize recording system
+      init() {
+        this.setupEventListeners();
+        this.createCombinedCanvas();
+        this.updateStatus('Click "Enable Webcam" to start');
+      },
+      
+      // Create a combined canvas for recording both webcam and game
+      createCombinedCanvas() {
+        this.combinedCanvas = document.createElement('canvas');
+        this.combinedCanvas.width = 800; // 400 webcam + 400 game
+        this.combinedCanvas.height = 600;
+        this.combinedCtx = this.combinedCanvas.getContext('2d');
+      },
+      
+      // Setup button event listeners
+      setupEventListeners() {
+        this.toggleWebcamBtn.addEventListener('click', () => this.toggleWebcam());
+        this.startRecordingBtn.addEventListener('click', () => this.startRecording());
+        this.stopRecordingBtn.addEventListener('click', () => this.stopRecording());
+      },
+      
+      // Toggle webcam on/off
+      async toggleWebcam() {
+        if (this.webcamEnabled) {
+          this.disableWebcam();
+        } else {
+          await this.enableWebcam();
+        }
+      },
+      
+      // Enable webcam
+      async enableWebcam() {
+        try {
+          this.updateStatus('Requesting webcam access...');
+          
+          this.webcamStream = await navigator.mediaDevices.getUserMedia({
+            video: {
+              width: { ideal: 400 },
+              height: { ideal: 600 },
+              facingMode: 'user'
+            },
+            audio: true // Also capture audio
+          });
+          
+          this.webcamVideo.srcObject = this.webcamStream;
+          this.webcamContainer.classList.add('active');
+          this.webcamEnabled = true;
+          
+          this.toggleWebcamBtn.textContent = '📷 Disable Webcam';
+          this.toggleWebcamBtn.classList.add('active');
+          this.startRecordingBtn.disabled = false;
+          
+          this.updateStatus('Webcam ready! Click "Start Recording" to begin.');
+          console.log('📹 Webcam enabled');
+          
+        } catch (err) {
+          console.error('Webcam error:', err);
+          this.updateStatus('❌ Could not access webcam: ' + err.message);
+        }
+      },
+      
+      // Disable webcam
+      disableWebcam() {
+        if (this.webcamStream) {
+          this.webcamStream.getTracks().forEach(track => track.stop());
+          this.webcamStream = null;
+        }
+        
+        this.webcamVideo.srcObject = null;
+        this.webcamContainer.classList.remove('active');
+        this.webcamEnabled = false;
+        
+        this.toggleWebcamBtn.textContent = '📷 Enable Webcam';
+        this.toggleWebcamBtn.classList.remove('active');
+        this.startRecordingBtn.disabled = true;
+        
+        if (this.isRecording) {
+          this.stopRecording();
+        }
+        
+        this.updateStatus('Webcam disabled');
+        console.log('📹 Webcam disabled');
+      },
+      
+      // Start recording
+      startRecording() {
+        if (!this.webcamEnabled || this.isRecording) return;
+        
+        try {
+          this.recordedChunks = [];
+          this.recordingStartScore = score;
+          
+          // Create a stream from the combined canvas
+          const canvasStream = this.combinedCanvas.captureStream(30); // 30 FPS
+          
+          // Get audio from webcam stream
+          const audioTracks = this.webcamStream.getAudioTracks();
+          if (audioTracks.length > 0) {
+            canvasStream.addTrack(audioTracks[0]);
+          }
+          
+          // Setup MediaRecorder
+          const options = { mimeType: 'video/webm;codecs=vp9,opus' };
+          
+          // Fallback for browsers that don't support vp9
+          if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+            options.mimeType = 'video/webm;codecs=vp8,opus';
+          }
+          if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+            options.mimeType = 'video/webm';
+          }
+          
+          this.mediaRecorder = new MediaRecorder(canvasStream, options);
+          
+          this.mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) {
+              this.recordedChunks.push(e.data);
+            }
+          };
+          
+          this.mediaRecorder.onstop = () => this.saveRecording();
+          
+          // Start recording
+          this.mediaRecorder.start(100); // Collect data every 100ms
+          this.isRecording = true;
+          
+          // Update UI
+          this.recIndicator.classList.add('active');
+          this.startRecordingBtn.style.display = 'none';
+          this.stopRecordingBtn.classList.add('active');
+          this.toggleWebcamBtn.disabled = true;
+          
+          // Start rendering to combined canvas
+          this.renderCombinedFrame();
+          
+          this.updateStatus('🔴 Recording... Play the game!');
+          console.log('🎬 Recording started');
+          
+        } catch (err) {
+          console.error('Recording error:', err);
+          this.updateStatus('❌ Could not start recording: ' + err.message);
+        }
+      },
+      
+      // Render combined frame (webcam + game) - BUG-003 FIX: Track RAF ID
+      renderCombinedFrameId: null,
+      
+      renderCombinedFrame() {
+        if (!this.isRecording) {
+          this.renderCombinedFrameId = null;
+          return;
+        }
+        
+        // Draw webcam (left side) - flipped horizontally
+        this.combinedCtx.save();
+        this.combinedCtx.translate(400, 0);
+        this.combinedCtx.scale(-1, 1);
+        this.combinedCtx.drawImage(this.webcamVideo, 0, 0, 400, 600);
+        this.combinedCtx.restore();
+        
+        // Draw game canvas (right side)
+        this.combinedCtx.drawImage(canvas, 400, 0, 400, 600);
+        
+        // Continue rendering - store RAF ID for cleanup
+        this.renderCombinedFrameId = requestAnimationFrame(() => this.renderCombinedFrame());
+      },
+      
+      // Stop recording - BUG-003 FIX: Cancel RAF
+      stopRecording() {
+        if (!this.isRecording) return;
+        
+        this.isRecording = false;
+        
+        // BUG-003 FIX: Cancel the animation frame to prevent memory leak
+        if (this.renderCombinedFrameId) {
+          cancelAnimationFrame(this.renderCombinedFrameId);
+          this.renderCombinedFrameId = null;
+        }
+        
+        if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+          this.mediaRecorder.stop();
+        }
+        
+        // Update UI
+        this.recIndicator.classList.remove('active');
+        this.startRecordingBtn.style.display = 'flex';
+        this.stopRecordingBtn.classList.remove('active');
+        this.toggleWebcamBtn.disabled = false;
+        
+        this.updateStatus('⏳ Processing recording...');
+        console.log('🎬 Recording stopped');
+      },
+      
+      // Save recording to file
+      saveRecording() {
+        if (this.recordedChunks.length === 0) {
+          this.updateStatus('❌ No recording data to save');
+          return;
+        }
+        
+        // Create blob from recorded chunks
+        const blob = new Blob(this.recordedChunks, { type: 'video/webm' });
+        
+        // Generate filename: yyyy-mm-dd_game_level_X_clouds_passed
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0]; // yyyy-mm-dd
+        const cloudsPassedDuringRecording = Math.max(0, score - this.recordingStartScore);
+        const speedLevel = Math.floor(score / CONFIG.SPEED_INCREASE_INTERVAL) + 1;
+        
+        const filename = `${dateStr}_game_level_${speedLevel}_clouds_${score}_passed.webm`;
+        
+        // Create download link and trigger download
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        
+        // Cleanup
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+        
+        this.updateStatus(`✅ Saved: ${filename}`);
+        console.log('💾 Recording saved:', filename);
+      },
+      
+      // Update status text
+      updateStatus(message) {
+        this.recordingStatus.textContent = message;
+      }
+    };
+    
+    // Initialize recording manager
+    RecordingManager.init();
+
+    // ============================================
+    // GAME LOOP (BUG-001: Frame-rate independent)
+    // ============================================
+    
+    function gameLoop(currentTime) {
+      // Calculate delta time
+      deltaTime = Math.min(currentTime - lastFrameTime, 100); // Cap at 100ms
+      lastFrameTime = currentTime;
+      
+      // Normalize delta for 60fps base
+      const delta = deltaTime / (1000 / CONFIG.TARGET_FPS);
+      
+      update(delta);
+      render();
+      gameLoopId = requestAnimationFrame(gameLoop);
+    }
+
+    // Start the game loop
+    gameLoopId = requestAnimationFrame(gameLoop);
+
+    // Pause game when tab is hidden (BUG-001)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        // Pause - cancel the loop
+        if (gameLoopId) {
+          cancelAnimationFrame(gameLoopId);
+          gameLoopId = null;
+          console.log('⏸️ Game paused (tab hidden)');
+        }
+      } else {
+        // Resume - restart the loop
+        if (!gameLoopId && state !== STATE.NAME_ENTRY) {
+          lastFrameTime = performance.now();
+          gameLoopId = requestAnimationFrame(gameLoop);
+          console.log('▶️ Game resumed (tab visible)');
+        }
+      }
+    });
+
+    console.log('🐰 Flappy Cinnamoroll loaded! Enter your name to start.');
+  </script>
+</body>
+</html>

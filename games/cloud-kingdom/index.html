@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Cloud Kingdom Explorer - Cinnamoroll Learning Games</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="title-area">
+                <div class="cloud-decoration">☁️</div>
+                <h1>Cloud Kingdom Explorer</h1>
+                <p class="subtitle">Explore magical lands with Cinnamoroll! 🐰✨</p>
+            </div>
+            
+            <div class="character-preview">🐰</div>
+            
+            <div class="start-form">
+                <button id="start-btn" class="primary-btn">
+                    <span>🗺️</span> Start Exploring!
+                </button>
+                
+                <button id="continue-btn" class="secondary-btn hidden">
+                    <span>▶️</span> Continue Adventure
+                </button>
+            </div>
+            
+            <div class="stats-preview">
+                <div class="stat-item">
+                    <span class="stat-icon">💎</span>
+                    <span class="stat-label">Gems</span>
+                    <span id="total-gems" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">🗺️</span>
+                    <span class="stat-label">Areas</span>
+                    <span id="areas-discovered" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-label">Quests</span>
+                    <span id="quests-completed" class="stat-value">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <button id="menu-btn" class="icon-btn">☰</button>
+                <div class="area-name" id="area-name">Starter Island</div>
+                <div class="header-stats">
+                    <span id="gem-count">💎 0</span>
+                    <span id="key-count">🗝️ 0</span>
+                </div>
+            </div>
+            
+            <div class="game-world">
+                <canvas id="game-canvas"></canvas>
+                <div id="interaction-prompt" class="interaction-prompt hidden">
+                    Press SPACE to interact
+                </div>
+            </div>
+            
+            <div class="game-footer">
+                <div class="quest-indicator" id="quest-indicator">
+                    <span class="quest-icon">📋</span>
+                    <span id="current-quest">Explore the island!</span>
+                </div>
+                
+                <div class="control-buttons">
+                    <button id="inventory-btn" class="game-btn">🎒</button>
+                    <button id="quest-btn" class="game-btn">📋</button>
+                </div>
+            </div>
+            
+            <!-- D-Pad for Mobile -->
+            <div class="dpad-container" id="dpad">
+                <button class="dpad-btn dpad-up" data-dir="up">▲</button>
+                <button class="dpad-btn dpad-left" data-dir="left">◀</button>
+                <button class="dpad-btn dpad-center" id="interact-btn">●</button>
+                <button class="dpad-btn dpad-right" data-dir="right">▶</button>
+                <button class="dpad-btn dpad-down" data-dir="down">▼</button>
+            </div>
+        </div>
+        
+        <!-- Inventory Modal -->
+        <div id="inventory-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>🎒 Inventory</h2>
+                    <button id="close-inventory" class="close-btn">×</button>
+                </div>
+                <div class="inventory-grid" id="inventory-grid">
+                    <!-- Inventory slots rendered by JS -->
+                </div>
+                <div class="item-description" id="item-description">
+                    Select an item to see details
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quest Modal -->
+        <div id="quest-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📋 Quests</h2>
+                    <button id="close-quests" class="close-btn">×</button>
+                </div>
+                <div class="quest-list" id="quest-list">
+                    <!-- Quests rendered by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pause Menu -->
+        <div id="pause-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⏸️ Paused</h2>
+                </div>
+                <div class="pause-menu">
+                    <button id="resume-btn" class="menu-btn">▶️ Resume</button>
+                    <button id="save-btn" class="menu-btn">💾 Save Game</button>
+                    <button id="quit-btn" class="menu-btn danger">🏠 Quit to Menu</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dialog Box -->
+        <div id="dialog-box" class="dialog-box hidden">
+            <div class="dialog-speaker" id="dialog-speaker">Cinnamoroll</div>
+            <div class="dialog-text" id="dialog-text"></div>
+            <div class="dialog-continue">Press SPACE to continue ▼</div>
+        </div>
+        
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <h1 id="result-title">🎉 Area Complete!</h1>
+                <div class="result-character">🐰✨</div>
+                
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <span class="stat-icon">💎</span>
+                        <span class="stat-label">Gems Found</span>
+                        <span id="result-gems" class="stat-value">0</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="stat-icon">⏱️</span>
+                        <span class="stat-label">Time</span>
+                        <span id="result-time" class="stat-value">00:00</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="stat-icon">👣</span>
+                        <span class="stat-label">Steps</span>
+                        <span id="result-steps" class="stat-value">0</span>
+                    </div>
+                </div>
+                
+                <div class="star-rating" id="result-stars">
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                </div>
+                
+                <div class="result-buttons">
+                    <button id="next-area-btn" class="primary-btn">Next Area ➡️</button>
+                    <button id="replay-btn" class="secondary-btn">🔄 Replay</button>
+                    <button id="home-btn" class="secondary-btn">🏠 Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../shared-assets/audio/GameAudioManager.js"></script>
+    <script src="../../shared-assets/player/PlayerManager.js"></script>
+    <script src="../../shared-assets/ui/Breadcrumb.js"></script>
+    <script src="CloudKingdomGame.js"></script>
+</body>
+</html>

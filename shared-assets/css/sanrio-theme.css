@@ -1,0 +1,365 @@
+/**
+ * Sanrio Theme CSS - Soft Solid Colors
+ * 
+ * Cinnamoroll-inspired color palette with solid colors (no gradients).
+ * Import this file in all game pages for consistent theming.
+ * 
+ * @version 1.0.0
+ */
+
+/* ==========================================
+   CSS VARIABLES - Sanrio Color Palette
+   ========================================== */
+
+:root {
+    /* Primary Colors */
+    --sanrio-pink: #FFB6C1;          /* Light pink - primary accent */
+    --sanrio-pink-dark: #FF9AAB;     /* Darker pink - hover states */
+    --sanrio-blue: #87CEEB;          /* Sky blue - secondary accent */
+    --sanrio-blue-dark: #6BB8D9;     /* Darker blue - hover states */
+    
+    /* Background Colors */
+    --sanrio-white: #FFFFFF;         /* Pure white - cards, modals */
+    --sanrio-cream: #FFF8E7;         /* Warm cream - main background */
+    --sanrio-snow: #F8F9FA;          /* Cool white - alternate bg */
+    
+    /* Accent Colors */
+    --sanrio-lavender: #E6E6FA;      /* Soft lavender - highlights */
+    --sanrio-mint: #98FB98;          /* Pale mint - success states */
+    --sanrio-peach: #FFDAB9;         /* Soft peach - warm accents */
+    --sanrio-yellow: #FFFACD;        /* Lemon chiffon - attention */
+    
+    /* Text Colors */
+    --sanrio-text-primary: #5D5D5D;  /* Dark gray - main text */
+    --sanrio-text-secondary: #888888; /* Medium gray - secondary text */
+    --sanrio-text-accent: #6B5B95;   /* Purple - accent text */
+    
+    /* Status Colors */
+    --sanrio-success: #90EE90;       /* Light green - success */
+    --sanrio-error: #FFB6B6;         /* Light red - error */
+    --sanrio-warning: #FFE4B5;       /* Moccasin - warning */
+    --sanrio-info: #B0E0E6;          /* Powder blue - info */
+    
+    /* Shadows */
+    --sanrio-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --sanrio-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --sanrio-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+    
+    /* Border Radius */
+    --sanrio-radius-sm: 8px;
+    --sanrio-radius-md: 12px;
+    --sanrio-radius-lg: 16px;
+    --sanrio-radius-xl: 24px;
+    
+    /* Transitions */
+    --sanrio-transition: all 0.2s ease;
+    
+    /* Responsive Breakpoints (for reference in JS) */
+    --breakpoint-tablet: 768px;
+    --breakpoint-desktop: 1024px;
+    --breakpoint-large: 1440px;
+    
+    /* Desktop Container Sizes */
+    --container-mobile: 500px;
+    --container-tablet: 700px;
+    --container-desktop: 900px;
+    --container-large: 1100px;
+}
+
+/* ==========================================
+   BASE STYLES
+   ========================================== */
+
+body.sanrio-theme {
+    background-color: var(--sanrio-cream);
+    color: var(--sanrio-text-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ==========================================
+   COMPONENT STYLES
+   ========================================== */
+
+/* Cards */
+.sanrio-card {
+    background: var(--sanrio-white);
+    border-radius: var(--sanrio-radius-lg);
+    box-shadow: var(--sanrio-shadow-md);
+    padding: 20px;
+    transition: var(--sanrio-transition);
+}
+
+.sanrio-card:hover {
+    box-shadow: var(--sanrio-shadow-lg);
+    transform: translateY(-2px);
+}
+
+/* Buttons - Primary */
+.sanrio-btn-primary {
+    background: var(--sanrio-pink);
+    color: white;
+    border: none;
+    border-radius: var(--sanrio-radius-md);
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--sanrio-transition);
+    box-shadow: var(--sanrio-shadow-sm);
+}
+
+.sanrio-btn-primary:hover {
+    background: var(--sanrio-pink-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--sanrio-shadow-md);
+}
+
+.sanrio-btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Buttons - Secondary */
+.sanrio-btn-secondary {
+    background: var(--sanrio-blue);
+    color: white;
+    border: none;
+    border-radius: var(--sanrio-radius-md);
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--sanrio-transition);
+    box-shadow: var(--sanrio-shadow-sm);
+}
+
+.sanrio-btn-secondary:hover {
+    background: var(--sanrio-blue-dark);
+    transform: translateY(-1px);
+}
+
+/* Buttons - Outline */
+.sanrio-btn-outline {
+    background: transparent;
+    color: var(--sanrio-pink);
+    border: 2px solid var(--sanrio-pink);
+    border-radius: var(--sanrio-radius-md);
+    padding: 10px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--sanrio-transition);
+}
+
+.sanrio-btn-outline:hover {
+    background: var(--sanrio-pink);
+    color: white;
+}
+
+/* Input Fields */
+.sanrio-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 2px solid var(--sanrio-lavender);
+    border-radius: var(--sanrio-radius-md);
+    background: var(--sanrio-white);
+    color: var(--sanrio-text-primary);
+    transition: var(--sanrio-transition);
+    outline: none;
+}
+
+.sanrio-input:focus {
+    border-color: var(--sanrio-pink);
+    box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.2);
+}
+
+/* Select Dropdowns */
+.sanrio-select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 2px solid var(--sanrio-lavender);
+    border-radius: var(--sanrio-radius-md);
+    background: var(--sanrio-white);
+    color: var(--sanrio-text-primary);
+    cursor: pointer;
+    transition: var(--sanrio-transition);
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+.sanrio-select:focus {
+    border-color: var(--sanrio-pink);
+}
+
+/* Modals */
+.sanrio-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--sanrio-transition);
+}
+
+.sanrio-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sanrio-modal {
+    background: var(--sanrio-white);
+    border-radius: var(--sanrio-radius-xl);
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: var(--sanrio-shadow-lg);
+    transform: scale(0.9);
+    transition: var(--sanrio-transition);
+}
+
+.sanrio-modal-overlay.active .sanrio-modal {
+    transform: scale(1);
+}
+
+/* Tags / Chips */
+.sanrio-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--sanrio-lavender);
+    color: var(--sanrio-text-accent);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.sanrio-tag-pink {
+    background: rgba(255, 182, 193, 0.3);
+    color: var(--sanrio-pink-dark);
+}
+
+.sanrio-tag-blue {
+    background: rgba(135, 206, 235, 0.3);
+    color: var(--sanrio-blue-dark);
+}
+
+/* Progress Bars */
+.sanrio-progress {
+    width: 100%;
+    height: 8px;
+    background: var(--sanrio-lavender);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.sanrio-progress-fill {
+    height: 100%;
+    background: var(--sanrio-pink);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+/* Headings */
+.sanrio-title {
+    color: var(--sanrio-pink);
+    font-weight: 700;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.sanrio-subtitle {
+    color: var(--sanrio-text-accent);
+    font-weight: 500;
+}
+
+/* Status Messages */
+.sanrio-success-box {
+    background: var(--sanrio-success);
+    color: #2E7D32;
+    padding: 12px 16px;
+    border-radius: var(--sanrio-radius-md);
+}
+
+.sanrio-error-box {
+    background: var(--sanrio-error);
+    color: #C62828;
+    padding: 12px 16px;
+    border-radius: var(--sanrio-radius-md);
+}
+
+.sanrio-info-box {
+    background: var(--sanrio-info);
+    color: #1565C0;
+    padding: 12px 16px;
+    border-radius: var(--sanrio-radius-md);
+}
+
+/* Icon Containers */
+.sanrio-icon-box {
+    width: 60px;
+    height: 60px;
+    background: var(--sanrio-lavender);
+    border-radius: var(--sanrio-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+/* ==========================================
+   UTILITY CLASSES
+   ========================================== */
+
+.text-pink { color: var(--sanrio-pink); }
+.text-blue { color: var(--sanrio-blue); }
+.text-accent { color: var(--sanrio-text-accent); }
+.text-muted { color: var(--sanrio-text-secondary); }
+
+.bg-cream { background: var(--sanrio-cream); }
+.bg-white { background: var(--sanrio-white); }
+.bg-lavender { background: var(--sanrio-lavender); }
+.bg-pink-light { background: rgba(255, 182, 193, 0.2); }
+.bg-blue-light { background: rgba(135, 206, 235, 0.2); }
+
+.shadow-sm { box-shadow: var(--sanrio-shadow-sm); }
+.shadow-md { box-shadow: var(--sanrio-shadow-md); }
+.shadow-lg { box-shadow: var(--sanrio-shadow-lg); }
+
+.rounded-sm { border-radius: var(--sanrio-radius-sm); }
+.rounded-md { border-radius: var(--sanrio-radius-md); }
+.rounded-lg { border-radius: var(--sanrio-radius-lg); }
+.rounded-xl { border-radius: var(--sanrio-radius-xl); }
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+
+@keyframes sanrio-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes sanrio-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes sanrio-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.animate-bounce { animation: sanrio-bounce 1s ease infinite; }
+.animate-pulse { animation: sanrio-pulse 1.5s ease infinite; }
+.animate-shake { animation: sanrio-shake 0.5s ease; }

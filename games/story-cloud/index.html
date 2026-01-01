@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Story Cloud Adventure - Cinnamoroll Learning Games</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="title-area">
+                <h1 class="game-title">📖 Story Cloud Adventure 📖</h1>
+                <div class="mascot">🐰☁️</div>
+                <p class="tagline">Read, choose, and discover!</p>
+            </div>
+            
+            <div class="settings-panel">
+                <div class="setting-group">
+                    <label for="story-select">Choose Story:</label>
+                    <select id="story-select">
+                        <option value="cloud-adventure">Cloud Adventure</option>
+                        <option value="rainbow-quest">Rainbow Quest</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="start-btn" class="primary-btn">Begin Story!</button>
+            
+            <div class="high-score-display">
+                <span>📚 Stories Completed: <span id="stories-completed">0</span></span>
+            </div>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div id="game-header">
+                <div class="header-left">
+                    <span id="chapter-display">Chapter 1</span>
+                </div>
+                <div class="header-center">
+                    <div id="page-progress">
+                        <div id="progress-bar"></div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span id="inventory-display">🎒 0</span>
+                </div>
+            </div>
+            
+            <!-- Story Illustration -->
+            <div id="illustration-area">
+                <div id="story-scene">☁️ 🐰 ☁️</div>
+            </div>
+            
+            <!-- Story Text -->
+            <div id="story-area">
+                <div id="story-text">
+                    <p id="story-content">The story will appear here...</p>
+                </div>
+            </div>
+            
+            <!-- Choice Area -->
+            <div id="choice-area">
+                <div id="choices-container">
+                    <!-- Choices will be rendered here -->
+                </div>
+            </div>
+            
+            <!-- Question Area (hidden by default) -->
+            <div id="question-area" class="hidden">
+                <div id="question-box">
+                    <p id="question-text">Question will appear here</p>
+                    <div id="answer-options">
+                        <!-- Answer options will be rendered here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <div id="controls-area">
+                <button id="text-speed-btn" class="icon-btn" title="Text Speed">⏩</button>
+                <button id="inventory-btn" class="icon-btn" title="Inventory">🎒</button>
+                <button id="home-btn" class="icon-btn" title="Home">🏠</button>
+            </div>
+            
+            <!-- Inventory Modal -->
+            <div id="inventory-modal" class="modal hidden">
+                <div class="modal-content">
+                    <h3>🎒 Your Items</h3>
+                    <div id="inventory-items"></div>
+                    <button id="close-inventory-btn" class="secondary-btn">Close</button>
+                </div>
+            </div>
+            
+            <!-- Feedback overlay -->
+            <div id="feedback-overlay" class="hidden">
+                <div id="feedback-content">
+                    <div id="feedback-icon"></div>
+                    <p id="feedback-text"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <h1 id="result-title">Story Complete!</h1>
+                <div id="star-rating" class="star-container">
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                </div>
+                
+                <div id="ending-display">
+                    <p id="ending-text">You reached the ending!</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="final-score">0</div>
+                        <div class="stat-label">Score</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="questions-correct">0</div>
+                        <div class="stat-label">Questions Correct</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="items-collected">0</div>
+                        <div class="stat-label">Items Found</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="accuracy-display">0%</div>
+                        <div class="stat-label">Comprehension</div>
+                    </div>
+                </div>
+                
+                <div class="result-buttons">
+                    <button id="play-again-btn" class="primary-btn">Read Again</button>
+                    <button id="home-result-btn" class="secondary-btn">Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../shared-assets/audio/GameAudioManager.js"></script>
+    <script src="../../shared-assets/player/PlayerManager.js"></script>
+    <script src="../../shared-assets/ui/Breadcrumb.js"></script>
+    <script src="StoryCloudGame.js"></script>
+</body>
+</html>

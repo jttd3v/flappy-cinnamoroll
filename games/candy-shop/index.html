@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Candy Shop - Cinnamoroll Learning Games</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="title-area">
+                <h1 class="game-title">🍬 Cinnamoroll's Candy Shop 🍬</h1>
+                <div class="mascot">🐰</div>
+                <p class="tagline">Serve customers and make change!</p>
+            </div>
+            
+            <button id="start-btn" class="primary-btn" onclick="window.game && window.game.startGame()">Open Shop!</button>
+            
+            <div class="high-score-display">
+                <span>💰 Best Tips: $<span id="high-score-value">0.00</span></span>
+            </div>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div id="game-header">
+                <div class="header-left">
+                    <span id="day-display">Day 1</span>
+                    <span id="money-display">💰 $20.00</span>
+                </div>
+                <div class="header-center">
+                    <div id="customer-progress">
+                        <span class="progress-dot filled"></span>
+                        <span class="progress-dot"></span>
+                        <span class="progress-dot"></span>
+                        <span class="progress-dot"></span>
+                        <span class="progress-dot"></span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span id="satisfaction-display">⭐⭐⭐⭐⭐</span>
+                </div>
+            </div>
+            
+            <!-- Customer Area -->
+            <div id="customer-area">
+                <div id="customer-speech">
+                    <div id="customer-icon">🐶</div>
+                    <div id="customer-request">
+                        <p id="order-text">I'd like 2 lollipops, please!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Shop Counter -->
+            <div id="shop-area">
+                <h3>Shop Items</h3>
+                <div id="candy-shelf">
+                    <!-- Candy items will be rendered here -->
+                </div>
+            </div>
+            
+            <!-- Order Area -->
+            <div id="order-area">
+                <div id="current-order">
+                    <h3>Current Order</h3>
+                    <div id="order-items">
+                        <!-- Selected items appear here -->
+                    </div>
+                </div>
+                <div id="order-summary">
+                    <div id="subtotal-row"><span>Subtotal:</span><span id="subtotal-value">$0.00</span></div>
+                    <div id="discount-row" class="hidden"><span>Discount:</span><span id="discount-value">-$0.00</span></div>
+                    <div id="tax-row" class="hidden"><span>Tax:</span><span id="tax-value">$0.00</span></div>
+                    <div id="total-row"><span>Total:</span><span id="total-value">$0.00</span></div>
+                </div>
+            </div>
+            
+            <!-- Payment Area -->
+            <div id="payment-area" class="hidden">
+                <h3>Customer pays: <span id="payment-amount">$5.00</span></h3>
+                <div id="change-prompt">
+                    <p>Give change:</p>
+                    <input type="number" id="change-input" step="0.01" min="0" placeholder="0.00">
+                    <button id="submit-change-btn" class="primary-btn">Give Change</button>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div id="action-area">
+                <button id="clear-btn" class="secondary-btn">Clear Order</button>
+                <button id="complete-btn" class="primary-btn" disabled>Complete Order</button>
+            </div>
+            
+            <!-- Feedback overlay -->
+            <div id="feedback-overlay" class="hidden">
+                <div id="feedback-content">
+                    <div id="feedback-icon"></div>
+                    <p id="feedback-text"></p>
+                    <p id="tip-text"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <h1 id="result-title">Shop Closed!</h1>
+                <div id="star-rating" class="star-container">
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="final-earnings">$0.00</div>
+                        <div class="stat-label">Total Earnings</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="final-tips">$0.00</div>
+                        <div class="stat-label">Tips Earned</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="customers-served">0</div>
+                        <div class="stat-label">Customers Served</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="accuracy-display">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+                
+                <div id="new-high-score" class="hidden">
+                    🎉 New Record! 🎉
+                </div>
+                
+                <div class="result-buttons">
+                    <button id="play-again-btn" class="primary-btn">Next Day</button>
+                    <button id="home-btn" class="secondary-btn">Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../shared-assets/audio/GameAudioManager.js"></script>
+    <script src="../../shared-assets/player/PlayerManager.js"></script>
+    <script src="../../shared-assets/ui/Breadcrumb.js"></script>
+    <script src="CandyShopGame.js"></script>
+</body>
+</html>

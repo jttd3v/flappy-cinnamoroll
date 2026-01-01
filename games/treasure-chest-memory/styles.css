@@ -1,0 +1,627 @@
+/* Treasure Chest Memory - Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #87CEEB 0%, #E0F6FF 50%, #FFE4EC 100%);
+  min-height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+#game-container {
+  width: 100%;
+  max-width: 500px;
+  height: 100vh;
+  max-height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Screens */
+.screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  height: 100%;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* Start Screen */
+#start-screen {
+  justify-content: center;
+  gap: 30px;
+  text-align: center;
+}
+
+.title-area h1 {
+  color: #FF6B9D;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(255, 107, 157, 0.2);
+}
+
+.title-area p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.cinnamoroll-mascot {
+  font-size: 80px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.settings label {
+  color: #555;
+  font-weight: 600;
+  text-align: left;
+}
+
+.settings select {
+  padding: 12px 15px;
+  border: 2px solid #FFB6C1;
+  border-radius: 25px;
+  font-size: 1rem;
+  background: white;
+  color: #333;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.settings select:focus {
+  border-color: #FF6B9D;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #FF6B9D 0%, #FF8E72 100%);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.5);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+}
+
+.secondary-btn {
+  background: white;
+  color: #FF6B9D;
+  border: 2px solid #FF6B9D;
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondary-btn:hover {
+  background: #FFF0F5;
+}
+
+.high-score {
+  color: #FFD700;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Game Screen */
+#game-screen {
+  padding: 15px;
+  gap: 15px;
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(135deg, #FFE4EC 0%, #FFF0F5 100%);
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(255, 182, 193, 0.3);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #999;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #FF6B9D;
+}
+
+#timer-stat.warning .stat-value {
+  color: #FF4444;
+  animation: pulse 0.5s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Card Grid */
+.card-grid {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  justify-content: center;
+  align-content: center;
+  flex: 1;
+  max-width: 100%;
+}
+
+/* Card */
+.card {
+  width: clamp(50px, 15vw, 70px);
+  height: clamp(65px, 20vw, 90px);
+  perspective: 1000px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner,
+.card.matched .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card-back {
+  background: linear-gradient(145deg, #8B4513 0%, #654321 100%);
+  border: 3px solid #A0522D;
+  z-index: 2;
+}
+
+.card-back::before {
+  content: '🎁';
+  font-size: clamp(24px, 6vw, 36px);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-front {
+  background: linear-gradient(145deg, #FFFFFF 0%, #FFF5F8 100%);
+  border: 3px solid #FFB6C1;
+  transform: rotateY(180deg);
+  font-size: clamp(28px, 7vw, 40px);
+}
+
+.card.matched .card-front {
+  background: linear-gradient(145deg, #FFFACD 0%, #FFE4B5 100%);
+  border-color: #FFD700;
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.card.wrong .card-inner {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: rotateY(180deg) translateX(0); }
+  20% { transform: rotateY(180deg) translateX(-8px); }
+  40% { transform: rotateY(180deg) translateX(8px); }
+  60% { transform: rotateY(180deg) translateX(-8px); }
+  80% { transform: rotateY(180deg) translateX(8px); }
+}
+
+.card.disabled {
+  pointer-events: none;
+}
+
+/* Game Controls */
+.game-controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+}
+
+.icon-btn {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.icon-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Result Screen */
+#result-screen {
+  justify-content: center;
+  gap: 25px;
+  text-align: center;
+}
+
+#result-title {
+  color: #FF6B9D;
+  font-size: 1.8rem;
+}
+
+.stars {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.star {
+  font-size: 50px;
+  opacity: 0.3;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.star.earned {
+  opacity: 1;
+  animation: starPop 0.5s ease;
+}
+
+@keyframes starPop {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.result-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: #FFF5F8;
+  padding: 20px 40px;
+  border-radius: 20px;
+}
+
+.result-stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.result-stat .label {
+  color: #888;
+}
+
+.result-stat .value {
+  font-weight: bold;
+  color: #FF6B9D;
+}
+
+.new-record {
+  color: #FFD700;
+  font-size: 1.2rem;
+  font-weight: bold;
+  animation: glow 1s ease infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 5px #FFD700; }
+  to { text-shadow: 0 0 20px #FFD700, 0 0 30px #FFA500; }
+}
+
+.result-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Overlay */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.overlay-content {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.overlay-content h2 {
+  color: #FF6B9D;
+}
+
+/* Confetti animation for win */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #FFD700;
+  animation: confettiFall 3s ease forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  .card {
+    width: 60px;
+    height: 78px;
+  }
+  
+  .card-grid {
+    gap: 8px;
+  }
+  
+  .card-back::before {
+    font-size: 24px;
+  }
+  
+  .card-front {
+    font-size: 28px;
+  }
+}
+
+@media (min-height: 800px) {
+  .card {
+    width: 80px;
+    height: 100px;
+  }
+  
+  .card-front {
+    font-size: 42px;
+  }
+}
+
+/* ===================== TABLET (768px+) ===================== */
+@media (min-width: 768px) {
+  body {
+    padding: 30px;
+  }
+  
+  #game-container {
+    max-width: 700px;
+    max-height: none;
+    height: auto;
+    min-height: 700px;
+    border-radius: 35px;
+  }
+  
+  .screen {
+    padding: 30px;
+  }
+  
+  .title-area h1 {
+    font-size: 2.5rem;
+  }
+  
+  .title-area p {
+    font-size: 1.2rem;
+  }
+  
+  .cinnamoroll-mascot {
+    font-size: 100px;
+  }
+  
+  .primary-btn {
+    padding: 18px 50px;
+    font-size: 1.4rem;
+  }
+  
+  .card-grid {
+    gap: 15px;
+    max-width: 550px;
+    margin: 0 auto;
+  }
+  
+  .card {
+    width: 90px;
+    height: 115px;
+  }
+  
+  .card-front {
+    font-size: 48px;
+  }
+  
+  .card-back::before {
+    font-size: 36px;
+  }
+  
+  #game-header {
+    padding: 15px 25px;
+    font-size: 1.1rem;
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .stat-value {
+    font-size: 2.2rem;
+  }
+}
+
+/* ===================== DESKTOP (1024px+) ===================== */
+@media (min-width: 1024px) {
+  body {
+    padding: 40px;
+  }
+  
+  #game-container {
+    max-width: 900px;
+    min-height: 750px;
+  }
+  
+  .screen {
+    padding: 40px;
+  }
+  
+  .title-area h1 {
+    font-size: 3rem;
+  }
+  
+  .title-area p {
+    font-size: 1.4rem;
+  }
+  
+  .cinnamoroll-mascot {
+    font-size: 120px;
+  }
+  
+  .card-grid {
+    gap: 18px;
+    max-width: 700px;
+  }
+  
+  .card {
+    width: 100px;
+    height: 130px;
+    border-radius: 15px;
+  }
+  
+  .card-front {
+    font-size: 54px;
+  }
+  
+  .card-back::before {
+    font-size: 42px;
+  }
+  
+  .result-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .stat-value {
+    font-size: 2.6rem;
+  }
+  
+  .stat-label {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===================== LARGE DESKTOP (1440px+) ===================== */
+@media (min-width: 1440px) {
+  #game-container {
+    max-width: 1100px;
+    min-height: 800px;
+  }
+  
+  .title-area h1 {
+    font-size: 3.5rem;
+  }
+  
+  .card-grid {
+    gap: 22px;
+    max-width: 850px;
+  }
+  
+  .card {
+    width: 110px;
+    height: 143px;
+  }
+  
+  .card-front {
+    font-size: 60px;
+  }
+}

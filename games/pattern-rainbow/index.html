@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Pattern Rainbow - Cinnamoroll Learning Games</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <div class="title-area">
+                <h1 class="game-title">🌈 Pattern Rainbow 🌈</h1>
+                <div class="mascot">
+                    <img src="../../assets/images/cinnamoroll.png" alt="Cinnamoroll" 
+                         onerror="this.style.display='none'">
+                </div>
+                <p class="tagline">Complete the colorful patterns!</p>
+            </div>
+            
+            <button id="start-btn" class="primary-btn rainbow-btn">Start Game!</button>
+            
+            <div class="high-score-display">
+                <span>🏆 High Score: <span id="high-score-value">0</span></span>
+            </div>
+        </div>
+        
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen">
+            <div id="game-header">
+                <div class="header-left">
+                    <span id="level-display">Level 1</span>
+                    <div id="round-progress">
+                        <span class="progress-dot filled"></span>
+                        <span class="progress-dot"></span>
+                        <span class="progress-dot"></span>
+                        <span class="progress-dot"></span>
+                        <span class="progress-dot"></span>
+                    </div>
+                </div>
+                <div class="header-center">
+                    <span id="score-display">Score: 0</span>
+                </div>
+                <div class="header-right">
+                    <span id="streak-display">🔥 0</span>
+                </div>
+            </div>
+            
+            <div id="game-content">
+                <div id="instruction-area">
+                    <p id="pattern-hint" class="hint-text"></p>
+                    <h2 id="instruction-text">Complete the pattern:</h2>
+                </div>
+                
+                <div id="pattern-area">
+                    <!-- Pattern elements will be rendered here -->
+                </div>
+                
+                <div id="divider-line"></div>
+                
+                <div id="choice-area">
+                    <p class="choice-label">Choose the answer:</p>
+                    <div id="choices-container">
+                        <!-- Choice buttons will be rendered here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="game-footer">
+                <button id="hint-btn" class="secondary-btn">
+                    💡 Hint <span id="hints-remaining">(3)</span>
+                </button>
+                <button id="skip-btn" class="secondary-btn">Skip →</button>
+            </div>
+            
+            <!-- Feedback overlay -->
+            <div id="feedback-overlay" class="hidden">
+                <div id="feedback-content">
+                    <div id="feedback-icon"></div>
+                    <p id="feedback-text"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <h1 id="result-title">Great Job!</h1>
+                <div id="star-rating" class="star-container">
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                    <span class="star">⭐</span>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="final-score">0</div>
+                        <div class="stat-label">Score</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="correct-count">0</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="accuracy-display">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="best-streak">0</div>
+                        <div class="stat-label">Best Streak</div>
+                    </div>
+                </div>
+                
+                <div id="new-high-score" class="hidden">
+                    🎉 New High Score! 🎉
+                </div>
+                
+                <div class="result-buttons">
+                    <button id="play-again-btn" class="primary-btn rainbow-btn">Play Again</button>
+                    <button id="home-btn" class="secondary-btn">Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../../shared-assets/audio/GameAudioManager.js"></script>
+    <script src="../../shared-assets/player/PlayerManager.js"></script>
+    <script src="../../shared-assets/ui/Breadcrumb.js"></script>
+    <script src="PatternRainbowGame.js"></script>
+</body>
+</html>
