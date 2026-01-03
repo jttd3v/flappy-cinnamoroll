@@ -43,7 +43,7 @@ const GameServices = (function() {
          */
         goToGame: function(gameId) {
             const gamePaths = {
-                'flappy-cinnamoroll': './index.html',
+                'flappy-cinnamoroll': './flappy.html',
                 'treasure-chest-memory': './games/treasure-chest-memory/index.html',
                 'star-counter': './games/star-counter/index.html',
                 'pattern-rainbow': './games/pattern-rainbow/index.html',

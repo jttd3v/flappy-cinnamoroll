@@ -20,6 +20,28 @@
     /* Adventure theme gradient */
     --adventure-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --sky-gradient: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #fff 100%);
+    
+    /* ===================== Soft Theme Colors (NEW) ===================== */
+    /* Category Colors - Soft Pastels */
+    --soft-science: #A8E6CF;
+    --soft-math: #A8D8EA;
+    --soft-language: #DDA0DD;
+    --soft-geography: #FFDAB3;
+    --soft-history: #D4C4B0;
+    --soft-logic: #B8C5D0;
+    
+    /* Soft UI Colors */
+    --soft-bg-primary: #FAF9F7;
+    --soft-bg-secondary: #FFFFFF;
+    --soft-correct: #A8E6CF;
+    --soft-incorrect: #FFB8B8;
+    --soft-timer-safe: #A8E6CF;
+    --soft-timer-warn: #FFE066;
+    --soft-timer-danger: #FFB8B8;
+    
+    /* Soft Shadows */
+    --soft-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --soft-shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* ===================== Reset & Base ===================== */
@@ -1361,4 +1383,145 @@ body {
         padding: 28px 35px;
         font-size: 1.4rem;
     }
+}
+
+/* ===================== EXPLANATION MODAL (NEW) ===================== */
+#explanation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#explanation-modal.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#explanation-modal.hidden {
+    display: none;
+}
+
+.explanation-content {
+    background: var(--soft-bg-secondary, #fff);
+    border-radius: 20px;
+    padding: 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: var(--soft-shadow-medium, 0 4px 16px rgba(0, 0, 0, 0.12));
+    text-align: center;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+#explanation-modal.visible .explanation-content {
+    transform: translateY(0);
+}
+
+.explanation-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.explanation-header.correct {
+    color: #2D936C;
+}
+
+.explanation-header.incorrect {
+    color: #C0392B;
+}
+
+.explanation-answer {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--soft-bg-primary, #FAF9F7);
+    border-radius: 10px;
+}
+
+.explanation-text {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* ===================== HINT PANEL (NEW) ===================== */
+#hint-panel {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #FFF9E6;
+    border: 2px solid var(--soft-timer-warn, #FFE066);
+    border-radius: 12px;
+    padding: 12px 20px;
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 500;
+    box-shadow: var(--soft-shadow, 0 2px 8px rgba(0, 0, 0, 0.08));
+}
+
+#hint-panel.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+/* ===================== POWER-UP BUTTON STATES (NEW) ===================== */
+.power-up-btn.disabled,
+.power-up-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.answer-btn.eliminated {
+    opacity: 0.3;
+    text-decoration: line-through;
+    pointer-events: none;
+    transform: scale(0.95);
+}
+
+/* ===================== SOFT THEME (opt-in via body.theme-soft) ===================== */
+body.theme-soft #game-container {
+    background: var(--soft-bg-primary);
+}
+
+body.theme-soft .answer-btn {
+    background: var(--soft-bg-secondary);
+    border: 2px solid #E0E0E0;
+    box-shadow: var(--soft-shadow);
+}
+
+body.theme-soft .answer-btn:hover:not(:disabled):not(.eliminated) {
+    border-color: var(--soft-math);
+    background: #F8FCFF;
+}
+
+body.theme-soft .answer-btn.correct {
+    background: var(--soft-correct);
+    border-color: #7BC9A6;
+}
+
+body.theme-soft .answer-btn.incorrect {
+    background: var(--soft-incorrect);
+    border-color: #E88B8B;
 }

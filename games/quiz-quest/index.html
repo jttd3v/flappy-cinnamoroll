@@ -19,7 +19,7 @@
                 <p class="tagline">Journey through knowledge!</p>
             </div>
             
-            <button id="start-btn" class="primary-btn adventure-btn" aria-label="Start quiz quest game">Begin Quest!</button>
+            <button id="start-btn" class="primary-btn adventure-btn" aria-label="Start quiz quest game" onclick="console.log('[DEBUG] Button clicked, window.game:', window.game); if(!window.game){alert('Game not loaded!');return;} window.game.startGame();">Begin Quest!</button>
             
             <div class="high-score-display">
                 <span>🏆 Best Score: <span id="high-score-value">0</span></span>
@@ -213,11 +213,28 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Explanation Modal (NEW - hidden by default) -->
+        <div id="explanation-modal" class="modal hidden" aria-hidden="true">
+            <div class="explanation-content">
+                <div class="explanation-header"></div>
+                <div class="explanation-answer"></div>
+                <div class="explanation-text"></div>
+                <button id="explanation-continue-btn" class="primary-btn">Continue →</button>
+            </div>
+        </div>
+        
+        <!-- Hint Panel (NEW - hidden by default) -->
+        <div id="hint-panel" class="hint-panel" aria-hidden="true">
+            <!-- Populated dynamically -->
+        </div>
     </div>
     
+    <script>window.onerror = function(msg, url, line) { alert('JS Error: ' + msg + '\nFile: ' + url + '\nLine: ' + line); return false; };</script>
     <script src="../../shared-assets/audio/GameAudioManager.js"></script>
     <script src="../../shared-assets/player/PlayerManager.js"></script>
     <script src="../../shared-assets/ui/Breadcrumb.js"></script>
+    <!-- QuizQuestGame.js includes inlined AdaptiveDifficulty for file:// compatibility -->
     <script src="QuizQuestGame.js"></script>
 </body>
 </html>

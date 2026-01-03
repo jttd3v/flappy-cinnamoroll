@@ -57,7 +57,7 @@
             </div>
         </div>
         
-        <!-- Game Screen -->
+        <!-- Game Screen - Two Column Layout -->
         <div id="game-screen" class="screen">
             <div class="game-header">
                 <button id="home-btn" class="icon-btn">🏠</button>
@@ -70,14 +70,21 @@
                 </div>
             </div>
             
-            <div class="target-preview" id="target-preview">
-                <h3>🎯 Goal</h3>
-                <div class="target-grid" id="target-grid"></div>
-            </div>
-            
-            <div class="puzzle-area">
-                <div class="puzzle-grid" id="puzzle-grid">
-                    <!-- Puzzle tiles rendered by JS -->
+            <!-- Two Column Layout: Goal on left, Puzzle on right -->
+            <div class="game-layout">
+                <div class="goal-column">
+                    <div class="target-preview" id="target-preview">
+                        <h3>🎯 Goal</h3>
+                        <div class="target-grid" id="target-grid"></div>
+                    </div>
+                </div>
+                
+                <div class="puzzle-column">
+                    <div class="puzzle-area">
+                        <div class="puzzle-grid" id="puzzle-grid">
+                            <!-- Puzzle tiles rendered by JS -->
+                        </div>
+                    </div>
                 </div>
             </div>
             

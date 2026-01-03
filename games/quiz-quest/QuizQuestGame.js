@@ -395,21 +395,56 @@ const QUESTION_BANK = {
             { q: "How many legs does a spider have?", a: "8", wrong: ["6", "4"] },
             { q: "What is the closest star to Earth?", a: "The Sun", wrong: ["The Moon", "Mars"] },
             { q: "What do bees make?", a: "Honey", wrong: ["Milk", "Bread"] },
-            { q: "Where do fish live?", a: "Water", wrong: ["Trees", "Clouds"] }
+            { q: "Where do fish live?", a: "Water", wrong: ["Trees", "Clouds"] },
+            // NEW: Enhanced schema examples with id, hint, explanation
+            { 
+                id: "sci-1-006",
+                q: "What color is the sky on a clear day?", 
+                a: "Blue", 
+                wrong: ["Green", "Red"],
+                hint: "Think about what you see when you look up outside",
+                explanation: "The sky appears blue because molecules in the air scatter blue light from the sun more than other colors."
+            },
+            { 
+                id: "sci-1-007",
+                q: "What do we call frozen water?", 
+                a: "Ice", 
+                wrong: ["Steam", "Fog"],
+                hint: "You find this in your freezer",
+                explanation: "When water gets very cold (below 0°C or 32°F), it freezes and becomes ice."
+            }
         ],
         2: [
             { q: "What planet is known as the Red Planet?", a: "Mars", wrong: ["Venus", "Jupiter"] },
             { q: "What gas do humans breathe out?", a: "Carbon dioxide", wrong: ["Oxygen", "Nitrogen"] },
             { q: "How many planets are in our solar system?", a: "8", wrong: ["9", "7"] },
             { q: "What is H2O commonly called?", a: "Water", wrong: ["Air", "Salt"] },
-            { q: "What animal is known for its long neck?", a: "Giraffe", wrong: ["Elephant", "Lion"] }
+            { q: "What animal is known for its long neck?", a: "Giraffe", wrong: ["Elephant", "Lion"] },
+            // NEW: Enhanced schema examples
+            {
+                id: "sci-2-006",
+                q: "What is the largest planet in our solar system?",
+                a: "Jupiter",
+                wrong: ["Saturn", "Neptune"],
+                hint: "This planet is named after the king of Roman gods",
+                explanation: "Jupiter is so large that over 1,300 Earths could fit inside it!"
+            }
         ],
         3: [
             { q: "What is the largest organ in the human body?", a: "Skin", wrong: ["Heart", "Brain", "Liver"] },
             { q: "What force keeps us on the ground?", a: "Gravity", wrong: ["Magnetism", "Friction", "Wind"] },
             { q: "What is the boiling point of water in Celsius?", a: "100°C", wrong: ["50°C", "0°C", "200°C"] },
             { q: "What type of animal is a dolphin?", a: "Mammal", wrong: ["Fish", "Reptile", "Bird"] },
-            { q: "What do caterpillars turn into?", a: "Butterflies", wrong: ["Bees", "Spiders", "Ants"] }
+            { q: "What do caterpillars turn into?", a: "Butterflies", wrong: ["Bees", "Spiders", "Ants"] },
+            // NEW: Enhanced schema examples
+            {
+                id: "sci-3-006",
+                q: "What is the process called when a liquid becomes a gas?",
+                a: "Evaporation",
+                wrong: ["Condensation", "Freezing", "Melting"],
+                hint: "Think about what happens to water in a hot pan",
+                explanation: "Evaporation occurs when liquid molecules gain enough energy to escape into the air as gas."
+            }
         ],
         4: [
             { q: "What is the chemical symbol for gold?", a: "Au", wrong: ["Ag", "Go", "Gd"] },
@@ -431,27 +466,63 @@ const QUESTION_BANK = {
             { q: "What is 5 - 3?", a: "2", wrong: ["1", "3"] },
             { q: "How many sides does a triangle have?", a: "3", wrong: ["4", "5"] },
             { q: "What is 1 + 1?", a: "2", wrong: ["1", "3"] },
-            { q: "What shape is a ball?", a: "Circle/Sphere", wrong: ["Square", "Triangle"] }
+            { q: "What shape is a ball?", a: "Circle/Sphere", wrong: ["Square", "Triangle"] },
+            // NEW: Enhanced schema examples
+            {
+                id: "math-1-006",
+                q: "How many fingers do you have on both hands?",
+                a: "10",
+                wrong: ["8", "12"],
+                hint: "Count the fingers on one hand, then double it",
+                explanation: "Each hand has 5 fingers, and 5 + 5 = 10 fingers in total!"
+            }
         ],
         2: [
             { q: "What is 7 × 8?", a: "56", wrong: ["54", "48"] },
             { q: "What is 100 ÷ 4?", a: "25", wrong: ["20", "30"] },
             { q: "How many degrees in a right angle?", a: "90", wrong: ["45", "180"] },
             { q: "What is 15 + 27?", a: "42", wrong: ["41", "43"] },
-            { q: "What is half of 50?", a: "25", wrong: ["20", "30"] }
+            { q: "What is half of 50?", a: "25", wrong: ["20", "30"] },
+            // NEW: Enhanced schema examples
+            {
+                id: "math-2-006",
+                q: "What is 9 × 9?",
+                a: "81",
+                wrong: ["72", "90"],
+                hint: "Think of 9 groups of 9 items",
+                explanation: "9 × 9 = 81. A trick: 9 times tables follow a pattern where digits sum to 9 (8+1=9)!"
+            }
         ],
         3: [
             { q: "What is 12 × 12?", a: "144", wrong: ["122", "132", "154"] },
             { q: "What is the square root of 81?", a: "9", wrong: ["8", "7", "10"] },
             { q: "How many degrees in a circle?", a: "360", wrong: ["180", "270", "400"] },
             { q: "What is 25% of 200?", a: "50", wrong: ["25", "75", "100"] },
-            { q: "What is 3³?", a: "27", wrong: ["9", "18", "36"] }
+            { q: "What is 3³?", a: "27", wrong: ["9", "18", "36"] },
+            // NEW: Enhanced schema examples
+            {
+                id: "math-3-006",
+                q: "What is the area of a square with side length 5?",
+                a: "25",
+                wrong: ["10", "20", "30"],
+                hint: "Area of a square = side × side",
+                explanation: "For a square, multiply one side by itself: 5 × 5 = 25 square units."
+            }
         ],
         4: [
             { q: "What is the value of π (pi) to 2 decimal places?", a: "3.14", wrong: ["3.41", "3.12", "3.16"] },
             { q: "Solve: 2x + 6 = 14", a: "x = 4", wrong: ["x = 3", "x = 5", "x = 6"] },
             { q: "What is 15% of 80?", a: "12", wrong: ["10", "15", "8"] },
-            { q: "What is the cube root of 125?", a: "5", wrong: ["4", "6", "25"] }
+            { q: "What is the cube root of 125?", a: "5", wrong: ["4", "6", "25"] },
+            // NEW: Enhanced schema examples
+            {
+                id: "math-4-006",
+                q: "If a triangle has angles of 60° and 70°, what is the third angle?",
+                a: "50°",
+                wrong: ["60°", "80°", "40°"],
+                hint: "All angles in a triangle add up to 180°",
+                explanation: "Triangle angles sum to 180°. So 180 - 60 - 70 = 50°."
+            }
         ],
         5: [
             { q: "What is the derivative of x²?", a: "2x", wrong: ["x", "x²", "2x²"] },
@@ -694,6 +765,79 @@ class MapRenderer {
 
 // ==================== Question Engine ====================
 
+/**
+ * Normalize a question to the enhanced schema format
+ * Supports both old format { q, a, wrong } and new format { id, q, a, wrong, hint, explanation }
+ * @param {Object} raw - Raw question object
+ * @param {string} category - Question category
+ * @param {number} tier - Difficulty tier
+ * @param {number} index - Index in array
+ * @returns {Object} Normalized question
+ */
+function normalizeQuestion(raw, category, tier, index) {
+    return {
+        id: raw.id ?? `${category}-${tier}-${index}`,
+        q: raw.q,
+        a: raw.a,
+        wrong: raw.wrong,
+        hint: raw.hint ?? null,           // Optional - use fallback generator if null
+        explanation: raw.explanation ?? null  // Optional - use fallback generator if null
+    };
+}
+
+/**
+ * Validate a question object has required fields
+ * @param {Object} q - Question to validate
+ * @returns {{valid: boolean, errors: string[]}}
+ */
+function validateQuestion(q) {
+    const errors = [];
+    
+    if (typeof q.q !== 'string' || q.q.length === 0) {
+        errors.push('Missing or invalid question text (q)');
+    }
+    if (typeof q.a !== 'string' || q.a.length === 0) {
+        errors.push('Missing or invalid answer (a)');
+    }
+    if (!Array.isArray(q.wrong) || q.wrong.length < 2) {
+        errors.push('Wrong answers must be array with at least 2 items');
+    }
+    
+    return {
+        valid: errors.length === 0,
+        errors
+    };
+}
+
+/**
+ * Validate a batch of questions before merging
+ * @param {Array} batch - Array of questions
+ * @returns {{valid: boolean, errors: Array, validCount: number}}
+ */
+function validateQuestionBatch(batch) {
+    if (!Array.isArray(batch)) {
+        return { valid: false, errors: ['Batch must be an array'], validCount: 0 };
+    }
+    
+    const allErrors = [];
+    let validCount = 0;
+    
+    batch.forEach((q, i) => {
+        const result = validateQuestion(q);
+        if (result.valid) {
+            validCount++;
+        } else {
+            allErrors.push({ index: i, errors: result.errors });
+        }
+    });
+    
+    return {
+        valid: allErrors.length === 0,
+        errors: allErrors,
+        validCount
+    };
+}
+
 class QuestionEngine {
     constructor() {
         this.usedQuestions = new Set();
@@ -724,20 +868,28 @@ class QuestionEngine {
         
         const question = available[idx];
         
+        // Normalize question to enhanced schema (NEW - Day 5)
+        const normalized = normalizeQuestion(question, category, tier, originalIdx);
+        
         // Create shuffled choices
         const numChoices = DIFFICULTY_PRESETS[difficulty]?.choices || 4;
-        const choices = this.shuffleArray([question.a, ...question.wrong]).slice(0, numChoices);
+        const choices = this.shuffleArray([normalized.a, ...normalized.wrong]).slice(0, numChoices);
         
         // Ensure correct answer is included
-        if (!choices.includes(question.a)) {
-            choices[Math.floor(Math.random() * choices.length)] = question.a;
+        if (!choices.includes(normalized.a)) {
+            choices[Math.floor(Math.random() * choices.length)] = normalized.a;
         }
         
         return {
-            question: question.q,
-            correctAnswer: question.a,
+            id: normalized.id,                    // NEW: Question ID for tracking
+            question: normalized.q,
+            correctAnswer: normalized.a,
             choices: this.shuffleArray(choices),
-            category: category
+            category: category,
+            hint: normalized.hint,                // NEW: Optional hint text
+            explanation: normalized.explanation,  // NEW: Optional explanation text
+            tier: tier,                           // NEW: Tier for returnToPool
+            index: originalIdx                    // NEW: Index for returnToPool
         };
     }
     
@@ -748,6 +900,31 @@ class QuestionEngine {
             [arr[i], arr[j]] = [arr[j], arr[i]];
         }
         return arr;
+    }
+    
+    /**
+     * Return a question to the available pool (for Skip power-up)
+     * @param {string} questionKey - The question key in format "category-tier-index"
+     * @returns {boolean} True if successfully returned, false if not found
+     */
+    returnToPool(questionKey) {
+        if (!questionKey) return false;
+        if (!this.usedQuestions.has(questionKey)) return false;
+        
+        this.usedQuestions.delete(questionKey);
+        console.log(`[QuestionEngine] Returned question to pool: ${questionKey}`);
+        return true;
+    }
+    
+    /**
+     * Get the key for the current question (for Skip power-up tracking)
+     * @param {string} category 
+     * @param {number} tier 
+     * @param {number} index 
+     * @returns {string}
+     */
+    getQuestionKey(category, tier, index) {
+        return `${category}-${tier}-${index}`;
     }
     
     reset() {
@@ -781,6 +958,25 @@ class QuizQuestGame {
         
         // Unlocked locations
         this.unlockedLocations = ['forest', 'mountain'];
+        
+        // Power-ups system (NEW - now enabled!)
+        this._powerupsEnabled = true;   // Feature flag - ENABLED
+        this._answerSelected = false;   // Track if answer already selected
+        this.powerups = {
+            fiftyFifty: { remaining: 2, used: false },
+            hint: { remaining: 3, used: false },
+            skip: { remaining: 1, used: false }
+        };
+        
+        // Question timing for adaptive difficulty
+        this._questionStartTime = null;
+        
+        // Explanation modal feature (NEW)
+        this._explanationEnabled = true;  // Feature flag for explanation modal
+        
+        // Adaptive difficulty system (NEW - Day 4)
+        this._useAdaptiveDifficulty = true;  // Feature flag
+        this.adaptiveDifficulty = null;      // Initialized in init()
         
         // Components
         this.questionEngine = new QuestionEngine();
@@ -847,15 +1043,111 @@ class QuizQuestGame {
     }
     
     init() {
+        // Initialize adaptive difficulty system (NEW - Day 4)
+        this._initAdaptiveDifficulty();
+        
         this.loadProgress();
         this.setupEventListeners();
         this.updateStartScreen();
         this.showScreen('start');
     }
     
+    /**
+     * Initialize adaptive difficulty with fallback
+     * @private
+     */
+    _initAdaptiveDifficulty() {
+        if (!this._useAdaptiveDifficulty) {
+            console.log('[Adaptive] Feature disabled, using age-based difficulty');
+            return;
+        }
+        
+        try {
+            // AdaptiveDifficulty class is defined in separate file but also on window
+            if (typeof AdaptiveDifficulty !== 'undefined') {
+                this.adaptiveDifficulty = new AdaptiveDifficulty({
+                    enabled: true,
+                    shadowMode: false,  // Actually affect gameplay
+                    initialTier: 3      // Start at Champion
+                });
+                console.log('[Adaptive] Initialized successfully');
+            } else {
+                console.warn('[Adaptive] AdaptiveDifficulty class not found, using age-based fallback');
+                this.adaptiveDifficulty = null;
+            }
+        } catch (err) {
+            console.error('[Adaptive] Init failed, using age-based fallback:', err);
+            this.adaptiveDifficulty = null;
+        }
+    }
+    
+    /**
+     * Get initial difficulty - tries adaptive, falls back to age-based
+     * @private
+     * @returns {number} Difficulty level 1-7
+     */
+    _getInitialDifficulty() {
+        // Try adaptive difficulty first
+        if (this.adaptiveDifficulty?.enabled) {
+            const tier = this.adaptiveDifficulty.getTier();
+            if (tier !== null && tier >= 1 && tier <= 7) {
+                console.log(`[Adaptive] Using adaptive tier: ${tier}`);
+                return tier;
+            }
+        }
+        
+        // Fallback: original age-based logic
+        let age = 16;
+        if (typeof PlayerManager !== 'undefined' && PlayerManager.hasActivePlayer()) {
+            age = PlayerManager.getPlayerAge() || 16;
+        }
+        const difficulty = getDifficultyFromAge(age);
+        console.log(`[Adaptive] Fallback to age-based: age=${age}, difficulty=${difficulty}`);
+        return difficulty;
+    }
+    
+    /**
+     * Record an answer for adaptive difficulty tracking
+     * @private
+     * @param {boolean} isCorrect 
+     */
+    _recordAnswerForAdaptive(isCorrect) {
+        if (!this.adaptiveDifficulty?.enabled) return;
+        
+        try {
+            // Calculate response time
+            const responseTime = this._questionStartTime 
+                ? Date.now() - this._questionStartTime 
+                : 15000; // Default 15s if not tracked
+            
+            // Get max time from current difficulty preset
+            const settings = DIFFICULTY_PRESETS[this.difficulty];
+            const maxTime = settings?.timeLimit ? settings.timeLimit * 1000 : 30000;
+            
+            // Record the answer
+            const newTier = this.adaptiveDifficulty.recordAnswer(isCorrect, responseTime, maxTime);
+            
+            // Update difficulty if tier changed
+            if (newTier !== null && newTier !== this.difficulty) {
+                console.log(`[Adaptive] Difficulty adjusted: ${this.difficulty} → ${newTier}`);
+                this.difficulty = newTier;
+            }
+        } catch (err) {
+            console.error('[Adaptive] Error recording answer:', err);
+            // Fail silently - game continues with current difficulty
+        }
+    }
+    
     setupEventListeners() {
+        // Debug logging
+        console.log('[Quiz Quest] Setting up event listeners');
+        console.log('[Quiz Quest] Start button:', this.elements.startBtn);
+        
         // Start button
-        this.elements.startBtn?.addEventListener('click', () => this.startGame());
+        this.elements.startBtn?.addEventListener('click', () => {
+            console.log('[Quiz Quest] Start button clicked!');
+            this.startGame();
+        });
         
         // Enter location
         this.elements.enterLocationBtn?.addEventListener('click', () => this.enterLocation());
@@ -873,6 +1165,400 @@ class QuizQuestGame {
         
         // Map canvas click
         this.mapCanvas?.addEventListener('click', (e) => this.handleMapClick(e));
+        
+        // Power-up buttons (NEW - wired but handlers have guards)
+        this._wireOptionalPowerups();
+        
+        // Explanation modal continue button (NEW)
+        const explanationContinueBtn = document.getElementById('explanation-continue-btn');
+        explanationContinueBtn?.addEventListener('click', () => this._closeExplanationModal());
+    }
+    
+    // ==================== POWER-UPS SYSTEM (NEW) ====================
+    
+    /**
+     * Wire power-up button event listeners
+     * @private
+     */
+    _wireOptionalPowerups() {
+        const wireButton = (id, handler) => {
+            const btn = document.getElementById(id);
+            if (!btn) return;  // Button doesn't exist - skip silently
+            
+            btn.addEventListener('click', () => {
+                try {
+                    handler.call(this);
+                } catch (err) {
+                    console.error(`[PowerUp:${id}] Handler error:`, err);
+                    // Fail silently - game continues
+                }
+            });
+        };
+        
+        wireButton('fifty-btn', this.useFiftyFifty);
+        wireButton('hint-btn', this.useHint);
+        wireButton('skip-btn', this.useSkip);
+    }
+    
+    /**
+     * Initialize power-ups for a new location
+     * @private
+     */
+    _initPowerupsForLocation() {
+        this.powerups = {
+            fiftyFifty: { remaining: 2, used: false },
+            hint: { remaining: 3, used: false },
+            skip: { remaining: 1, used: false }
+        };
+        this._updatePowerupUI();
+    }
+    
+    /**
+     * Update power-up button UI (counts and disabled states)
+     * @private
+     */
+    _updatePowerupUI() {
+        // Update counts
+        const fiftyCount = document.getElementById('fifty-count');
+        const hintCount = document.getElementById('hint-count');
+        const skipCount = document.getElementById('skip-count');
+        
+        if (fiftyCount) fiftyCount.textContent = this.powerups.fiftyFifty.remaining;
+        if (hintCount) hintCount.textContent = this.powerups.hint.remaining;
+        if (skipCount) skipCount.textContent = this.powerups.skip.remaining;
+        
+        // Update disabled states
+        const fiftyBtn = document.getElementById('fifty-btn');
+        const hintBtn = document.getElementById('hint-btn');
+        const skipBtn = document.getElementById('skip-btn');
+        
+        if (fiftyBtn) {
+            fiftyBtn.disabled = !this._powerupsEnabled || this.powerups.fiftyFifty.remaining <= 0;
+            fiftyBtn.classList.toggle('disabled', fiftyBtn.disabled);
+        }
+        if (hintBtn) {
+            hintBtn.disabled = !this._powerupsEnabled || this.powerups.hint.remaining <= 0;
+            hintBtn.classList.toggle('disabled', hintBtn.disabled);
+        }
+        if (skipBtn) {
+            skipBtn.disabled = !this._powerupsEnabled || this.powerups.skip.remaining <= 0;
+            skipBtn.classList.toggle('disabled', skipBtn.disabled);
+        }
+    }
+    
+    /**
+     * 50/50 Power-up: Remove 2 wrong answers
+     */
+    useFiftyFifty() {
+        // Guard clauses - return early if anything unexpected
+        if (!this._powerupsEnabled) {
+            console.log('[PowerUp:5050] Feature disabled');
+            return;
+        }
+        if (!this.powerups?.fiftyFifty || this.powerups.fiftyFifty.remaining <= 0) {
+            this._showPowerupToast('No 50/50 remaining!');
+            return;
+        }
+        if (!this.currentQuestion) {
+            console.log('[PowerUp:5050] No current question');
+            return;
+        }
+        if (this._answerSelected) {
+            console.log('[PowerUp:5050] Answer already selected');
+            return;
+        }
+        if (this.powerups.fiftyFifty.used) {
+            console.log('[PowerUp:5050] Already used this question');
+            return;
+        }
+        
+        // Mark as used for this question
+        this.powerups.fiftyFifty.remaining--;
+        this.powerups.fiftyFifty.used = true;
+        this._updatePowerupUI();
+        
+        // Find correct answer index
+        const correctAnswer = this.currentQuestion.correctAnswer;
+        const choices = this.currentQuestion.choices;
+        const correctIndex = choices.indexOf(correctAnswer);
+        
+        // Get indices of wrong answers
+        const wrongIndices = choices
+            .map((_, i) => i)
+            .filter(i => i !== correctIndex);
+        
+        // Shuffle and take 2 to eliminate
+        const shuffled = wrongIndices.sort(() => Math.random() - 0.5);
+        const toRemove = shuffled.slice(0, 2);
+        
+        // Disable those buttons visually
+        const answerBtns = this.elements.answersGrid?.querySelectorAll('.answer-btn');
+        if (answerBtns) {
+            toRemove.forEach(idx => {
+                const btn = answerBtns[idx];
+                if (btn) {
+                    btn.classList.add('eliminated');
+                    btn.disabled = true;
+                }
+            });
+        }
+        
+        this.playSound('powerup');
+        console.log('[PowerUp:5050] Eliminated 2 wrong answers');
+    }
+    
+    /**
+     * Hint Power-up: Show a hint for the current question
+     */
+    useHint() {
+        // Guard clauses
+        if (!this._powerupsEnabled) {
+            console.log('[PowerUp:Hint] Feature disabled');
+            return;
+        }
+        if (!this.powerups?.hint || this.powerups.hint.remaining <= 0) {
+            this._showPowerupToast('No hints remaining!');
+            return;
+        }
+        if (!this.currentQuestion) {
+            console.log('[PowerUp:Hint] No current question');
+            return;
+        }
+        if (this._answerSelected) {
+            console.log('[PowerUp:Hint] Answer already selected');
+            return;
+        }
+        if (this.powerups.hint.used) {
+            console.log('[PowerUp:Hint] Already used this question');
+            return;
+        }
+        
+        // Mark as used
+        this.powerups.hint.remaining--;
+        this.powerups.hint.used = true;
+        this._updatePowerupUI();
+        
+        // Cost: reduce time bonus by 50%
+        if (this.timeRemaining > 0) {
+            this.timeRemaining = Math.floor(this.timeRemaining * 0.5);
+            this._updateTimerDisplay();
+        }
+        
+        // Use question's hint if available, otherwise generate fallback (NEW - Day 5)
+        const correctAnswer = this.currentQuestion.correctAnswer;
+        let hintText;
+        if (this.currentQuestion.hint) {
+            hintText = `💡 ${this.currentQuestion.hint}`;
+        } else {
+            // Fallback: first letter hint
+            hintText = `💡 The answer starts with "${correctAnswer[0].toUpperCase()}"...`;
+        }
+        
+        // Show hint panel
+        const hintPanel = document.getElementById('hint-panel');
+        if (hintPanel) {
+            hintPanel.textContent = hintText;
+            hintPanel.classList.add('visible');
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                hintPanel.classList.remove('visible');
+            }, 5000);
+        }
+        
+        this.playSound('powerup');
+        console.log('[PowerUp:Hint] Showed hint');
+    }
+    
+    /**
+     * Skip Power-up: Skip to next question without penalty
+     */
+    useSkip() {
+        // Guard clauses
+        if (!this._powerupsEnabled) {
+            console.log('[PowerUp:Skip] Feature disabled');
+            return;
+        }
+        if (!this.powerups?.skip || this.powerups.skip.remaining <= 0) {
+            this._showPowerupToast('No skips remaining!');
+            return;
+        }
+        if (!this.currentQuestion) {
+            console.log('[PowerUp:Skip] No current question');
+            return;
+        }
+        if (this._answerSelected) {
+            console.log('[PowerUp:Skip] Answer already selected');
+            return;
+        }
+        
+        // Mark as used
+        this.powerups.skip.remaining--;
+        this._updatePowerupUI();
+        
+        // Stop timer
+        this.stopTimer();
+        
+        // Hide hint panel if visible
+        const hintPanel = document.getElementById('hint-panel');
+        if (hintPanel) hintPanel.classList.remove('visible');
+        
+        // Move to next question (no penalty, no points)
+        this.questionIndex++;
+        this.showNextQuestion();
+        
+        this.playSound('skip');
+        console.log('[PowerUp:Skip] Skipped question');
+    }
+    
+    /**
+     * Show a toast message for power-up feedback
+     * @private
+     */
+    _showPowerupToast(message) {
+        // Use hint panel as toast
+        const hintPanel = document.getElementById('hint-panel');
+        if (hintPanel) {
+            hintPanel.textContent = message;
+            hintPanel.classList.add('visible');
+            setTimeout(() => hintPanel.classList.remove('visible'), 2000);
+        }
+    }
+    
+    /**
+     * Reset power-up "used" flags for new question
+     * @private
+     */
+    _resetPowerupsForQuestion() {
+        if (this.powerups) {
+            this.powerups.fiftyFifty.used = false;
+            this.powerups.hint.used = false;
+            // Note: skip.used doesn't reset - one per location
+        }
+    }
+    
+    /**
+     * Update timer display (extracted for hint time penalty)
+     * @private
+     */
+    _updateTimerDisplay() {
+        const timerText = document.getElementById('timer-text');
+        if (timerText) {
+            timerText.textContent = this.timeRemaining;
+        }
+    }
+    
+    // ==================== EXPLANATION MODAL (NEW) ====================
+    
+    /**
+     * Safely show explanation modal after answer
+     * Falls back gracefully if modal doesn't exist
+     * @param {boolean} isCorrect - Whether answer was correct
+     * @param {string} selectedAnswer - The answer user selected
+     * @private
+     */
+    _safeShowExplanation(isCorrect, selectedAnswer) {
+        // Check feature flag
+        if (!this._explanationEnabled) {
+            return;
+        }
+        
+        try {
+            const modal = document.getElementById('explanation-modal');
+            if (!modal) {
+                // Modal doesn't exist - continue without it (old behavior)
+                console.log('[Explanation] Modal not found, skipping');
+                return;
+            }
+            
+            const header = modal.querySelector('.explanation-header');
+            const answerDiv = modal.querySelector('.explanation-answer');
+            const textDiv = modal.querySelector('.explanation-text');
+            
+            // Update header
+            if (header) {
+                header.textContent = isCorrect ? '✅ Correct!' : '❌ Incorrect';
+                header.classList.remove('correct', 'incorrect');
+                header.classList.add(isCorrect ? 'correct' : 'incorrect');
+            }
+            
+            // Update answer display
+            if (answerDiv) {
+                answerDiv.innerHTML = `The answer is: <strong>${this.currentQuestion.correctAnswer}</strong>`;
+            }
+            
+            // Update explanation text
+            if (textDiv) {
+                const explanation = this._generateExplanation(isCorrect, selectedAnswer);
+                textDiv.textContent = explanation;
+            }
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            modal.classList.add('visible');
+            modal.setAttribute('aria-hidden', 'false');
+            
+        } catch (err) {
+            console.error('[Explanation] Error showing modal:', err);
+            // Fail silently - game continues normally
+        }
+    }
+    
+    /**
+     * Generate explanation text for the answer
+     * Uses question's explanation if available, otherwise generates fallback (NEW - Day 5)
+     * @private
+     */
+    _generateExplanation(isCorrect, selectedAnswer) {
+        const question = this.currentQuestion;
+        const category = this.currentLocation?.category || 'general';
+        
+        // Use question's built-in explanation if available
+        if (question.explanation) {
+            if (isCorrect) {
+                return question.explanation;
+            } else {
+                return `${question.explanation} The correct answer was "${question.correctAnswer}".`;
+            }
+        }
+        
+        // Fallback: Category-specific generated explanation
+        const categoryFlavor = {
+            science: 'Science fact',
+            math: 'Math insight',
+            language: 'Language tip',
+            geography: 'Geography note',
+            history: 'Historical fact',
+            logic: 'Logic principle'
+        };
+        
+        const prefix = categoryFlavor[category] || 'Fun fact';
+        
+        if (isCorrect) {
+            if (this.streak > 1) {
+                return `${prefix}: Great work! You're on a ${this.streak}-answer streak! 🔥`;
+            }
+            return `${prefix}: "${question.correctAnswer}" is correct. Keep up the great work!`;
+        } else {
+            return `${prefix}: The correct answer was "${question.correctAnswer}", not "${selectedAnswer || 'nothing'}". You'll get it next time!`;
+        }
+    }
+    
+    /**
+     * Close explanation modal and continue quiz
+     * @private
+     */
+    _closeExplanationModal() {
+        try {
+            const modal = document.getElementById('explanation-modal');
+            if (modal) {
+                modal.classList.remove('visible');
+                modal.classList.add('hidden');
+                modal.setAttribute('aria-hidden', 'true');
+            }
+        } catch (err) {
+            console.error('[Explanation] Error closing modal:', err);
+        }
     }
     
     showScreen(screenName) {
@@ -898,12 +1584,8 @@ class QuizQuestGame {
             }
         }
         
-        // Get difficulty from PlayerManager age
-        let age = 16;
-        if (typeof PlayerManager !== 'undefined' && PlayerManager.hasActivePlayer()) {
-            age = PlayerManager.getPlayerAge() || 16;
-        }
-        this.difficulty = getDifficultyFromAge(age);
+        // Get difficulty - try adaptive first, fallback to age-based (NEW - Day 4)
+        this.difficulty = this._getInitialDifficulty();
         
         // Reset game state
         this.lives = QUIZ_CONFIG.STARTING_LIVES;
@@ -954,6 +1636,10 @@ class QuizQuestGame {
         this.playSound('start');
         this.questionIndex = 0;
         this.correctInLocation = 0;
+        
+        // Initialize power-ups for this location (NEW)
+        this._initPowerupsForLocation();
+        
         this.showNextQuestion();
         this.showScreen('quiz');
     }
@@ -963,6 +1649,15 @@ class QuizQuestGame {
             this.completeLocation();
             return;
         }
+        
+        // Reset answer state and power-up flags for new question (NEW)
+        this._answerSelected = false;
+        this._resetPowerupsForQuestion();
+        this._questionStartTime = Date.now();
+        
+        // Hide hint panel if visible (NEW)
+        const hintPanel = document.getElementById('hint-panel');
+        if (hintPanel) hintPanel.classList.remove('visible');
         
         // Get question
         this.currentQuestion = this.questionEngine.getQuestion(
@@ -991,12 +1686,20 @@ class QuizQuestGame {
         
         // Start timer if applicable
         const settings = DIFFICULTY_PRESETS[this.difficulty];
+        const timerSection = document.getElementById('quiz-timer-section');
         if (settings.timeLimit) {
             this.startTimer(settings.timeLimit);
+            // Ensure timer is visible
+            if (timerSection) {
+                timerSection.style.opacity = '1';
+                timerSection.style.pointerEvents = 'auto';
+            }
         } else {
-            // Hide timer ring if no time limit
-            const timerSection = document.getElementById('quiz-timer-section');
-            if (timerSection) timerSection.style.opacity = '0.3';
+            // Fully hide timer ring if no time limit (Explorer difficulty)
+            if (timerSection) {
+                timerSection.style.opacity = '0';
+                timerSection.style.pointerEvents = 'none';
+            }
         }
         
         // Hide feedback
@@ -1070,10 +1773,20 @@ class QuizQuestGame {
     }
     
     selectAnswer(answer) {
+        // Mark answer as selected to prevent power-up usage (NEW)
+        this._answerSelected = true;
+        
         // Stop timer
         this.stopTimer();
         
+        // Hide hint panel if visible (NEW)
+        const hintPanel = document.getElementById('hint-panel');
+        if (hintPanel) hintPanel.classList.remove('visible');
+        
         const isCorrect = answer === this.currentQuestion.correctAnswer;
+        
+        // Record answer for adaptive difficulty (NEW - Day 4)
+        this._recordAnswerForAdaptive(isCorrect);
         
         if (isCorrect) {
             this.handleCorrectAnswer();
@@ -1157,6 +1870,9 @@ class QuizQuestGame {
         
         this.elements.feedbackOverlay?.classList.remove('hidden');
         
+        // Show explanation modal (NEW - optional enhancement)
+        this._safeShowExplanation(isCorrect, selectedAnswer);
+        
         // Update lives display
         if (this.elements.livesDisplay) {
             this.elements.livesDisplay.textContent = this.lives;
@@ -1165,6 +1881,12 @@ class QuizQuestGame {
     
     continueQuiz() {
         if (this.lives <= 0) return;
+        
+        // Close explanation modal if open (NEW)
+        this._closeExplanationModal();
+        
+        // Hide existing feedback overlay
+        this.elements.feedbackOverlay?.classList.add('hidden');
         
         this.questionIndex++;
         this.showNextQuestion();
@@ -1406,8 +2128,10 @@ class QuizQuestGame {
 
 // ==================== Initialize Game ====================
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('[Quiz Quest] DOM loaded, initializing game...');
     try {
         window.game = new QuizQuestGame();
+        console.log('[Quiz Quest] Game initialized successfully');
     } catch (error) {
         console.error('Failed to initialize Quiz Quest game:', error);
     }

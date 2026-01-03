@@ -39,14 +39,14 @@ echo  ✅ Server starting on port %PORT%
 echo.
 echo  ================================================
 echo     Open your browser to:
-echo     http://localhost:%PORT%/launcher.html
+echo     http://localhost:%PORT%
 echo  ================================================
 echo.
 echo  Press Ctrl+C to stop the server
 echo.
 
 :: Wait a moment then open browser
-start "" "http://localhost:%PORT%/launcher.html"
+start "" "http://localhost:%PORT%/"
 
 :: Start the Python HTTP server
 python -m http.server %PORT%

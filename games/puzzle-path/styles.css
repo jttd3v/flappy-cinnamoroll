@@ -32,7 +32,7 @@ body {
 
 .game-container {
     width: 100%;
-    max-width: 500px;
+    max-width: 900px; /* Wider to accommodate two columns */
     height: 100vh;
     margin: 0 auto;
     position: relative;
@@ -226,24 +226,69 @@ body {
     padding-bottom: 30px;
 }
 
+/* ==================== Two Column Layout ==================== */
+/* Fix #2: Top-align columns, not center */
+.game-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    flex: 1;
+    align-items: flex-start; /* Top alignment for visual balance */
+    justify-content: center;
+    min-height: 0;
+    padding: 15px 20px;
+}
+
+.goal-column {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.puzzle-column {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    min-width: 0;
+}
+
+/* Responsive: Stack on small screens */
+@media (max-width: 650px) {
+    .game-layout {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .goal-column {
+        order: -1;
+    }
+}
+
+/* Fix #6: Compact header with tighter hierarchy */
 .game-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    padding: 8px 12px;
     background: white;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-soft);
+    max-width: fit-content;
+    margin: 0 auto 15px auto;
 }
 
 .icon-btn {
-    width: 45px;
-    height: 45px;
-    font-size: 24px;
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
     background: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -259,97 +304,117 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 20px;
 }
 
 #puzzle-name {
     font-weight: bold;
     color: var(--text-dark);
+    font-size: 14px;
 }
 
 #puzzle-size {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-light);
 }
 
 .header-stats {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--primary-color);
 }
 
-/* Target Preview */
+/* Target Preview - Side column layout */
+/* Fix #1: Larger goal grid, Fix #3: Consistent gaps */
 .target-preview {
     background: white;
     border-radius: var(--border-radius);
-    padding: 15px;
+    padding: 20px 24px;
     box-shadow: var(--shadow-soft);
     text-align: center;
+    height: fit-content;
 }
 
 .target-preview h3 {
     color: var(--text-dark);
-    margin-bottom: 10px;
-    font-size: 14px;
+    margin-bottom: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .target-preview.hidden {
     display: none;
 }
 
-.target-grid {
-    display: inline-grid;
-    gap: 3px;
-    background: #f0f0f0;
-    padding: 5px;
-    border-radius: 10px;
+/* Hide goal column when target is hidden */
+.goal-column:has(.target-preview.hidden) {
+    display: none;
 }
 
+/* Fix #3: Gap ratio consistency with main grid */
+.target-grid {
+    display: inline-grid;
+    gap: 5px; /* Proportional gap matching puzzle grid ratio */
+    background: rgba(240, 240, 240, 0.6);
+    padding: 10px;
+    border-radius: 14px;
+}
+
+/* Fix #1: Scale up target tiles by ~30% */
+/* Fix #4: Consistent empty slot styling */
 .target-tile {
-    width: 30px;
-    height: 30px;
+    width: clamp(36px, 5vw, 48px);
+    height: clamp(36px, 5vw, 48px);
     background: var(--tile-bg);
-    border-radius: 5px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: clamp(18px, 3vw, 24px);
+    border: 2px solid var(--tile-border);
+    box-shadow: 0 2px 6px rgba(255, 158, 205, 0.15);
 }
 
+/* Fix #4: Identical empty slot style as puzzle grid */
 .target-tile.empty {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.4);
+    border: 2px dashed #ccc;
+    box-shadow: none;
 }
 
 /* Puzzle Area */
 .puzzle-area {
-    flex: 1;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    padding: 20px;
+    padding: 0;
 }
 
+/* Fix #3: Consistent visual rhythm with goal grid */
 .puzzle-grid {
     display: grid;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.5);
-    padding: 15px;
+    gap: 5px; /* Matches target-grid gap ratio */
+    background: rgba(255, 255, 255, 0.6);
+    padding: 12px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-medium);
 }
 
 .puzzle-tile {
-    aspect-ratio: 1;
+    width: clamp(48px, 9vw, 62px);
+    height: clamp(48px, 9vw, 62px);
     background: var(--tile-bg);
-    border: 4px solid var(--tile-border);
-    border-radius: 15px;
+    border: 2px solid var(--tile-border);
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: clamp(24px, 8vw, 40px);
+    font-size: clamp(20px, 4.5vw, 30px);
     font-weight: bold;
     cursor: pointer;
     transition: all 0.15s ease;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 2px 8px rgba(255, 158, 205, 0.2);
     user-select: none;
 }
 
@@ -362,16 +427,18 @@ body {
     transform: scale(0.98);
 }
 
+/* Fix #4: Identical empty slot style matching target grid */
 .puzzle-tile.empty {
-    background: rgba(255, 255, 255, 0.3);
-    border: 4px dashed #ddd;
+    background: rgba(255, 255, 255, 0.4);
+    border: 2px dashed #ccc;
     cursor: default;
     box-shadow: none;
 }
 
+/* Fix #5: Tighter, crisper selection highlight */
 .puzzle-tile.movable {
     border-color: var(--accent-color);
-    box-shadow: 0 0 15px rgba(127, 200, 248, 0.5);
+    box-shadow: 0 0 0 3px rgba(127, 200, 248, 0.4);
 }
 
 .puzzle-tile.moving {

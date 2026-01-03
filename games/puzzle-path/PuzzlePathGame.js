@@ -9,14 +9,15 @@
 const PUZZLE_CONFIG = Object.freeze({
   ANIMATION_DURATION: 150,  // ms
   
+  // Updated: Always show target preview - two-column layout makes space for it
   DIFFICULTY_SETTINGS: {
     1: { gridSize: 2, moveLimit: null, timeLimit: null, showTarget: true },
     2: { gridSize: 3, moveLimit: null, timeLimit: null, showTarget: true },
-    3: { gridSize: 3, moveLimit: null, timeLimit: null, showTarget: false },
-    4: { gridSize: 4, moveLimit: null, timeLimit: null, showTarget: false },
-    5: { gridSize: 4, moveLimit: 50, timeLimit: null, showTarget: false },
-    6: { gridSize: 5, moveLimit: 80, timeLimit: 180, showTarget: false },
-    7: { gridSize: 5, moveLimit: 60, timeLimit: 120, showTarget: false }
+    3: { gridSize: 3, moveLimit: null, timeLimit: null, showTarget: true },
+    4: { gridSize: 4, moveLimit: null, timeLimit: null, showTarget: true },
+    5: { gridSize: 4, moveLimit: 50, timeLimit: null, showTarget: true },
+    6: { gridSize: 5, moveLimit: 80, timeLimit: 180, showTarget: true },
+    7: { gridSize: 5, moveLimit: 60, timeLimit: 120, showTarget: true }
   },
   
   STAR_THRESHOLDS: {
@@ -273,13 +274,18 @@ class PuzzleRenderer {
     
     /**
      * Updates the grid display
+     * Bug Fix #1: Re-attach click handlers for tiles transitioning from empty
      */
     updateGrid() {
         const state = this.engine.getState();
+        const self = this;
         
         for (let i = 0; i < state.tiles.length; i++) {
             const tile = this.tileElements[i];
             if (!tile) continue;
+            
+            // Check if tile was empty before (had no click handler)
+            const wasEmpty = tile.classList.contains('empty');
             
             tile.className = 'puzzle-tile';
             
@@ -288,6 +294,15 @@ class PuzzleRenderer {
                 tile.textContent = '';
             } else {
                 tile.textContent = this.tileContent[state.tiles[i] - 1] || state.tiles[i];
+                
+                // Re-attach click handler if tile was previously empty
+                if (wasEmpty) {
+                    // Clone to remove old listeners, then add new one
+                    const newTile = tile.cloneNode(true);
+                    newTile.addEventListener('click', () => self.handleTileClick(i));
+                    tile.parentNode.replaceChild(newTile, tile);
+                    this.tileElements[i] = newTile;
+                }
             }
         }
         
@@ -360,7 +375,7 @@ class PuzzlePathGame {
         const getElement = (id) => document.getElementById(id);
         
         return {
-            ageSelect: getElement('age-select'),
+            // Bug Fix #2: Removed dead 'age-select' reference (element doesn't exist in HTML)
             themeSelect: getElement('theme-select'),
             startBtn: getElement('start-btn'),
             bestMoves: getElement('best-moves'),
@@ -618,10 +633,16 @@ class PuzzlePathGame {
     
     /**
      * Starts the game timer
+     * Bug Fix #3: Ensure startTime is valid before starting timer
      */
     startTimer() {
         if (this.timerInterval) {
             clearInterval(this.timerInterval);
+        }
+        
+        // Defensive: ensure startTime is set
+        if (!this.startTime || this.startTime <= 0) {
+            this.startTime = Date.now();
         }
         
         this.timerInterval = setInterval(() => {
@@ -653,6 +674,7 @@ class PuzzlePathGame {
     /**
      * Called when a move is made
      * @param {number} moves - Current move count
+     * Bug Fix #4: Added null guard for engine
      */
     onMove(moves) {
         if (this.elements.moveCount) {
@@ -663,7 +685,8 @@ class PuzzlePathGame {
             const remaining = Math.max(0, this.moveLimit - moves);
             this.elements.movesRemaining.textContent = remaining;
             
-            if (remaining <= 0 && !this.engine.isSolved()) {
+            // Bug Fix #4: Guard against null engine
+            if (remaining <= 0 && this.engine && !this.engine.isSolved()) {
                 this.onMoveLimit();
             }
         }
@@ -679,8 +702,10 @@ class PuzzlePathGame {
         const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
         const moves = this.engine.moves;
         
-        // Calculate stars based on moves (optimal is about (gridSize^2 * 3))
-        const optimalMoves = this.gridSize * this.gridSize * 3;
+        // Bug Fix #5: More realistic optimal move calculation
+        // 2x2 ~6 moves, 3x3 ~22 moves, 4x4 ~50 moves, 5x5 ~100 moves
+        const tileCount = this.gridSize * this.gridSize - 1;
+        const optimalMoves = Math.max(tileCount, Math.floor(tileCount * 2.5));
         const ratio = moves / optimalMoves;
         
         let stars = 1;
@@ -874,8 +899,14 @@ class PuzzlePathGame {
     /**
      * Helper method to play sound effects with defensive programming
      * @param {string} type - Type of sound effect
+     * Bug Fix #6: Lazy audio initialization for race condition
      */
     playSound(type) {
+        // Bug Fix #6: Re-check for audio if it wasn't available at construction
+        if (!this.audio && typeof gameAudio !== 'undefined') {
+            this.audio = gameAudio;
+        }
+        
         if (this.audio && this.sfxEnabled) {
             try {
                 this.audio.playSFX(type);
