@@ -685,13 +685,26 @@ class CloudKingdomGame {
         document.addEventListener('keydown', (e) => this.handleKeyDown(e));
         document.addEventListener('keyup', (e) => this.handleKeyUp(e));
         
-        // D-Pad
+        // D-Pad with hold-to-move support
+        let moveInterval = null;
+        const startMove = (dir) => {
+            this.handleMove(dir);
+            clearInterval(moveInterval);
+            moveInterval = setInterval(() => this.handleMove(dir), 180);
+        };
+        const stopMove = () => {
+            clearInterval(moveInterval);
+            moveInterval = null;
+        };
+        
         document.querySelectorAll('.dpad-btn[data-dir]').forEach(btn => {
-            btn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                this.handleMove(btn.dataset.dir);
-            });
-            btn.addEventListener('mousedown', () => this.handleMove(btn.dataset.dir));
+            const dir = btn.dataset.dir;
+            btn.addEventListener('touchstart', (e) => { e.preventDefault(); startMove(dir); });
+            btn.addEventListener('touchend', stopMove);
+            btn.addEventListener('touchcancel', stopMove);
+            btn.addEventListener('mousedown', () => startMove(dir));
+            btn.addEventListener('mouseup', stopMove);
+            btn.addEventListener('mouseleave', stopMove);
         });
         
         this.elements.interactBtn?.addEventListener('click', () => this.handleInteract());
@@ -759,6 +772,7 @@ class CloudKingdomGame {
         const result = this.player.move(direction);
         
         if (result.success) {
+            this.playSound('move');
             // Update camera
             this.camera?.follow(
                 this.player.x,
@@ -787,16 +801,23 @@ class CloudKingdomGame {
     handleInteract() {
         if (!this.player || this.dialogSystem.active) return;
         
-        // Check for exit
-        if (this.player.isAtExit() && this.questManager.areAllComplete()) {
-            this.completeArea();
-            return;
+        // Check for exit - show feedback if locked
+        if (this.player.isAtExit()) {
+            if (this.questManager.areAllComplete()) {
+                this.completeArea();
+                return;
+            } else {
+                this.showToast('Complete all quests first! 📋');
+                this.playSound('error');
+                return;
+            }
         }
         
         const interactable = this.player.interact();
         
         if (interactable?.entity?.type === 'npc') {
             const npc = interactable.entity;
+            this.playSound('click');
             this.dialogSystem.show(npc.name, npc.dialog);
         }
     }
@@ -805,16 +826,26 @@ class CloudKingdomGame {
         if (!entity || !entity.itemId) return;
         
         this.inventory.addItem(entity.itemId, 1);
+        this.playSound('pickup');
         this.updateHUD();
         
         // Update quests
         const completedQuest = this.questManager.updateProgress('collect', entity.itemId, 1);
         
         if (completedQuest) {
+            this.playSound('success');
             this.showToast(`Quest Complete: ${completedQuest.title} ⭐`);
         } else {
             const itemInfo = KINGDOM_CONFIG.ITEMS[entity.itemId];
-            this.showToast(`Got ${itemInfo?.name || entity.itemId}! ${itemInfo?.icon || ''}`);
+            // Show quest progress if collecting for an active quest
+            const relatedQuest = this.questManager.getActiveQuests().find(
+                q => q.type === 'collect' && q.target === entity.itemId
+            );
+            if (relatedQuest) {
+                this.showToast(`${itemInfo?.icon || ''} ${relatedQuest.progress}/${relatedQuest.amount} ${itemInfo?.name || entity.itemId}`);
+            } else {
+                this.showToast(`Got ${itemInfo?.name || entity.itemId}! ${itemInfo?.icon || ''}`);
+            }
         }
         
         // Track gems
@@ -827,11 +858,17 @@ class CloudKingdomGame {
         if (!this.elements.interactionPrompt || !this.player) return;
         
         const canInteract = this.player.canInteract();
-        const atExit = this.player.isAtExit() && this.questManager.areAllComplete();
+        const atExit = this.player.isAtExit();
+        const questsComplete = this.questManager.areAllComplete();
         
-        if (canInteract || atExit) {
+        if (atExit && !questsComplete) {
+            // At exit but quests incomplete - show locked message
             this.elements.interactionPrompt.classList.remove('hidden');
-            this.elements.interactionPrompt.textContent = atExit ? 
+            this.elements.interactionPrompt.textContent = '🔒 Complete quests to unlock exit';
+        } else if (canInteract || (atExit && questsComplete)) {
+            // Can interact with NPC or exit is unlocked
+            this.elements.interactionPrompt.classList.remove('hidden');
+            this.elements.interactionPrompt.textContent = (atExit && questsComplete) ? 
                 'Press SPACE to continue' : 'Press SPACE to interact';
         } else {
             this.elements.interactionPrompt.classList.add('hidden');
@@ -893,12 +930,15 @@ class CloudKingdomGame {
             }
         }
         
-        // Get difficulty from PlayerManager age
+        // Get difficulty from age selector or PlayerManager
         let age = 16;
-        if (typeof PlayerManager !== 'undefined' && PlayerManager.hasActivePlayer()) {
+        if (this.elements.ageSelect) {
+            age = parseInt(this.elements.ageSelect.value, 10) || 16;
+        } else if (typeof PlayerManager !== 'undefined' && PlayerManager.hasActivePlayer()) {
             age = PlayerManager.getPlayerAge() || 16;
         }
         this.difficulty = getDifficultyFromAge(age);
+        console.log(`Starting game with age ${age}, difficulty ${this.difficulty}`);
         
         this.currentMapId = mapId;
         this.loadMap(mapId);

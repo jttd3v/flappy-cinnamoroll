@@ -395,8 +395,8 @@ body {
 .puzzle-grid {
     display: grid;
     gap: 5px; /* Matches target-grid gap ratio */
-    background: rgba(255, 255, 255, 0.6);
-    padding: 12px;
+    background: rgba(250, 250, 250, 0.993);
+    padding: 6px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-medium);
 }
