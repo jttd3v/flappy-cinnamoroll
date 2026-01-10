@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proverb Ascension - Scripture Mastery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Audio System -->
+    <script src="../../shared-assets/audio/GameAudioManager.js"></script>
+    <!-- Player Manager -->
+    <script src="../../shared-assets/player/PlayerManager.js"></script>
+</head>
+<body>
+    <!-- Breadcrumbs Navigation -->
+    <nav class="breadcrumbs">
+        <a href="../../launcher.html" class="breadcrumb-link" id="home-btn">
+            <span class="breadcrumb-icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <span class="breadcrumb-separator">›</span>
+        <span class="breadcrumb-current">📜 Proverb Ascension</span>
+        <button class="close-btn" id="close-btn" title="Return to Home">✕ Close</button>
+    </nav>
+
+    <!-- Main Layout: Webcam + Game -->
+    <div class="main-layout">
+        <!-- Webcam Container -->
+        <div id="webcam-container" class="webcam-container">
+            <video id="webcam-video" autoplay muted playsinline></video>
+            <div class="webcam-overlay">
+                <span class="webcam-label">📹 Player Cam</span>
+                <div class="rec-indicator" id="rec-indicator">
+                    <span class="rec-dot"></span>
+                    <span>REC</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Container -->
+        <div id="game-container" class="game-container">
+            <!-- Header -->
+            <header class="game-header">
+                <div class="header-left">
+                    <span id="level-display" class="level-badge">Level 1/5</span>
+                    <span id="difficulty-badge" class="diff-badge">Sapling</span>
+                </div>
+                <div class="header-center">
+                    <span class="game-title">📜 Proverb Ascension</span>
+                </div>
+                <div class="header-right">
+                    <span class="score-label">Score:</span>
+                    <span id="score-display" class="score-value">0</span>
+                    <button id="sound-toggle" class="sound-btn" title="Toggle Sound">🔊</button>
+                </div>
+            </header>
+            
+            <!-- Start Screen -->
+            <section id="start-screen" class="screen active">
+                <div class="screen-content start-content">
+                    <div class="logo-section">
+                        <div class="logo-icon">📖</div>
+                        <h1>Proverb Ascension</h1>
+                        <p class="tagline">Master the Wisdom of Proverbs 1:1-6</p>
+                        <div id="player-welcome" class="player-welcome"></div>
+                    </div>
+                    
+                    <div class="verse-selection-card">
+                        <h3>📜 Choose a Verse to Study</h3>
+                        <div id="verse-selector" class="verse-selector">
+                            <!-- Verse buttons injected by JS -->
+                        </div>
+                        <div id="start-feedback" class="feedback-msg"></div>
+                    </div>
+                
+                <div class="info-cards">
+                    <div class="info-card">
+                        <span class="info-icon">📜</span>
+                        <span>6 Proverbs</span>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">❓</span>
+                        <span>Questions</span>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">⭐</span>
+                        <span>Earn Wisdom</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Intro Screen -->
+        <section id="intro-screen" class="screen">
+            <div class="screen-content intro-content">
+                <div class="verse-card">
+                    <div class="verse-header">
+                        <span class="verse-label">Learn This Verse</span>
+                        <span id="intro-reference" class="verse-reference">Proverbs 1:1</span>
+                    </div>
+                    <blockquote id="intro-text" class="verse-text">
+                        "The proverbs of Solomon son of David, king of Israel:"
+                    </blockquote>
+                    <div id="intro-theme" class="verse-theme">Theme: Purpose</div>
+                </div>
+                
+                <div class="intro-instructions">
+                    <h3>🎮 Game Modes</h3>
+                    <ul>
+                        <li><strong>❓ Multiple Choice</strong> - Pick the correct answer</li>
+                        <li><strong>✅❌ True/False</strong> - Is the verse correct?</li>
+                        <li><strong>✏️ Fill Blanks</strong> - Type missing words</li>
+                        <li><strong>🔗 Match Lines</strong> - Connect verses to references</li>
+                    </ul>
+                </div>
+                
+                <button id="start-questions-btn" class="btn btn-primary btn-large">
+                    <span>I'm Ready!</span>
+                    <span class="btn-icon">✓</span>
+                </button>
+            </div>
+        </section>
+        
+        <!-- Question Screen -->
+        <section id="question-screen" class="screen">
+            <div class="screen-content question-content">
+                <div class="question-header">
+                    <span id="question-progress" class="q-progress">1 / 4</span>
+                    <div id="question-timer" class="timer-container" style="display: none;">
+                        <svg class="timer-svg" viewBox="0 0 100 100">
+                            <circle class="timer-bg" cx="50" cy="50" r="45"/>
+                            <circle id="timer-ring" class="timer-ring" cx="50" cy="50" r="45"/>
+                        </svg>
+                        <span id="timer-text" class="timer-text">30</span>
+                    </div>
+                    <div id="streak-display" class="streak"></div>
+                </div>
+                
+                <div class="question-card">
+                    <span id="question-type" class="q-type">💡 Understanding</span>
+                    <p id="question-text" class="q-text">What is this verse about?</p>
+                </div>
+                
+                <div id="choices-container" class="choices">
+                    <!-- Choices injected by JS -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Feedback Screen -->
+        <section id="feedback-screen" class="screen">
+            <div class="screen-content feedback-content">
+                <div class="feedback-card">
+                    <div id="feedback-icon" class="feedback-icon correct">✅</div>
+                    <h2 id="feedback-title" class="feedback-title">Correct!</h2>
+                    <p id="feedback-message" class="feedback-message">Great job!</p>
+                    <div id="feedback-points" class="feedback-points">+100</div>
+                </div>
+                <button id="next-question-btn" class="btn btn-primary">
+                    <span>Continue</span>
+                    <span class="btn-icon">→</span>
+                </button>
+            </div>
+        </section>
+        
+        <!-- Level Complete Screen -->
+        <section id="level-complete-screen" class="screen">
+            <div class="screen-content level-complete-content">
+                <div class="complete-card">
+                    <div class="complete-icon">🏆</div>
+                    <h2 id="level-complete-title" class="complete-title">Proverbs 1:1 Complete!</h2>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-value" id="level-score">400</span>
+                            <span class="stat-label">Points</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="level-accuracy">100%</span>
+                            <span class="stat-label">Accuracy</span>
+                        </div>
+                    </div>
+                    <div id="level-badge" class="level-badge perfect">⭐ Perfect!</div>
+                </div>
+                <button id="next-level-btn" class="btn btn-primary btn-large">
+                    <span>Next Proverb</span>
+                    <span class="btn-icon">→</span>
+                </button>
+            </div>
+        </section>
+        
+        <!-- Mode Screen (Fill Blanks, Match Lines, True/False) -->
+        <section id="mode-screen" class="screen">
+            <div class="screen-content mode-content">
+                <h2 id="mode-title" class="mode-title">Game Mode</h2>
+                <div id="mode-container" class="mode-container">
+                    <!-- Mode content injected by JS -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Complete Screen -->
+        <section id="complete-screen" class="screen">
+            <div class="screen-content complete-content">
+                <div class="victory-card">
+                    <div class="victory-icon">🎓</div>
+                    <h1>Wisdom Achieved!</h1>
+                    <p class="victory-subtitle">You've mastered Proverbs 1:1-5</p>
+                    <div class="final-stats">
+                        <div class="final-stat">
+                            <span class="final-value" id="final-score">0</span>
+                            <span class="final-label">Total Score</span>
+                        </div>
+                        <div class="final-stat">
+                            <span class="final-value" id="final-streak">0</span>
+                            <span class="final-label">Best Streak</span>
+                        </div>
+                        <div class="final-stat">
+                            <span class="final-value" id="final-accuracy">0%</span>
+                            <span class="final-label">Accuracy</span>
+                        </div>
+                    </div>
+                </div>
+                <button id="play-again-btn" class="btn btn-primary btn-large">
+                    <span>Play Again</span>
+                    <span class="btn-icon">↻</span>
+                </button>
+            </div>
+        </section>
+        
+        <!-- Confetti Container -->
+        <div id="confetti-container" class="confetti-container"></div>
+        </div>
+    </div>
+
+    <!-- Recording Controls -->
+    <div class="recording-controls" id="recording-controls">
+        <button id="toggle-webcam-btn" class="rec-btn">📷 Enable Webcam</button>
+        <button id="start-recording-btn" class="rec-btn rec-start" disabled>⏺️ Start Recording</button>
+        <button id="stop-recording-btn" class="rec-btn rec-stop">⏹️ Stop & Save</button>
+    </div>
+    <div id="recording-status" class="recording-status"></div>
+
+    <!-- Exit Confirmation Modal -->
+    <div id="exit-modal" class="exit-modal">
+        <div class="exit-modal-content">
+            <h3>🚪 Leave Game?</h3>
+            <p>Your progress will be saved. Are you sure you want to return home?</p>
+            <div class="exit-modal-buttons">
+                <button id="exit-cancel-btn" class="btn btn-secondary">Stay</button>
+                <button id="exit-confirm-btn" class="btn btn-primary">Go Home</button>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="ProverbAscensionGame.js"></script>
+</body>
+</html>

@@ -16,6 +16,7 @@
 | 8 | [Cloud Kingdom Explorer](cloud-kingdom/) | Exploration + Logic | HIGH | 📋 PRD Ready |
 | 9 | [Puzzle Cloud Path](puzzle-path/) | Critical Thinking | MEDIUM | 📋 PRD Ready |
 | 10 | [Career Clouds](career-clouds/) | Assessment + Meta | HIGH | 📋 PRD Ready |
+| 11 | [Proverb Ascension](proverb-ascension/) | Scripture Memory + Wisdom | HIGH | ✅ Complete |
 
 ---
 
@@ -73,6 +74,14 @@ games/
 │   ├── SKILLS.md
 │   ├── career-clouds.config.js
 │   └── README.md
+├── proverb-ascension/      # Game 11: Scripture Memory
+│   ├── PRD.md
+│   ├── SKILLS.md
+│   ├── proverb-ascension.config.js
+│   ├── ProverbAscensionGame.js
+│   ├── index.html
+│   ├── styles.css
+│   └── README.md
 └── INDEX.md                # This file
 ```
 
@@ -98,12 +107,13 @@ games/
 | Skill | Primary Games | Secondary Games |
 |-------|--------------|-----------------|
 | Math | Star Counter, Candy Shop | Quiz Quest |
-| Memory | Treasure Chest | Quiz Quest, Story Cloud |
+| Memory | Treasure Chest, Proverb Ascension | Quiz Quest, Story Cloud |
 | Logic | Pattern Rainbow, Puzzle Path | Cloud Kingdom |
-| Reading | Story Cloud | Quiz Quest |
-| Writing | Dream Journal | - |
+| Reading | Story Cloud, Proverb Ascension | Quiz Quest |
+| Writing | Dream Journal, Proverb Ascension | - |
 | Spatial | Cloud Kingdom, Puzzle Path | Pattern Rainbow |
 | Creativity | Dream Journal | Pattern Rainbow |
+| Scripture | Proverb Ascension | - |
 
 ---
 
